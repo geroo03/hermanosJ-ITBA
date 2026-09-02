@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Taller & Showroom | Hermanos Jota</title>
+  <meta name="description" content="Visitanos en nuestra Casa Taller en el Barrio de San Cristóbal, CABA. Contactate para asesoramiento personalizado o solicitar piezas a medida.">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+
+  <!-- Top Bar Informativa -->
+  <aside class="top-bar" aria-label="Anuncios">
+    <span>
+      <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      <strong>Envío Bonificado</strong> en compras superiores a $350.000
+    </span>
+    <span class="d-none-sm">|</span>
+    <span>
+      <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <strong>Programa Herencia Viva</strong> | 10 Años de Garantía
+    </span>
+  </aside>
+
+  <!-- Header Principal -->
+  <header class="site-header" id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-logo" aria-label="Hermanos Jota - Inicio">
+        <div class="logo-icon">
+          <img src="assets/images/logo.svg" alt="Hermanos Jota Logo" class="logo-icon-img">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">Hermanos Jota</span>
+          <span class="logo-subtitle">Casa Taller & Ebanistería</span>
+        </div>
+      </a>
+
+      <!-- Navegación Desktop -->
+      <nav class="main-nav" aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Inicio</a></li>
+          <li><a href="productos.html" class="nav-link">Catálogo</a></li>
+          <li><a href="contacto.html" class="nav-link active">Casa Taller & Showroom</a></li>
+        </ul>
+      </nav>
+
+      <!-- Acciones de Cabecera -->
+      <div class="header-actions">
+        <button type="button" class="btn-header-action btn-open-cart" id="openCartBtn" aria-label="Abrir Carrito">
+          <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-badge" id="headerCartBadge" style="display: none;">0</span>
+        </button>
+
+        <button type="button" class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú de navegación">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación Móvil (Drawer) -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-content">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="mobile-nav-link">Inicio <span>→</span></a></li>
+        <li><a href="productos.html" class="mobile-nav-link">Catálogo <span>→</span></a></li>
+        <li><a href="contacto.html" class="mobile-nav-link active">Casa Taller & Showroom <span>→</span></a></li>
+      </ul>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2rem;">
+        <p style="display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Av. San Juan 2847, San Cristóbal
+        </p>
+        <p style="display: flex; align-items: center; gap: 0.4rem;">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +54 11 4567-8900
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- Banner de Cabecera -->
+    <section class="contact-header-banner" aria-label="Contacto">
+      <div class="container">
+        <h1>Casa Taller & Showroom</h1>
+        <p>Visitanos en el histórico barrio de San Cristóbal o escribinos para asesoramiento y presupuestos a medida.</p>
+      </div>
+    </section>
+
+    <!-- Contenido Principal -->
+    <div class="container">
+      <div class="contact-layout">
+        
+        <!-- 1. Columna de Información y Showroom -->
+        <aside class="contact-info-panel" aria-label="Información de contacto">
+          <div class="info-card">
+            <div class="info-card-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="info-card-content">
+              <h3>Casa Taller San Cristóbal</h3>
+              <p>Av. San Juan 2847 (C1232AAB)<br>Ciudad Autónoma de Buenos Aires, Argentina.<br>Espacio de exhibición y taller activo.</p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="info-card-content">
+              <h3>Horarios de Atención</h3>
+              <p>Lunes a Viernes: 10:00 a 19:00 hs.<br>Sábados: 10:00 a 14:00 hs.<br>Domingos y Feriados cerrado.</p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-card-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/><path d="M6 9h12M6 15h8"/></svg>
+            </div>
+            <div class="info-card-content">
+              <h3>Canales Digitales</h3>
+              <p>
+                Email general: <a href="mailto:info@hermanosjota.com.ar" style="color: var(--siena-tostado); font-weight: 600;">info@hermanosjota.com.ar</a><br>
+                Ventas: <a href="mailto:ventas@hermanosjota.com.ar" style="color: var(--siena-tostado); font-weight: 600;">ventas@hermanosjota.com.ar</a><br>
+                WhatsApp: <a href="https://wa.me/541145678900" target="_blank" style="color: var(--siena-tostado); font-weight: 600;">+54 11 4567-8900</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Mapa Simulado con Estilo Gráfico -->
+          <div class="map-card" aria-label="Ubicación geográfica de Casa Taller">
+            <div class="map-pin-box">
+              <span style="font-size: 1.25rem; display: block; margin-bottom: 0.25rem;">
+                <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <strong>Hermanos Jota — Casa Taller</strong><br>
+              <small>Av. San Juan 2847, San Cristóbal, CABA</small>
+            </div>
+          </div>
+        </aside>
+
+        <!-- 2. Columna del Formulario de Contacto -->
+        <section class="contact-form-container" id="formContainer" aria-label="Formulario de contacto">
+          <div class="form-header">
+            <span class="section-tag">Conversá con nosotros</span>
+            <h2>Envianos tu Consulta</h2>
+            <p>Hablamos como asesores de confianza y compañeros apasionados del buen diseño.</p>
+          </div>
+
+          <form id="contactForm" class="contact-form" novalidate>
+            <!-- Fila 1: Nombre y Email -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre" class="form-label">Nombre y Apellido <span class="req">*</span></label>
+                <input 
+                  type="text" 
+                  id="nombre" 
+                  name="nombre" 
+                  class="form-input" 
+                  placeholder="Ej: Sofía Martínez"
+                  required
+                >
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="form-label">Correo Electrónico <span class="req">*</span></label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  class="form-input" 
+                  placeholder="nombre@ejemplo.com"
+                  required
+                >
+                <span class="error-message"></span>
+              </div>
+            </div>
+
+            <!-- Fila 2: Teléfono y Motivo -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="telefono" class="form-label">Teléfono / WhatsApp</label>
+                <input 
+                  type="tel" 
+                  id="telefono" 
+                  name="telefono" 
+                  class="form-input" 
+                  placeholder="Ej: +54 11 4567-8900"
+                >
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="asunto" class="form-label">Motivo de Consulta <span class="req">*</span></label>
+                <select id="asunto" name="asunto" class="form-select" required>
+                  <option value="">Seleccionar motivo...</option>
+                  <option value="presupuesto">Proyecto / Mueble a medida</option>
+                  <option value="visita">Coordinar visita a Casa Taller</option>
+                  <option value="herencia">Programa Herencia Viva / Restauración</option>
+                  <option value="duda">Consulta sobre una pieza del catálogo</option>
+                  <option value="otro">Otro asunto</option>
+                </select>
+                <span class="error-message"></span>
+              </div>
+            </div>
+
+            <!-- Fila 3: Mensaje -->
+            <div class="form-group">
+              <label for="mensaje" class="form-label">Mensaje <span class="req">*</span></label>
+              <textarea 
+                id="mensaje" 
+                name="mensaje" 
+                class="form-textarea" 
+                placeholder="Contanos sobre tu espacio, las maderas de tu preferencia o detalles de tu proyecto..."
+                required
+              ></textarea>
+              <span class="error-message"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem; font-size: 0.95rem; margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span>Enviar Mensaje</span>
+            </button>
+          </form>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Carrito Lateral (Drawer) -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de Compras">
+    <div class="cart-header">
+      <h3 class="cart-header-title">
+        <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Tu Carrito
+      </h3>
+      <button type="button" class="cart-close-btn" id="closeCartBtn" aria-label="Cerrar Carrito">
+        <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <div id="cartShippingProgress" class="shipping-progress"></div>
+
+    <div class="cart-body" id="cartItemsContainer">
+      <!-- Items inyectados dinámicamente con JS -->
+    </div>
+
+    <div class="cart-footer" id="cartFooterContainer">
+      <!-- Resumen y botón finalizar compra -->
+    </div>
+  </aside>
+
+  <!-- Modal de Checkout Simulado -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-card">
+      <div class="modal-icon-success">
+        <svg class="icon icon-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>¡Pedido Confirmado!</h3>
+      <p>Tu orden ha sido procesada con éxito.</p>
+      <div id="checkoutModalDetails"></div>
+      <button type="button" class="btn btn-primary btn-block" onclick="cerrarModalCheckout()">Continuar Navegando</button>
+    </div>
+  </div>
+
+  <!-- Footer Semántico -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+            <div class="logo-icon">
+              <img src="assets/images/logo.svg" alt="Hermanos Jota Logo" class="logo-icon-img">
+            </div>
+            <div class="logo-text">
+              <span class="logo-title">Hermanos Jota</span>
+              <span class="logo-subtitle">Casa Taller & Ebanistería</span>
+            </div>
+          </a>
+          <p class="footer-brand-text">
+            El redescubrimiento de un arte olvidado: crear muebles que no solo sirven una función, sino que alimentan el alma.
+          </p>
+          <div class="social-links">
+            <a href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram @hermanosjota_ba">
+              <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://wa.me/541145678900" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="WhatsApp +54 11 4567-8900">
+              <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </a>
+            <a href="mailto:info@hermanosjota.com.ar" class="social-link" aria-label="Correo info@hermanosjota.com.ar">
+              <svg class="icon icon-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navegación</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="productos.html">Catálogo de Autor</a></li>
+            <li><a href="productos.html?cat=living">Colección Living</a></li>
+            <li><a href="productos.html?cat=comedor">Colección Comedor</a></li>
+            <li><a href="contacto.html">Casa Taller & Showroom</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Casa Taller</h4>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <span>Av. San Juan 2847, San Cristóbal, CABA</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </span>
+            <span>Lun a Vie: 10:00 - 19:00<br>Sáb: 10:00 - 14:00</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            <span>info@hermanosjota.com.ar</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Club de Ebanistería</h4>
+          <p style="font-size: 0.875rem; color: var(--sand-300); margin-bottom: 1rem;">
+            Suscribite para recibir lanzamientos exclusivos, historias de taller y consejos de cuidado natural de la madera.
+          </p>
+          <form id="newsletterForm" style="display: flex; gap: 0.5rem;">
+            <input type="email" placeholder="Tu correo electrónico" required style="flex: 1; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--sand-300); background: var(--white); color: var(--wood-900);">
+            <button type="submit" class="btn btn-accent btn-sm">Unirme</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear">2026</span> Hermanos Jota. Todos los derechos reservados. Manual de Marca Oficial.</p>
+        <div class="payment-badges">
+          <span class="pay-badge">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Visa
+          </span>
+          <span class="pay-badge">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Mastercard
+          </span>
+          <span class="pay-badge">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Amex
+          </span>
+          <span class="pay-badge">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+            Transferencia (-15%)
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/icons.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>
