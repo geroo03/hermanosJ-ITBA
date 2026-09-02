@@ -8,8 +8,8 @@ Proyecto de fachada completa y experiencia interactiva de e-commerce construida 
 
 | Integrante | Rol en el Proyecto |
 |---|---|
-| **Santiago Orion** | Arquitectura HTML5 Semántico & SEO |
-| **Mateo Bouso** | Diseño UI/CSS3, Paleta Oficial & Responsive Design |
+| **Mateo Bouso** | Arquitectura HTML5 Semántico & SEO |
+| **Santiago Orion** | Diseño UI/CSS3, Paleta Oficial & Responsive Design |
 | **Tadeo Piccato** | Lógica de Catálogo, Búsqueda Reactiva & Asincronismo JS |
 | **Sebastian Geronimo Peralta** | Carrito de Compras, LocalStorage & Drawer Off-Canvas |
 | **Nicolas Benitez** | Formulario de Contacto, Validaciones DOM & QA |
