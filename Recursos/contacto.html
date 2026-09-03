@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Contacto, showroom y taller de Hermanos Jota en San Cristóbal, Buenos Aires.">
+  <title>Contacto — Hermanos Jota</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="products.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Hermanos Jota, inicio"><img src="Kit de imágenes/logo.svg" alt="" width="120" height="120"><span>Hermanos<br>Jota</span></a>
+      <nav class="site-nav" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="productos.html">Colección</a><a href="index.html#historia">Nuestra historia</a><a href="contacto.html">Contacto</a></nav>
+      <div class="header-actions">
+        <button class="cart-toggle" type="button" data-cart-open aria-label="Abrir carrito"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L20 7H6"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg><span class="cart-count" data-cart-count>0</span></button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <header class="page-intro">
+      <div class="container page-intro__grid">
+        <div><p class="eyebrow">Casa Taller</p><h1>Conversemos sin apuro.</h1></div>
+        <p class="page-intro__copy">Elegir una pieza para muchos años merece tiempo. Contanos qué imaginás y te acompañamos a encontrarla.</p>
+      </div>
+    </header>
+
+    <section class="contact-section">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <p class="eyebrow">Showroom y taller</p>
+          <h2>Vení a conocer cómo hacemos.</h2>
+          <p>Nuestra casa está en San Cristóbal. Podés visitar el showroom, tocar los materiales y conversar directamente con el equipo que diseña y construye cada mueble.</p>
+          <dl class="contact-list">
+            <div><dt>Dirección</dt><dd>Av. San Juan 2847, C1232AAB<br>San Cristóbal, CABA, Argentina</dd></div>
+            <div><dt>Horarios</dt><dd>Lunes a viernes, 10:00–19:00<br>Sábados, 10:00–14:00</dd></div>
+            <div><dt>Información</dt><dd><a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a></dd></div>
+            <div><dt>Ventas</dt><dd><a href="mailto:ventas@hermanosjota.com.ar">ventas@hermanosjota.com.ar</a></dd></div>
+            <div><dt>WhatsApp</dt><dd><a href="https://wa.me/541145678900" target="_blank" rel="noreferrer">+54 11 4567-8900</a></dd></div>
+            <div><dt>Instagram</dt><dd><a href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noreferrer">@hermanosjota_ba</a></dd></div>
+          </dl>
+        </div>
+
+        <div class="contact-form-wrap">
+          <p class="eyebrow">Tu consulta</p>
+          <h2>¿Qué pieza tenés en mente?</h2>
+          <form id="contact-form" novalidate>
+            <div class="field"><label for="name">Nombre</label><input id="name" name="name" type="text" autocomplete="name" required><span class="field__error"></span></div>
+            <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required><span class="field__error"></span></div>
+            <div class="field"><label for="message">Mensaje</label><textarea id="message" name="message" required placeholder="Contanos sobre tu espacio, la pieza o los materiales que te interesan."></textarea><span class="field__error"></span></div>
+            <button class="button button--primary button--wide" type="submit">Enviar consulta</button>
+          </form>
+          <div class="form-success" id="form-success" tabindex="-1" hidden><strong>Gracias por escribirnos.</strong><span>Recibimos tu consulta simulada. En una implementación con backend, el equipo respondería dentro de las próximas 48 horas hábiles.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="values-strip" aria-label="Programa Herencia Viva">
+      <div class="container values-grid">
+        <article class="value"><h3>Restauramos</h3><p>Recuperamos y renovamos piezas antiguas para que puedan seguir contando historias.</p></article>
+        <article class="value"><h3>Enseñamos</h3><p>Ofrecemos talleres gratuitos de cuidado y mantenimiento a nuestros clientes.</p></article>
+        <article class="value"><h3>Recompramos</h3><p>Reconocemos hasta un 40% del valor original en piezas bien cuidadas.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><img src="Kit de imágenes/logo.svg" alt="Hermanos Jota" width="120" height="120"><p>Muebles que honran el pasado, abrazan el futuro y se vuelven parte de tu historia.</p></div>
+        <div class="footer-column"><h2>Visitanos</h2><span>Av. San Juan 2847</span><span>San Cristóbal, CABA</span><span>Lun–Vie 10–19 h</span><span>Sáb 10–14 h</span></div>
+        <div class="footer-column"><h2>Conversemos</h2><a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a><a href="tel:+541145678900">+54 11 4567-8900</a><a href="contacto.html">Formulario de contacto</a><a href="Manual de marca.pdf" target="_blank">Manual de marca</a></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year></span> Hermanos Jota. Todos los derechos reservados.</span><span>Diseñado y hecho en Buenos Aires.</span></div>
+    </div>
+  </footer>
+</body>
+</html>

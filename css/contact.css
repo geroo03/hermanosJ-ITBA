@@ -1,0 +1,264 @@
+/* ============================================================
+   Hermanos Jota — Estilos de Contacto & Showroom (contacto.html)
+   Paneles Informativos, Mapa Simulado y Formulario con Validación
+   ============================================================ */
+
+.contact-header-banner {
+  padding: 3.5rem 0 2.5rem;
+  background: linear-gradient(180deg, var(--alabastro-light) 0%, var(--paper) 100%);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2.5rem;
+}
+
+.contact-header-banner h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--siena-tostado);
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.contact-header-banner p {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 640px;
+}
+
+/* Layout Principal de Contacto */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr 1.3fr;
+    gap: 3.5rem;
+    align-items: flex-start;
+  }
+}
+
+/* Panel Informativo Lateral */
+.contact-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.info-card {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  box-shadow: var(--shadow-sm);
+}
+
+.info-card-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--alabastro-calido);
+  color: var(--siena-tostado);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-card-content h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--madera-noble);
+  margin-bottom: 0.4rem;
+}
+
+.info-card-content p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* Mapa Simulado */
+.map-card {
+  background-color: var(--alabastro-light);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: radial-gradient(var(--sand-300) 1px, transparent 1px);
+  background-size: 16px 16px;
+  padding: 1.5rem;
+}
+
+.map-pin-box {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  color: var(--siena-tostado);
+}
+
+.map-pin-box strong {
+  color: var(--madera-noble);
+  font-size: 0.95rem;
+}
+
+.map-pin-box small {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* Contenedor del Formulario */
+.contact-form-container {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 640px) {
+  .contact-form-container {
+    padding: 2.5rem;
+  }
+}
+
+.form-header {
+  margin-bottom: 2rem;
+}
+
+.form-header h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.3rem);
+  font-weight: 700;
+  color: var(--madera-noble);
+  margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Formulario & Campos */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--madera-noble);
+}
+
+.form-label .req {
+  color: var(--siena-tostado);
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  font-family: var(--font-sans);
+  color: var(--madera-noble);
+  background-color: var(--alabastro-light);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--siena-tostado);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.12);
+}
+
+.form-input.is-invalid, .form-textarea.is-invalid {
+  border-color: #D32F2F;
+  background-color: #FFF5F5;
+}
+
+.error-message {
+  font-size: 0.75rem;
+  color: #D32F2F;
+  display: none;
+  font-weight: 500;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Tarjeta de Confirmación / Éxito */
+.contact-success-card {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.success-icon {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(135, 169, 107, 0.15);
+  color: var(--verde-salvia-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.contact-success-card h2 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--madera-noble);
+  margin-bottom: 1rem;
+}
+
+.contact-success-card p {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}

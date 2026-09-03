@@ -1,0 +1,268 @@
+/* ============================================================
+   Hermanos Jota — Estilos del Detalle de Producto (producto.html)
+   Galería, Especificaciones de Ebanistería y Piezas Relacionadas
+   ============================================================ */
+
+.product-detail-page {
+  padding: 2.5rem 0 4rem;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs a:hover {
+  color: var(--siena-tostado);
+}
+
+.breadcrumbs .separator {
+  color: var(--sand-300);
+}
+
+.breadcrumbs .current {
+  color: var(--madera-noble);
+  font-weight: 600;
+}
+
+/* Layout Principal de 2 Columnas */
+.product-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 900px) {
+  .product-detail-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: flex-start;
+  }
+}
+
+/* Columna Visual */
+.detail-gallery-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.detail-image-card {
+  position: relative;
+  background-color: var(--alabastro-light);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-badge {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 2;
+  background-color: var(--siena-tostado);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.detail-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.detail-main-img:hover {
+  transform: scale(1.03);
+}
+
+.detail-guarantee-strip {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 640px) {
+  .detail-guarantee-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--madera-800);
+}
+
+.guarantee-item svg {
+  color: var(--verde-salvia);
+}
+
+/* Columna de Información */
+.detail-info-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-header-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.detail-tag-room {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--siena-tostado);
+}
+
+.detail-tag-wood {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: var(--alabastro-light);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.detail-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--madera-noble);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.detail-price-box {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.detail-price-amount {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--madera-noble);
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+}
+
+.detail-installments {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.discount-badge {
+  display: inline-block;
+  background-color: var(--alabastro-calido);
+  color: var(--siena-tostado);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-left: 0.35rem;
+}
+
+.detail-actions {
+  margin-bottom: 2rem;
+}
+
+.detail-actions .btn {
+  margin-bottom: 0.75rem;
+}
+
+.detail-delivery-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.detail-description {
+  margin-bottom: 2rem;
+}
+
+.detail-description .lead-text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--madera-800);
+}
+
+/* Ficha de Ebanistería */
+.detail-specs {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.specs-heading {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--madera-noble);
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.spec-row dt {
+  font-weight: 600;
+  color: var(--madera-800);
+}
+
+.spec-row dd {
+  color: var(--text-muted);
+}
+
+/* Piezas Relacionadas */
+.related-section {
+  padding-top: 3rem;
+  border-top: 1px solid var(--line);
+}

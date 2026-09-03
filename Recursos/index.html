@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hermanos Jota crea mobiliario argentino de autor, hecho para acompañar generaciones.">
+  <title>Hermanos Jota — Muebles con historia</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="products.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <div class="announcement">Casa Taller · Buenos Aires · Producción consciente · Espíritu años 60</div>
+  <header class="site-header site-header--overlay">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Hermanos Jota, inicio">
+        <img src="Kit de imágenes/logo.svg" alt="" width="120" height="120">
+        <span>Hermanos<br>Jota</span>
+      </a>
+      <nav class="site-nav" aria-label="Navegación principal">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Colección</a>
+        <a href="#historia">Nuestra historia</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-toggle" type="button" data-cart-open aria-label="Abrir carrito">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L20 7H6"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+          <span class="cart-count" data-cart-count>0</span>
+        </button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero" aria-labelledby="hero-title">
+      <video autoplay muted loop playsinline preload="metadata" poster="Kit de imágenes/Historia Taller.jpg" aria-label="Historia visual del mobiliario Hermanos Jota">
+        <source src="Historia Inmueble.mp4" type="video/mp4">
+      </video>
+      <div class="hero__content">
+        <div class="hero__kicker">Diseñado en Buenos Aires</div>
+        <h1 class="display-title" id="hero-title">Muebles que alimentan el alma.</h1>
+        <div class="hero__bottom">
+          <p>Herencia e innovación se encuentran en piezas honestas, pensadas para envejecer con gracia.</p>
+          <a class="button button--ghost" href="productos.html">Descubrir la colección</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-strip" aria-label="Compromisos de Hermanos Jota">
+      <div class="container intro-strip__inner">
+        <div><p class="eyebrow">Origen</p><strong>Maderas argentinas</strong></div>
+        <div><p class="eyebrow">Oficio</p><strong>Hecho por manos expertas</strong></div>
+        <div><p class="eyebrow">Legado</p><strong>10 años de garantía</strong></div>
+      </div>
+    </section>
+
+    <section class="featured" aria-labelledby="featured-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Selección de la casa</p><h2 id="featured-title">Piezas con carácter propio.</h2></div>
+          <a class="text-link" href="productos.html">Ver todas las piezas</a>
+        </div>
+        <div class="product-grid" id="featured-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="manifesto" id="historia" aria-labelledby="manifesto-title">
+      <div class="container manifesto__inner">
+        <span class="manifesto__number">60s</span>
+        <blockquote id="manifesto-title">“Cada pieza cuenta la historia de manos expertas y materiales nobles.”</blockquote>
+        <p>Redescubrimos un arte que nunca debió olvidarse: crear muebles que sirven una función y, al mismo tiempo, hacen más cálida la vida alrededor.</p>
+      </div>
+    </section>
+
+    <section class="craft-section" aria-labelledby="craft-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Nuestra manera de hacer</p><h2 id="craft-title">Belleza con conciencia.</h2></div>
+          <p>Decisiones simples y trazables sostienen cada pieza, desde el bosque hasta tu casa.</p>
+        </div>
+        <div class="craft-grid">
+          <article class="craft-card"><span class="craft-card__number">01</span><h3>Madera responsable</h3><p>Madera certificada FSC, con prioridad en especies nativas y proveedores del Gran Buenos Aires.</p></article>
+          <article class="craft-card"><span class="craft-card__number">02</span><h3>Acabados naturales</h3><p>Aceite de lino, cera de abejas y tintes vegetales de bajo COV dejan respirar a cada material.</p></article>
+          <article class="craft-card"><span class="craft-card__number">03</span><h3>Herencia Viva</h3><p>Garantía extendida, restauración, taller de cuidados y recompra de piezas bien conservadas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="instagram-section" aria-labelledby="instagram-title">
+      <div class="container instagram-layout">
+        <div class="instagram-copy">
+          <p class="eyebrow">Desde el taller</p>
+          <h2 id="instagram-title">Una historia, treinta segundos.</h2>
+          <p>El oficio también vive en los gestos cotidianos. Reproducí el video, dejá tu corazón, guardalo o sumate a la conversación.</p>
+          <a class="text-link" href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noreferrer">@hermanosjota_ba</a>
+        </div>
+        <article class="instagram-post" aria-label="Publicación interactiva de Instagram">
+          <header class="instagram-post__header">
+            <span class="instagram-avatar"><img src="Kit de imágenes/logo.svg" alt="" width="120" height="120"></span>
+            <div class="instagram-account"><strong>muebleria_hnos_jota</strong><small>Buenos Aires, Argentina</small></div>
+            <button class="instagram-more" type="button" aria-label="Más opciones">•••</button>
+          </header>
+          <div class="instagram-media">
+            <video controls playsinline preload="metadata" aria-label="Video de Hermanos Jota en Instagram">
+              <source src="fragmento instagram/video instagram con diseño.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="instagram-actions">
+            <button class="instagram-button" type="button" data-like aria-label="Me gusta" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></button>
+            <button class="instagram-button" type="button" data-focus-comment aria-label="Comentar"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.5 9.5 0 0 1-4-.9L3 21l1.7-4.5A8.6 8.6 0 1 1 21 11.5Z"/></svg></button>
+            <button class="instagram-button" type="button" aria-label="Compartir"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+            <button class="instagram-button" type="button" data-save aria-label="Guardar" aria-pressed="false"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4Z"/></svg></button>
+          </div>
+          <div class="instagram-caption">
+            <p><strong data-like-count>12.386 Me gusta</strong></p>
+            <p><strong>muebleria_hnos_jota</strong> ¡Renová tu hogar con estilo! ✨ Descubrí nuestra nueva colección de muebles de madera.</p>
+          </div>
+          <div class="instagram-comments"><p><strong>carolo_l</strong> Esa veta es preciosa 🌿</p></div>
+          <small class="instagram-meta">Hace 2 días</small>
+          <form class="instagram-comment"><input type="text" aria-label="Agregar un comentario" placeholder="Agregá un comentario…"><button type="submit">Publicar</button></form>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><img src="Kit de imágenes/logo.svg" alt="Hermanos Jota" width="120" height="120"><p>Muebles que honran el pasado, abrazan el futuro y se vuelven parte de tu historia.</p></div>
+        <div class="footer-column"><h2>Visitanos</h2><span>Av. San Juan 2847</span><span>San Cristóbal, CABA</span><span>Lun–Vie 10–19 h</span><span>Sáb 10–14 h</span></div>
+        <div class="footer-column"><h2>Conversemos</h2><a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a><a href="tel:+541145678900">+54 11 4567-8900</a><a href="contacto.html">Formulario de contacto</a><a href="Manual de marca.pdf" target="_blank">Manual de marca</a></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year></span> Hermanos Jota. Todos los derechos reservados.</span><span>Diseñado y hecho en Buenos Aires.</span></div>
+    </div>
+  </footer>
+</body>
+</html>

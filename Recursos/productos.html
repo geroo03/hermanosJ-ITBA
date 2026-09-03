@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Catálogo completo de muebles de autor Hermanos Jota.">
+  <title>Colección — Hermanos Jota</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="products.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Hermanos Jota, inicio"><img src="Kit de imágenes/logo.svg" alt="" width="120" height="120"><span>Hermanos<br>Jota</span></a>
+      <nav class="site-nav" aria-label="Navegación principal"><a href="index.html">Inicio</a><a href="productos.html">Colección</a><a href="index.html#historia">Nuestra historia</a><a href="contacto.html">Contacto</a></nav>
+      <div class="header-actions">
+        <button class="cart-toggle" type="button" data-cart-open aria-label="Abrir carrito"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 3h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L20 7H6"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg><span class="cart-count" data-cart-count>0</span></button>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <header class="page-intro">
+      <div class="container page-intro__grid">
+        <div><p class="eyebrow">Colección 2026</p><h1>Objetos para vivir mejor.</h1></div>
+        <p class="page-intro__copy">Cada pieza nace por encargo, se termina a mano y conserva la identidad irrepetible de sus materiales.</p>
+      </div>
+    </header>
+
+    <section class="catalog" aria-labelledby="catalog-title">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Catálogo completo</p><h2 id="catalog-title">Encontrá tu próxima historia.</h2></div>
+        </div>
+        <div class="catalog-toolbar">
+          <label class="search-field" for="product-search">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="product-search" type="search" placeholder="Buscar por nombre, material o ambiente…" autocomplete="off">
+          </label>
+          <div class="filters" id="category-filters" aria-label="Filtrar por categoría">
+            <button class="is-active" type="button" data-category="Todos">Todos</button>
+            <button type="button" data-category="Asientos">Asientos</button>
+            <button type="button" data-category="Mesas">Mesas</button>
+            <button type="button" data-category="Guardado">Guardado</button>
+            <button type="button" data-category="Trabajo">Trabajo</button>
+          </div>
+          <p class="catalog-summary" id="catalog-count" aria-live="polite">Cargando colección…</p>
+        </div>
+        <div class="product-grid" id="catalog-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="values-strip" aria-label="Principios de producción">
+      <div class="container values-grid">
+        <article class="value"><h3>30% recuperado</h3><p>Como mínimo, en cada colección incorporamos materiales recuperados o reciclados.</p></article>
+        <article class="value"><h3>Cero descartables</h3><p>Eliminamos los plásticos de un solo uso en toda nuestra cadena de producción.</p></article>
+        <article class="value"><h3>Origen trazable</h3><p>Cada mueble incluye un certificado con el origen de los materiales utilizados.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand"><img src="Kit de imágenes/logo.svg" alt="Hermanos Jota" width="120" height="120"><p>Muebles que honran el pasado, abrazan el futuro y se vuelven parte de tu historia.</p></div>
+        <div class="footer-column"><h2>Visitanos</h2><span>Av. San Juan 2847</span><span>San Cristóbal, CABA</span><span>Lun–Vie 10–19 h</span><span>Sáb 10–14 h</span></div>
+        <div class="footer-column"><h2>Conversemos</h2><a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a><a href="tel:+541145678900">+54 11 4567-8900</a><a href="contacto.html">Formulario de contacto</a><a href="Manual de marca.pdf" target="_blank">Manual de marca</a></div>
+      </div>
+      <div class="footer-bottom"><span>© <span data-year></span> Hermanos Jota. Todos los derechos reservados.</span><span>Diseñado y hecho en Buenos Aires.</span></div>
+    </div>
+  </footer>
+</body>
+</html>
