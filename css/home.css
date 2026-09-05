@@ -3,6 +3,12 @@
    Hero, Colecciones de Autor, Piezas Destacadas & Taller
    ============================================================ */
 
+/* Hero: entrada animada escalonada */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Hero Banner Principal */
 .hero-section {
   padding: 4.5rem 0 4rem;
@@ -14,6 +20,26 @@
 
 .hero-content {
   max-width: 780px;
+}
+
+.hero-content .hero-tag {
+  animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.hero-content .hero-title {
+  animation: heroFadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+}
+
+.hero-content .hero-description {
+  animation: heroFadeUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
+}
+
+.hero-content .hero-cta-group {
+  animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.44s both;
+}
+
+.hero-content .hero-stats {
+  animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.54s both;
 }
 
 .hero-tag, .section-tag {
@@ -233,7 +259,14 @@
 
 .feature-box:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  border-color: var(--sand-300);
+}
+
+.feature-box:hover .feature-icon-wrapper {
+  background-color: var(--siena-tostado);
+  color: var(--white);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .feature-icon-wrapper {
@@ -246,6 +279,7 @@
   background-color: var(--alabastro-calido);
   color: var(--siena-tostado);
   margin-bottom: 1.25rem;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .feature-title {
