@@ -262,3 +262,23 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+/* Estado visual para campos correctamente validados */
+.form-input.is-valid,
+.form-select.is-valid,
+.form-textarea.is-valid {
+  border-color: var(--verde-salvia-dark);
+}
+
+/* Estado visual para campos con errores */
+.form-input.is-invalid,
+.form-select.is-invalid,
+.form-textarea.is-invalid {
+  border-color: #D32F2F;
+  background-color: #FFF5F5;
+}
+
+/* Mantiene visible el mensaje de error cuando JS lo activa */
+.error-message.is-visible {
+  display: block;
+}

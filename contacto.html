@@ -155,52 +155,101 @@
           </div>
 
           <form id="contactForm" class="contact-form" novalidate>
+            
             <!-- Fila 1: Nombre y Email -->
             <div class="form-row">
+              
               <div class="form-group">
-                <label for="nombre" class="form-label">Nombre y Apellido <span class="req">*</span></label>
+                <label for="nombre" class="form-label">
+                  Nombre y Apellido <span class="req">*</span>
+                </label>
+
                 <input 
-                  type="text" 
-                  id="nombre" 
-                  name="nombre" 
-                  class="form-input" 
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  class="form-input"
                   placeholder="Ej: Sofía Martínez"
+                  autocomplete="name"
+                  minlength="3"
+                  maxlength="60"
                   required
+                  aria-describedby="nombreError"
                 >
-                <span class="error-message"></span>
+
+                <span 
+                  class="error-message" 
+                  id="nombreError"
+                  role="alert"
+                ></span>
               </div>
 
               <div class="form-group">
-                <label for="email" class="form-label">Correo Electrónico <span class="req">*</span></label>
+                <label for="email" class="form-label">
+                  Correo Electrónico <span class="req">*</span>
+                </label>
+
                 <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  class="form-input" 
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-input"
                   placeholder="nombre@ejemplo.com"
+                  autocomplete="email"
+                  maxlength="100"
                   required
+                  aria-describedby="emailError"
                 >
-                <span class="error-message"></span>
+
+                <span 
+                  class="error-message"
+                  id="emailError"
+                  role="alert"
+                ></span>
               </div>
+
             </div>
+
 
             <!-- Fila 2: Teléfono y Motivo -->
             <div class="form-row">
-              <div class="form-group">
-                <label for="telefono" class="form-label">Teléfono / WhatsApp</label>
-                <input 
-                  type="tel" 
-                  id="telefono" 
-                  name="telefono" 
-                  class="form-input" 
-                  placeholder="Ej: +54 11 4567-8900"
-                >
-                <span class="error-message"></span>
-              </div>
 
               <div class="form-group">
-                <label for="asunto" class="form-label">Motivo de Consulta <span class="req">*</span></label>
-                <select id="asunto" name="asunto" class="form-select" required>
+                <label for="telefono" class="form-label">
+                  Teléfono / WhatsApp
+                </label>
+
+                <input 
+                  type="tel"
+                  id="telefono"
+                  name="telefono"
+                  class="form-input"
+                  placeholder="Ej: +54 11 4567-8900"
+                  autocomplete="tel"
+                  maxlength="20"
+                  aria-describedby="telefonoError"
+                >
+
+                <span 
+                  class="error-message"
+                  id="telefonoError"
+                  role="alert"
+                ></span>
+              </div>
+
+
+              <div class="form-group">
+                <label for="asunto" class="form-label">
+                  Motivo de Consulta <span class="req">*</span>
+                </label>
+
+                <select
+                  id="asunto"
+                  name="asunto"
+                  class="form-select"
+                  required
+                  aria-describedby="asuntoError"
+                >
                   <option value="">Seleccionar motivo...</option>
                   <option value="presupuesto">Proyecto / Mueble a medida</option>
                   <option value="visita">Coordinar visita a Casa Taller</option>
@@ -208,28 +257,65 @@
                   <option value="duda">Consulta sobre una pieza del catálogo</option>
                   <option value="otro">Otro asunto</option>
                 </select>
-                <span class="error-message"></span>
+
+                <span 
+                  class="error-message"
+                  id="asuntoError"
+                  role="alert"
+                ></span>
               </div>
+
             </div>
+
 
             <!-- Fila 3: Mensaje -->
             <div class="form-group">
-              <label for="mensaje" class="form-label">Mensaje <span class="req">*</span></label>
-              <textarea 
-                id="mensaje" 
-                name="mensaje" 
-                class="form-textarea" 
+              <label for="mensaje" class="form-label">
+                Mensaje <span class="req">*</span>
+              </label>
+
+              <textarea
+                id="mensaje"
+                name="mensaje"
+                class="form-textarea"
                 placeholder="Contanos sobre tu espacio, las maderas de tu preferencia o detalles de tu proyecto..."
+                minlength="10"
+                maxlength="500"
                 required
+                aria-describedby="mensajeError"
               ></textarea>
-              <span class="error-message"></span>
+
+              <span 
+                class="error-message"
+                id="mensajeError"
+                role="alert"
+              ></span>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem; font-size: 0.95rem; margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+
+            <!-- Botón de envío -->
+            <button 
+              type="submit"
+              class="btn btn-primary btn-block"
+              style="padding: 1rem; font-size: 0.95rem; margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+            >
+              <svg 
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+
               <span>Enviar Mensaje</span>
             </button>
+
           </form>
+
+          
         </section>
 
       </div>
