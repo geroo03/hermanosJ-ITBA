@@ -1,0 +1,16 @@
+# Normaliza finales de línea: LF en el repo, nativo en el working copy.
+* text=auto
+
+# Fuentes del proyecto
+*.html  text diff=html
+*.css   text diff=css
+*.js    text
+*.md    text
+
+# Binarios: nunca convertir
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.svg   text
+*.mp4   binary
+*.pdf   binary

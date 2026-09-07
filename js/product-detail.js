@@ -172,9 +172,10 @@
           window.Cart?.add?.({
             id: product.id,
             nombre: product.name,
+            descripcion: product.short || product.descripcionCorta || '',
             precio: product.price,
             imagen: product.image
-          }, 1);
+          });
 
           addBtn.classList.add('is-added');
           addBtn.disabled = true;

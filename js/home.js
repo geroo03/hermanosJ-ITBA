@@ -113,9 +113,10 @@
         window.Cart?.add?.({
           id: product.id,
           nombre: product.name,
+          descripcion: product.short || product.descripcionCorta || '',
           precio: product.price,
           imagen: product.image
-        }, 1);
+        });
 
         btn.classList.add('is-added');
         btn.disabled = true;
@@ -127,9 +128,39 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHome);
-  } else {
+  /**
+   * Video de marca del hero: respeta `prefers-reduced-motion`.
+   * Si el usuario pidió menos movimiento, se pausa y queda el póster fijo.
+   */
+  function initHeroVideo() {
+    const video = document.getElementById('heroVideo');
+    if (!video) return;
+
+    const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const aplicarPreferencia = () => {
+      if (sinMovimiento.matches) {
+        video.pause();
+        video.removeAttribute('autoplay');
+      } else {
+        video.play?.().catch(() => {
+          /* Autoplay bloqueado por el navegador: queda el póster. */
+        });
+      }
+    };
+
+    aplicarPreferencia();
+    sinMovimiento.addEventListener?.('change', aplicarPreferencia);
+  }
+
+  function init() {
     initHome();
+    initHeroVideo();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 })();

@@ -65,27 +65,31 @@ Proyecto de fachada completa y experiencia interactiva de e-commerce construida 
 
 ```
 primera entrega/
-├── index.html               # Inicio: Hero de autor, colecciones, 4 destacados asíncronos y Casa Taller
+├── index.html               # Inicio: Hero con video de marca, colecciones, 4 destacados, Casa Taller y fragmento de Instagram
 ├── productos.html           # Catálogo: Buscador reactivo, filtros por categoría, ordenamiento y grilla
 ├── producto.html            # Detalle: Galería interactiva, especificaciones de ebanistería y compra
 ├── contacto.html            # Casa Taller: Formulario validado con JS, mapa gráfico e info de contacto
 ├── Kit de imágenes/         # Kit oficial provisto por la cátedra
+├── Recursos/                # Material de cátedra (consigna, manual de marca, baseline)
 ├── assets/
-│   └── images/              # Imágenes optimizadas del catálogo oficial y logo.svg
+│   ├── images/              # Imágenes optimizadas del catálogo oficial y logo.svg
+│   └── video/               # Video de marca del hero y fragmento de Instagram
 ├── css/
-│   ├── styles.css           # Tokens del Manual de Marca, layout, drawer de carrito, toasts y footer
-│   ├── home.css             # Estilos de Hero, colecciones y propuesta de valor
+│   ├── styles.css           # Tokens del Manual de Marca, layout, tipografías, botones y footer
+│   ├── cart.css             # Drawer off-canvas, ítems del carrito, barra de envío y modal
+│   ├── home.css             # Hero con video, colecciones, propuesta de valor y fragmento de Instagram
 │   ├── catalog.css          # Estilos de buscador reactivo, pills de filtro y ordenamiento
-│   ├── product-detail.css   # Estilos de galería con zoom, selector de cantidad y sellos
+│   ├── product-detail.css   # Estilos de ficha técnica, sellos de garantía y piezas relacionadas
 │   └── contact.css          # Estilos de formulario con feedback en vivo y mensaje en DOM
 ├── js/
 │   ├── icons.js             # Módulo de iconos vectoriales SVG limpios y escalables
 │   ├── data.js              # Array de objetos con los 11 productos y métodos asíncronos (setTimeout/async-await)
-│   ├── cart.js              # Carrito con LocalStorage, barra de envío y modal de checkout
+│   ├── cart.js              # Carrito con LocalStorage, unicidad por pieza, envío y modal de checkout
 │   ├── main.js              # Header dinámico, menú responsive y sistema de notificaciones toast
-│   ├── home.js              # Inyección asíncrona de piezas destacadas con skeleton loading
+│   ├── home.js              # Piezas destacadas asíncronas con skeletons y control del video del hero
+│   ├── instagram.js         # Publicación interactiva de Instagram: like, guardado y comentarios
 │   ├── catalog.js           # Filtrado en tiempo real, búsqueda reactiva y ordenación dinámica
-│   ├── product-detail.js    # Carga dinámica por parámetro URL (?id=), galería y cálculo de cuotas
+│   ├── product-detail.js    # Carga dinámica por parámetro URL (?id=), ficha y piezas relacionadas
 │   └── contact.js           # Validación de formulario en tiempo real y confirmación en el DOM
 └── README.md                # Documentación oficial de entrega
 ```
@@ -94,11 +98,12 @@ primera entrega/
 
 ## 🚀 Cómo Visualizar el Proyecto Localmente
 
-1. **Abrir directamente en el navegador**:
-   - Hacer doble clic en [`index.html`](file:///c:/Users/Hijos/Desktop/desarrollo/curso%20de%20desarrollo%20full%20stack/primera%20entrega/index.html) desde el explorador de archivos.
-2. **Utilizar una extensión de servidor local** (Recomendado):
-   - Con VS Code / Antigravity IDE, hacer clic derecho en `index.html` y seleccionar **"Open with Live Server"**.
-   - O ejecutar: `npx serve .`
+1. **Utilizar un servidor local** (recomendado, necesario para los videos):
+   - Con VS Code, hacer clic derecho en `index.html` y seleccionar **"Open with Live Server"**.
+   - O ejecutar en la carpeta del proyecto: `npx serve .` / `python -m http.server 8000`
+2. **Abrir directamente en el navegador**:
+   - Doble clic en `index.html`. Funciona, pero algunos navegadores restringen la
+     reproducción de video sobre el protocolo `file://`.
 
 ---
 
@@ -121,6 +126,24 @@ primera entrega/
 - **Filtros Combinados**: Filtros por categoría y ordenamiento por precio o nombre.
 - **Persistencia**: Carrito guardado en `localStorage` sincronizado en todas las páginas.
 - **Validación de Formulario**: Validación en tiempo real (expresión regular para email, requeridos) y renderizado de tarjeta de éxito en el DOM sin recargar la página.
+
+### 4. Carrito Lateral (Consigna `Recursos/adicional.md`)
+- **Sidebar derecho**: Drawer off-canvas fijo a la derecha, disponible en las 4 páginas.
+- **Ficha completa por ítem**: cada pieza en el carrito muestra **nombre, descripción, imagen y precio**.
+- **Una unidad por pieza**: no es posible agregar el mismo producto más de una vez. El botón
+  de la tarjeta queda deshabilitado como *"En el Carrito"*, un intento repetido sólo abre el
+  drawer con un toast, y no existen controles de cantidad. Los carritos guardados por
+  versiones anteriores se normalizan al leerlos desde `localStorage`.
+
+### 5. Contenido Audiovisual de Marca
+- **Video del hero** (`assets/video/historia-inmueble.mp4`): reproducción automática, silenciada
+  y en bucle como fondo de portada, con un scrim cálido que garantiza el contraste del texto.
+  Se pausa automáticamente si el sistema declara `prefers-reduced-motion`.
+- **Fragmento de Instagram** (`Recursos/fragmento instagram/Instrucción.md`): publicación
+  simulada e interactiva con video propio, *me gusta* con contador en vivo, doble clic para
+  dar corazón, guardado, compartir (Web Share API con respaldo al portapapeles) y comentarios
+  que se agregan al DOM. Los estados usan `aria-pressed` y el comentario del usuario se
+  inserta con `textContent` para evitar inyección de HTML.
 
 ---
 

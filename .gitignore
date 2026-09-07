@@ -1,0 +1,26 @@
+# ---- Sistema operativo ----
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+._*
+
+# ---- Editores / IDE ----
+.vscode/
+.idea/
+*.swp
+*~
+
+# ---- Dependencias y builds (el proyecto es 100% vanilla, pero por si
+#      alguien corre `npx serve` o similar) ----
+node_modules/
+package-lock.json
+dist/
+.cache/
+
+# ---- Temporales de compresión de video ----
+*.opt.mp4
+*.tmp.mp4
+
+# ---- Empaquetados ----
+*.zip

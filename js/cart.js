@@ -11,11 +11,9 @@
    API pública (para que catalog.js / product-detail.js / home.js
    agreguen productos cuando estén listos):
 
-     Cart.add(producto, cantidad)   // producto: {id, nombre, precio, imagen}
+     Cart.add(producto)   // producto: {id, nombre, descripcion, precio, imagen}
      Cart.remove(id)
-     Cart.setQuantity(id, cantidad)
-     Cart.increment(id)
-     Cart.decrement(id)
+     Cart.has(id)
      Cart.clear()
      Cart.getItems()
      Cart.getSubtotal()
@@ -28,7 +26,6 @@
 
   const STORAGE_KEY = 'hj_cart';
   const FREE_SHIPPING_THRESHOLD = 350000; // Coincide con el aviso del top-bar
-  const MAX_QTY = 99;
 
   const currencyFormatter = new Intl.NumberFormat('es-AR', {
     style: 'currency',
@@ -56,11 +53,32 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
+      return Array.isArray(parsed) ? normalizeCart(parsed) : [];
     } catch (error) {
       console.warn('[Carrito] No se pudo leer localStorage, se reinicia el carrito.', error);
       return [];
     }
+  }
+
+  /**
+   * Normaliza lo que venga de localStorage a la regla vigente:
+   * una unidad por pieza y sin ids repetidos. Así un carrito guardado
+   * por una versión anterior (que sí permitía cantidades) no rompe
+   * la consigna al volver a abrir el sitio.
+   */
+  function normalizeCart(items) {
+    const vistos = new Set();
+    const normalizados = [];
+
+    items.forEach((item) => {
+      if (!item || item.id === undefined || item.id === null) return;
+      const id = String(item.id);
+      if (vistos.has(id)) return;
+      vistos.add(id);
+      normalizados.push({ ...item, cantidad: 1 });
+    });
+
+    return normalizados;
   }
 
   function writeCart(items) {
@@ -76,59 +94,45 @@
   // API pública del carrito
   // ------------------------------------------------------------
 
-  function addItem(producto, cantidad = 1) {
+  // Regla de la consigna (Recursos/adicional.md):
+  // "No debe ser posible agregar un producto al carrito más de una vez".
+  // Si la pieza ya está en el carrito no se duplica ni se suma cantidad:
+  // se avisa con un toast y se abre el drawer para que el usuario la vea.
+  function addItem(producto) {
     if (!producto || producto.id === undefined || producto.id === null) {
       console.warn('[Carrito] Producto inválido, no se agregó.', producto);
-      return;
+      return false;
     }
 
     const items = readCart();
-    const cantidadValida = Math.max(1, Math.min(MAX_QTY, Math.floor(Number(cantidad)) || 1));
-    const existente = items.find((item) => String(item.id) === String(producto.id));
 
-    if (existente) {
-      existente.cantidad = Math.min(MAX_QTY, existente.cantidad + cantidadValida);
-    } else {
-      items.push({
-        id: producto.id,
-        nombre: producto.nombre || 'Producto sin nombre',
-        precio: Number(producto.precio) || 0,
-        imagen: producto.imagen || '',
-        cantidad: cantidadValida,
-      });
+    if (hasItem(producto.id)) {
+      window.showToast?.(`${producto.nombre || 'Esta pieza'} ya está en tu carrito`);
+      openDrawer();
+      return false;
     }
+
+    items.push({
+      id: producto.id,
+      nombre: producto.nombre || 'Producto sin nombre',
+      descripcion: producto.descripcion || '',
+      precio: Number(producto.precio) || 0,
+      imagen: producto.imagen || '',
+      cantidad: 1,
+    });
 
     writeCart(items);
     window.showToast?.(`${producto.nombre || 'Producto'} agregado al carrito`);
     openDrawer();
+    return true;
+  }
+
+  function hasItem(id) {
+    return readCart().some((item) => String(item.id) === String(id));
   }
 
   function removeItem(id) {
     writeCart(readCart().filter((item) => String(item.id) !== String(id)));
-  }
-
-  function setQuantity(id, cantidad) {
-    const items = readCart();
-    const item = items.find((item) => String(item.id) === String(id));
-    if (!item) return;
-
-    const nuevaCantidad = Math.floor(Number(cantidad));
-    if (!Number.isFinite(nuevaCantidad) || nuevaCantidad <= 0) {
-      removeItem(id);
-      return;
-    }
-    item.cantidad = Math.min(MAX_QTY, nuevaCantidad);
-    writeCart(items);
-  }
-
-  function incrementItem(id) {
-    const item = readCart().find((item) => String(item.id) === String(id));
-    if (item) setQuantity(id, item.cantidad + 1);
-  }
-
-  function decrementItem(id) {
-    const item = readCart().find((item) => String(item.id) === String(id));
-    if (item) setQuantity(id, item.cantidad - 1);
   }
 
   function clearCart() {
@@ -241,15 +245,13 @@
           </div>
           <div class="cart-item-info">
             <p class="cart-item-name">${escapeHtml(item.nombre)}</p>
-            <p class="cart-item-unit-price">${formatPrice(item.precio)} c/u</p>
-            <div class="cart-item-qty" role="group" aria-label="Cantidad de ${escapeHtml(item.nombre)}">
-              <button type="button" class="qty-btn" data-action="decrement" aria-label="Restar una unidad">−</button>
-              <span class="qty-value">${item.cantidad}</span>
-              <button type="button" class="qty-btn" data-action="increment" aria-label="Sumar una unidad">+</button>
-            </div>
+            ${item.descripcion
+              ? `<p class="cart-item-desc">${escapeHtml(item.descripcion)}</p>`
+              : ''}
+            <span class="cart-item-unique">Pieza única por pedido</span>
           </div>
           <div class="cart-item-side">
-            <span class="cart-item-subtotal">${formatPrice(item.precio * item.cantidad)}</span>
+            <span class="cart-item-subtotal">${formatPrice(item.precio)}</span>
             <button type="button" class="cart-item-remove" data-action="remove" aria-label="Eliminar ${escapeHtml(item.nombre)} del carrito">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
             </button>
@@ -357,16 +359,8 @@
       const id = itemEl?.dataset.id;
       if (!id) return;
 
-      switch (actionBtn.dataset.action) {
-        case 'increment':
-          incrementItem(id);
-          break;
-        case 'decrement':
-          decrementItem(id);
-          break;
-        case 'remove':
-          removeItem(id);
-          break;
+      if (actionBtn.dataset.action === 'remove') {
+        removeItem(id);
       }
     }
   });
@@ -403,9 +397,7 @@
   window.Cart = {
     add: addItem,
     remove: removeItem,
-    setQuantity,
-    increment: incrementItem,
-    decrement: decrementItem,
+    has: hasItem,
     clear: clearCart,
     getItems,
     getSubtotal,

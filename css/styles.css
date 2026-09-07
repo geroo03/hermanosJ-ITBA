@@ -218,6 +218,19 @@ ul, ol {
   text-transform: uppercase;
 }
 
+/* Sólo para lectores de pantalla: visible para AT, oculto en pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Scroll-reveal utility */
 .reveal {
   opacity: 0;
@@ -461,6 +474,19 @@ ul, ol {
 .btn-outline:hover {
   background-color: var(--siena-tostado);
   color: var(--white);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--madera-noble);
+  border: 1.5px solid var(--line-strong);
+}
+
+.btn-secondary:hover {
+  background-color: var(--madera-noble);
+  border-color: var(--madera-noble);
+  color: var(--paper);
   transform: translateY(-2px);
 }
 

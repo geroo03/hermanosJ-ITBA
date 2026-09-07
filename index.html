@@ -88,7 +88,25 @@
 
   <main>
     <!-- 1. Hero Banner Principal (Manual de Marca: Herencia & Innovación) -->
-    <section class="hero-section" aria-label="Bienvenida">
+    <section class="hero-section hero-section--video" aria-label="Bienvenida">
+      <!-- Video de marca "Historia del Inmueble" (Kit oficial de la cátedra).
+           Decorativo: la narrativa accesible vive en el texto superpuesto. -->
+      <div class="hero-media" aria-hidden="true">
+        <video
+          id="heroVideo"
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="assets/images/historia-taller.jpg"
+          tabindex="-1">
+          <source src="assets/video/historia-inmueble.mp4" type="video/mp4">
+        </video>
+        <div class="hero-scrim"></div>
+      </div>
+
       <div class="container">
         <div class="hero-content">
           <span class="hero-tag">
@@ -244,6 +262,89 @@
         </div>
       </div>
     </section>
+
+    <!-- 6. Fragmento de Instagram — publicación interactiva (Recursos/fragmento instagram) -->
+    <section class="instagram-section" aria-labelledby="instagramTitle">
+      <div class="container instagram-layout">
+        <div class="instagram-copy reveal">
+          <span class="section-tag">Desde el Taller</span>
+          <h2 class="section-title" id="instagramTitle">Una historia, treinta segundos</h2>
+          <p class="section-subtitle">
+            El oficio también vive en los gestos cotidianos: el cepillo sobre la veta, el aceite de lino tibio, la pausa justa antes del ensamble. Reproducí el video, dejá tu corazón, guardalo o sumate a la conversación.
+          </p>
+          <a href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+            Seguinos en @hermanosjota_ba
+          </a>
+        </div>
+
+        <article class="ig-post reveal reveal-delay-1" aria-label="Publicación interactiva de Instagram de Hermanos Jota">
+          <header class="ig-post-header">
+            <span class="ig-avatar"><img src="assets/images/logo.svg" alt="" width="44" height="44"></span>
+            <div class="ig-account">
+              <strong>muebleria_hnos_jota</strong>
+              <small>Buenos Aires, Argentina</small>
+            </div>
+            <button type="button" class="ig-more" aria-label="Más opciones de la publicación">&#8226;&#8226;&#8226;</button>
+          </header>
+
+          <div class="ig-media">
+            <video
+              class="ig-video"
+              controls
+              playsinline
+              preload="metadata"
+              poster="assets/images/historia-taller.jpg"
+              aria-label="Video: el taller de Hermanos Jota en treinta segundos">
+              <source src="assets/video/instagram-hermanos-jota.mp4" type="video/mp4">
+              <p>Tu navegador no reproduce video HTML5. <a href="assets/video/instagram-hermanos-jota.mp4">Descargá el video</a>.</p>
+            </video>
+          </div>
+
+          <div class="ig-actions">
+            <button type="button" class="ig-action" data-ig-like aria-label="Me gusta" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+            </button>
+            <button type="button" class="ig-action" data-ig-focus-comment aria-label="Comentar esta publicación">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.5 9.5 0 0 1-4-.9L3 21l1.7-4.5A8.6 8.6 0 1 1 21 11.5Z"/></svg>
+            </button>
+            <button type="button" class="ig-action" data-ig-share aria-label="Compartir publicación">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            </button>
+            <button type="button" class="ig-action ig-action--save" data-ig-save aria-label="Guardar publicación" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4Z"/></svg>
+            </button>
+          </div>
+
+          <div class="ig-caption">
+            <p class="ig-likes" data-ig-like-count>12.386 Me gusta</p>
+            <p class="ig-text">
+              <strong>muebleria_hnos_jota</strong> Renová tu hogar con piezas que envejecen con gracia. ✨ Nogal argentino certificado FSC, aceite de lino prensado en frío y 10 años de garantía estructural. <span class="ig-hashtag">#HerenciaViva</span> <span class="ig-hashtag">#MaderaNoble</span>
+            </p>
+          </div>
+
+          <ul class="ig-comments" data-ig-comments aria-live="polite">
+            <li><strong>carolo_l</strong> Esa veta es preciosa 🌿</li>
+            <li><strong>estudio.tarum</strong> El Aparador Uspallata es un lujo 👏</li>
+          </ul>
+
+          <p class="ig-meta">Hace 2 días</p>
+
+          <form class="ig-comment-form" data-ig-comment-form novalidate>
+            <label class="sr-only" for="igCommentInput">Agregar un comentario</label>
+            <input
+              type="text"
+              id="igCommentInput"
+              name="comentario"
+              class="ig-comment-input"
+              placeholder="Agregá un comentario…"
+              maxlength="140"
+              autocomplete="off">
+            <button type="submit" class="ig-publish">Publicar</button>
+          </form>
+        </article>
+      </div>
+    </section>
   </main>
 
   <!-- Carrito Lateral (Drawer) -->
@@ -393,5 +494,6 @@
   <script src="js/cart.js"></script>
   <script src="js/main.js"></script>
   <script src="js/home.js"></script>
+  <script src="js/instagram.js"></script>
 </body>
 </html>

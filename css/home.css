@@ -42,6 +42,143 @@
   animation: heroFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.54s both;
 }
 
+/* Grupo de CTAs y métricas del hero (layout base) */
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  max-width: 640px;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.hero-stat-number {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--siena-tostado);
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+
+.hero-stat-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------
+   Hero con video de marca ("Historia del Inmueble")
+   El video es decorativo: un scrim cálido garantiza el contraste
+   AA del texto superpuesto sobre cualquier fotograma.
+   ------------------------------------------------------------ */
+.hero-section--video {
+  padding: 6rem 0 5rem;
+  background: var(--madera-noble);
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  min-height: min(82vh, 760px);
+}
+
+.hero-section--video > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: saturate(0.92) contrast(1.02);
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(31, 20, 14, 0.94) 0%, rgba(31, 20, 14, 0.82) 42%, rgba(31, 20, 14, 0.42) 100%),
+    linear-gradient(180deg, rgba(31, 20, 14, 0.35) 0%, rgba(31, 20, 14, 0) 35%);
+}
+
+/* Inversión de la paleta sobre el video */
+.hero-section--video .hero-tag {
+  background-color: rgba(245, 230, 211, 0.14);
+  color: var(--alabastro-calido);
+  border: 1px solid rgba(245, 230, 211, 0.28);
+  backdrop-filter: blur(6px);
+}
+
+.hero-section--video .hero-title {
+  color: var(--paper);
+  text-shadow: 0 2px 24px rgba(31, 20, 14, 0.45);
+}
+
+.hero-section--video .hero-title span {
+  color: var(--vara-de-oro);
+}
+
+.hero-section--video .hero-description {
+  color: rgba(245, 230, 211, 0.88);
+}
+
+.hero-section--video .hero-stats {
+  border-top-color: rgba(245, 230, 211, 0.22);
+}
+
+.hero-section--video .hero-stat-number {
+  color: var(--vara-de-oro);
+}
+
+.hero-section--video .hero-stat-label {
+  color: rgba(245, 230, 211, 0.72);
+}
+
+.hero-section--video .btn-secondary {
+  color: var(--paper);
+  border-color: rgba(245, 230, 211, 0.55);
+}
+
+.hero-section--video .btn-secondary:hover {
+  background-color: var(--paper);
+  border-color: var(--paper);
+  color: var(--madera-noble);
+}
+
+@media (max-width: 640px) {
+  .hero-section--video {
+    padding: 4rem 0 3.5rem;
+    min-height: auto;
+  }
+
+  .hero-scrim {
+    background: linear-gradient(180deg, rgba(31, 20, 14, 0.86) 0%, rgba(31, 20, 14, 0.92) 100%);
+  }
+}
+
+/* Sin animaciones si el usuario pidió menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .hero-content > * {
+    animation: none !important;
+  }
+}
+
 .hero-tag, .section-tag {
   display: inline-flex;
   align-items: center;
@@ -351,4 +488,336 @@
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   Fragmento de Instagram — publicación interactiva
+   (Recursos/fragmento instagram/Instrucción.md)
+   ============================================================ */
+
+.instagram-section {
+  padding: 4.5rem 0 5.5rem;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--alabastro-light) 100%);
+  border-top: 1px solid var(--line);
+}
+
+.instagram-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .instagram-layout {
+    grid-template-columns: 1fr minmax(360px, 420px);
+    gap: 4rem;
+  }
+}
+
+.instagram-copy .section-subtitle {
+  margin-bottom: 1.75rem;
+  max-width: 46ch;
+}
+
+/* ---------- Tarjeta de la publicación ---------- */
+
+.ig-post {
+  position: relative;
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.ig-post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.ig-avatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background-color: var(--alabastro-calido);
+  /* Anillo degradado, guiño al de Instagram con la paleta de la marca */
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--vara-de-oro);
+}
+
+.ig-avatar img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.ig-account {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.ig-account strong {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--madera-noble);
+}
+
+.ig-account small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.ig-more {
+  margin-left: auto;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--madera-noble);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+
+.ig-more:hover {
+  background-color: var(--alabastro-light);
+}
+
+/* ---------- Media ---------- */
+
+.ig-media {
+  position: relative;
+  background-color: var(--madera-noble);
+  aspect-ratio: 4 / 5;
+}
+
+.ig-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Corazón al hacer doble clic sobre el video */
+.ig-post::after {
+  content: "♥";
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.4);
+  font-size: 5.5rem;
+  color: var(--white);
+  text-shadow: 0 4px 24px rgba(31, 20, 14, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ig-post.is-hearted::after {
+  animation: igHeartPop 0.9s ease-out;
+}
+
+@keyframes igHeartPop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  25%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  60%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* ---------- Acciones ---------- */
+
+.ig-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 0.75rem 0.35rem;
+}
+
+.ig-action {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  color: var(--madera-noble);
+  transition: transform var(--transition), background-color var(--transition), color var(--transition);
+}
+
+.ig-action svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ig-action:hover {
+  background-color: var(--alabastro-light);
+  transform: translateY(-1px);
+}
+
+.ig-action:active {
+  transform: scale(0.9);
+}
+
+.ig-action--save {
+  margin-left: auto;
+}
+
+/* Estados activos: corazón rosa polvoriento, guardado vara de oro */
+.ig-action[data-ig-like].is-active {
+  color: var(--rosa-polvoriento);
+  animation: igLikePop 0.35s ease-out;
+}
+
+.ig-action[data-ig-like].is-active svg {
+  fill: var(--rosa-polvoriento);
+}
+
+.ig-action[data-ig-save].is-active {
+  color: var(--vara-de-oro-dark);
+}
+
+.ig-action[data-ig-save].is-active svg {
+  fill: var(--vara-de-oro);
+}
+
+@keyframes igLikePop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- Copy, comentarios y formulario ---------- */
+
+.ig-caption {
+  padding: 0 1rem 0.5rem;
+}
+
+.ig-likes {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--madera-noble);
+  margin-bottom: 0.4rem;
+}
+
+.ig-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--madera-800);
+}
+
+.ig-text strong {
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+.ig-hashtag {
+  color: var(--siena-tostado);
+  font-weight: 500;
+}
+
+.ig-comments {
+  list-style: none;
+  padding: 0 1rem;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 8.5rem;
+  overflow-y: auto;
+}
+
+.ig-comments li {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--madera-800);
+  overflow-wrap: anywhere;
+}
+
+.ig-comments strong {
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+.ig-meta {
+  padding: 0.6rem 1rem 0.75rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ig-comment-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.ig-comment-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--madera-noble);
+  padding: 0.35rem 0;
+}
+
+.ig-comment-input::placeholder {
+  color: var(--text-muted);
+}
+
+.ig-comment-input:focus {
+  outline: none;
+}
+
+.ig-comment-form:focus-within {
+  background-color: var(--alabastro-light);
+}
+
+.ig-publish {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--siena-tostado);
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.ig-publish:hover {
+  background-color: var(--alabastro-calido);
+  color: var(--siena-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ig-action,
+  .ig-post::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
