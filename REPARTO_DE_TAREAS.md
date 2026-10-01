@@ -1,8 +1,8 @@
-# Reparto de tareas — documento interno
+# Reparto de tareas
 
-Este archivo sirve para coordinar el trabajo del equipo. Debe eliminarse en el commit final, junto con `material-campus/`.
+> **Antes de la entrega final:** quien realice cada una de las tareas 2 a 5 debe reemplazar el título genérico por su nombre y usuario de GitHub, usando el mismo formato de la tarea de Santiago: `Nombre Apellido (@usuario) — título de la tarea`. Por ejemplo: `Nombre Apellido (@usuario) — API de productos`. Este bloque de instrucciones se elimina en el último commit; el resto del documento se conserva como registro del aporte de cada integrante.
 
-Cada tarea tiene archivos propios para que puedan hacerse en paralelo. Los commits indicados son funcionales y acumulativos; no deben crearse commits vacíos solo para subir el contador.
+Este archivo sirve para coordinar el trabajo y para dejar documentada la responsabilidad de cada integrante. Cada tarea tiene archivos propios para que puedan hacerse en paralelo.
 
 ## 1. Santiago Oroz (`SantiagoOroz`) — Estado raíz, consumo de API y vistas
 
@@ -60,4 +60,4 @@ El carrito debe modificar únicamente el estado que recibe desde `App` a través
 - API: `GET http://localhost:3000/api/productos` y `GET http://localhost:3000/api/productos/:id`.
 - Los componentes visuales reciben datos y eventos por props; solo `App.jsx` hace el `fetch` y posee el estado `cart`.
 - Cada integrante trabaja en su rama y abre un PR. Conviene separar los avances por funcionalidad terminada y comprobable; cada PR debe conservar al menos un commit funcional de su autor.
-- Al finalizar, eliminar `REPARTO_DE_TAREAS.md` y `material-campus/` en un único commit de limpieza antes de la entrega.
+- Al finalizar, eliminar `material-campus/` y el bloque de instrucciones ubicado al principio de este documento. El reparto completado se conserva como evidencia de la responsabilidad de cada integrante.
