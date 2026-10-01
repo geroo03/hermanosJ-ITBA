@@ -1,166 +1,68 @@
-# E-commerce Mueblería Hermanos Jota — Primera Entrega (Sprint 2)
+# Mueblería Hermanos Jota — Sprints 3 y 4
 
-Proyecto de fachada completa y experiencia interactiva de e-commerce construida 100% con tecnologías del lado del cliente (**HTML5 Semántico, Vanilla CSS3 y JavaScript Moderno**) sin dependencias externas, adaptado rigurosamente al **Manual de Marca Oficial © 2026**.
+Proyecto grupal del ITBA: una tienda de muebles con una API en Node.js/Express y una interfaz en React.
 
----
+## Reparto de trabajo
 
-## 👥 Integrantes del Equipo
+Cada integrante trabaja sobre archivos distintos para que las tareas puedan desarrollarse en paralelo. Antes de integrar, cada PR debe conservar el contrato de props y endpoints indicado.
 
-| Integrante | Rol en el Proyecto |
-|---|---|
-| **Mateo Bouso** | Arquitectura HTML5 Semántico & SEO |
-| **Santiago Oroz** | Diseño UI/CSS3, Paleta Oficial & Responsive Design |
-| **Tadeo Piccato** | Lógica de Catálogo, Búsqueda Reactiva & Asincronismo JS |
-| **Sebastian Geronimo Peralta** | Carrito de Compras, LocalStorage & Drawer Off-Canvas |
-| **Nicolas Benitez** | Formulario de Contacto, Validaciones DOM & QA |
+### 1. Santiago Oroz (`SantiagoOroz`) — Aplicación e integración del catálogo
 
----
+**Archivos propios:** `client/src/App.jsx`, `client/src/services/productsApi.js`, `client/src/styles/app.css`.
 
-## 🌿 Esencia de Marca & Filosofía
+- Configurar la aplicación React y el estado raíz: productos, `loading`, `error`, vista activa y producto seleccionado.
+- Consumir `GET /api/productos` con `fetch` desde `useEffect` y mostrar correctamente carga, error y éxito.
+- Conectar las vistas Catálogo, Detalle, Carrito y Contacto mediante renderizado condicional, pasando props y callbacks sin duplicar estado.
 
-> **"Hermanos Jota es el redescubrimiento de un arte olvidado: crear muebles que no solo sirven una función, sino que alimentan el alma. Existimos en la intersección entre herencia e innovación, donde la calidez del optimismo de los años 60 se encuentra con la conciencia de la sustentabilidad del 2026. Cada pieza cuenta una historia de artesanía que honra el pasado mientras abraza el futuro."**
+Commits sugeridos: `feat(client): scaffold app views and product API service`; `feat(client): fetch products with loading and error states`; `feat(client): integrate catalogue and navigation views`.
 
-### Personalidad y Tono de Comunicación
-- **Cálida pero no empalagosa** — Transmitimos cercanía sin caer en lo artificial.
-- **Conocedora pero no pretenciosa** — Compartimos experiencia con humildad.
-- **Nostálgica pero no anclada en el pasado** — Honramos la tradición mientras innovamos.
-- **Sofisticada pero accesible** — Elegancia que no intimida.
+### 2. API de productos
 
----
+**Archivos propios:** `backend/src/data/products.js`, `backend/src/controllers/productsController.js`, `backend/src/routes/productsRouter.js`.
 
-## 🎨 Paleta Oficial de Colores (Manual de Marca)
+- Definir un catálogo local consistente de productos (id, nombre, precio, imagen, descripción y categoría).
+- Implementar `GET /api/productos` y `GET /api/productos/:id` con `express.Router` y controladores separados.
+- Devolver un 404 JSON claro cuando el producto solicitado no exista.
 
-| Color | Nombre | Código HEX | Uso Principal |
-|---|---|---|---|
-| 🟤 | **Siena Tostado** | `#A0522D` | Color principal de marca, títulos y logotipo |
-| 🟢 | **Verde Salvia** | `#87A96B` | Acento secundario, sustentabilidad y stock |
-| 📜 | **Alabastro Cálido** | `#F5E6D3` | Fondos principales, contenedores y fotografía |
-| 🟡 | **Vara de Oro** | `#D4A437` | Detalles premium, acentos dorados y calificaciones |
-| 🌸 | **Rosa Polvoriento**| `#C47A6D` | Acentos suaves y etiquetas destacadas |
-| 🪵 | **Madera Noble** | `#1F140E` / `#2D1C13` | Textos de alto contraste y estructura |
+Commits sugeridos: `feat(api): add local product catalogue`; `feat(api): add product list controller`; `feat(api): add product detail endpoint and JSON 404`.
 
----
+### 3. Infraestructura y middlewares del backend
 
-## ✍️ Sistema Tipográfico
+**Archivos propios:** `backend/src/app.js`, `backend/src/server.js`, `backend/src/middlewares/logger.js`, `backend/src/middlewares/notFound.js`, `backend/src/middlewares/errorHandler.js`, `backend/package.json`.
 
-- **Tipografía Primaria**: `Inter` (Sans-Serif de Rasmus Andersson)
-  - *Light (300)*: Leyendas y notas secundarias (9pt, espaciado 0.02em).
-  - *Regular (400)*: Texto principal y descripciones (11-12pt, interlineado 1.6).
-  - *Medium (500) & Bold (700)*: Botones y CTAs en mayúsculas (espaciado 0.08em).
-- **Tipografía Secundaria**: `Playfair Display` (Serif Editorial)
-  - *Regular & Bold (700)*: Títulos principales y cabeceras editoriales (mayúsculas, espaciado 0.1em).
+- Crear el servidor Express y montar `express.json()`, `cors` y el router de productos en `/api/productos`.
+- Implementar logging global de método y URL.
+- Añadir manejador de ruta inexistente y manejador global de errores; documentar cómo iniciar el servidor.
 
----
+Commits sugeridos: `chore(api): initialize Express server`; `feat(api): add CORS JSON and request logger`; `feat(api): add centralized 404 and error handling`.
 
-## 🪵 Sustentabilidad & Programa "Herencia Viva"
+### 4. Componentes de catálogo y detalle
 
-- **Madera Certificada FSC**: Algarrobo, quebracho, caldén, roble, petiribí, nogal y paraíso de reforestación controlada.
-- **Acabados 100% Naturales**: Aceite de lino prensado en frío, cera de abejas local y tintes vegetales al agua de bajo COV.
-- **Garantía Extendida**: 10 años en estructura, 5 años en acabados.
-- **Cero Plásticos**: Cadena de embalaje y producción libre de plásticos descartables.
+**Archivos propios:** `client/src/components/ProductCard.jsx`, `client/src/components/ProductList.jsx`, `client/src/components/ProductDetail.jsx`, `client/src/styles/products.css`.
 
----
+- Construir `ProductCard` con imagen, precio, descripción corta, “Ver detalle” y “Agregar al carrito”.
+- Construir `ProductList` con `.map()` y `key` correcta, sin hacer fetch dentro del componente.
+- Construir `ProductDetail` con información extendida y callbacks para volver y agregar; recibir todo por props.
 
-## 📁 Estructura del Proyecto
+Commits sugeridos: `feat(catalogue): add reusable product card`; `feat(catalogue): render product list from props`; `feat(catalogue): add product detail view`.
 
-```
-primera entrega/
-├── index.html               # Inicio: Hero con video de marca, colecciones, 4 destacados, Casa Taller y fragmento de Instagram
-├── productos.html           # Catálogo: Buscador reactivo, filtros por categoría, ordenamiento y grilla
-├── producto.html            # Detalle: Galería interactiva, especificaciones de ebanistería y compra
-├── contacto.html            # Casa Taller: Formulario validado con JS, mapa gráfico e info de contacto
-├── Kit de imágenes/         # Kit oficial provisto por la cátedra
-├── Recursos/                # Material de cátedra (consigna, manual de marca, baseline)
-├── assets/
-│   ├── images/              # Imágenes optimizadas del catálogo oficial y logo.svg
-│   └── video/               # Video de marca del hero y fragmento de Instagram
-├── css/
-│   ├── styles.css           # Tokens del Manual de Marca, layout, tipografías, botones y footer
-│   ├── cart.css             # Drawer off-canvas, ítems del carrito, barra de envío y modal
-│   ├── home.css             # Hero con video, colecciones, propuesta de valor y fragmento de Instagram
-│   ├── catalog.css          # Estilos de buscador reactivo, pills de filtro y ordenamiento
-│   ├── product-detail.css   # Estilos de ficha técnica, sellos de garantía y piezas relacionadas
-│   └── contact.css          # Estilos de formulario con feedback en vivo y mensaje en DOM
-├── js/
-│   ├── icons.js             # Módulo de iconos vectoriales SVG limpios y escalables
-│   ├── data.js              # Array de objetos con los 11 productos y métodos asíncronos (setTimeout/async-await)
-│   ├── cart.js              # Carrito con LocalStorage, unicidad por pieza, envío y modal de checkout
-│   ├── main.js              # Header dinámico, menú responsive y sistema de notificaciones toast
-│   ├── home.js              # Piezas destacadas asíncronas con skeletons y control del video del hero
-│   ├── instagram.js         # Publicación interactiva de Instagram: like, guardado y comentarios
-│   ├── catalog.js           # Filtrado en tiempo real, búsqueda reactiva y ordenación dinámica
-│   ├── product-detail.js    # Carga dinámica por parámetro URL (?id=), ficha y piezas relacionadas
-│   └── contact.js           # Validación de formulario en tiempo real y confirmación en el DOM
-└── README.md                # Documentación oficial de entrega
-```
+### 5. Carrito, navegación, contacto y pie
 
----
+**Archivos propios:** `client/src/components/Navbar.jsx`, `client/src/components/Cart.jsx`, `client/src/components/ContactForm.jsx`, `client/src/components/Footer.jsx`, `client/src/styles/layout.css`.
 
-## 🚀 Cómo Visualizar el Proyecto Localmente
+- Crear `Navbar` con branding, navegación y contador reactivo recibido por props.
+- Implementar carrito controlado por props: incrementar, decrementar, eliminar y total calculado.
+- Implementar formulario de contacto controlado con `useState`, validación básica y mensaje de éxito; completar el footer institucional.
 
-1. **Utilizar un servidor local** (recomendado, necesario para los videos):
-   - Con VS Code, hacer clic derecho en `index.html` y seleccionar **"Open with Live Server"**.
-   - O ejecutar en la carpeta del proyecto: `npx serve .` / `python -m http.server 8000`
-2. **Abrir directamente en el navegador**:
-   - Doble clic en `index.html`. Funciona, pero algunos navegadores restringen la
-     reproducción de video sobre el protocolo `file://`.
+Commits sugeridos: `feat(layout): add navbar and footer`; `feat(cart): add cart controls and calculated total`; `feat(contact): add controlled contact form validation`.
 
----
+## Contrato de integración
 
-## 📋 Requerimientos Cumplidos (Criterios de Evaluación)
+- El backend expone `GET http://localhost:3000/api/productos` y `GET http://localhost:3000/api/productos/:id`.
+- Los componentes visuales no hacen `fetch`; reciben datos y eventos por props.
+- `App.jsx` es el único dueño de `cart`, que usa elementos `{ product, quantity }`.
+- Cada tarea se desarrolla en una rama/PR propia y se integra mediante revisión. Así cada integrante conserva al menos un commit de funcionalidad verificable en la rama principal.
 
-### 1. HTML5 Semántico y Accesibilidad
-- Jerarquía semántica estricta (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`).
-- Formulario de contacto con etiquetas `<label>`, atributos `required`, `aria-label` e inputs tipados.
-- Iconografía 100% vectorial SVG escalable y accesible con `currentColor`.
+## Orden sugerido de integración
 
-### 2. CSS3, Modelo de Cajas & Flexbox/Grid
-- Uso exhaustivo de variables CSS (`:root`) basadas en el Manual de Marca Oficial.
-- Diseño **Mobile-First** con breakpoints en 640px, 768px, 900px, 1024px y 1200px.
-- Animaciones suaves de interacción, micro-interacciones hover y skeleton loaders.
-
-### 3. JavaScript Vanilla & Manipulación del DOM
-- **Array de Objetos (`PRODUCTOS`)**: Catálogo estructurado con 11 piezas oficiales.
-- **Asincronismo**: Carga simulada con `Promise`, `setTimeout` y `async/await`.
-- **Búsqueda Reactiva**: Filtro instantáneo por texto en título, categoría o madera.
-- **Filtros Combinados**: Filtros por categoría y ordenamiento por precio o nombre.
-- **Persistencia**: Carrito guardado en `localStorage` sincronizado en todas las páginas.
-- **Validación de Formulario**: Validación en tiempo real (expresión regular para email, requeridos) y renderizado de tarjeta de éxito en el DOM sin recargar la página.
-
-### 4. Carrito Lateral (Consigna `Recursos/adicional.md`)
-- **Sidebar derecho**: Drawer off-canvas fijo a la derecha, disponible en las 4 páginas.
-- **Ficha completa por ítem**: cada pieza en el carrito muestra **nombre, descripción, imagen y precio**.
-- **Una unidad por pieza**: no es posible agregar el mismo producto más de una vez. El botón
-  de la tarjeta queda deshabilitado como *"En el Carrito"*, un intento repetido sólo abre el
-  drawer con un toast, y no existen controles de cantidad. Los carritos guardados por
-  versiones anteriores se normalizan al leerlos desde `localStorage`.
-
-### 5. Contenido Audiovisual de Marca
-- **Video del hero** (`assets/video/historia-inmueble.mp4`): reproducción automática, silenciada
-  y en bucle como fondo de portada, con un scrim cálido que garantiza el contraste del texto.
-  Se pausa automáticamente si el sistema declara `prefers-reduced-motion`.
-- **Fragmento de Instagram** (`Recursos/fragmento instagram/Instrucción.md`): publicación
-  simulada e interactiva con video propio, *me gusta* con contador en vivo, doble clic para
-  dar corazón, guardado, compartir (Web Share API con respaldo al portapapeles) y comentarios
-  que se agregan al DOM. Los estados usan `aria-pressed` y el comentario del usuario se
-  inserta con `textContent` para evitar inyección de HTML.
-
----
-
-## 🏛️ Casa Taller & Contacto Oficial
-
-- **Ubicación**: Av. San Juan 2847 (C1232AAB), Barrio de San Cristóbal, CABA, Argentina.
-- **Horarios**: Lunes a Viernes de 10:00 a 19:00 hs | Sábados de 10:00 a 14:00 hs.
-- **WhatsApp**: `+54 11 4567-8900`
-- **Email**: `info@hermanosjota.com.ar` | `ventas@hermanosjota.com.ar`
-- **Instagram**: `@hermanosjota_ba`
-
----
-
-## 📜 Créditos del Manual de Marca
-- **Dirección Creativa**: Estudio Hermanos
-- **Diseño**: María Fernanda López
-- **Fotografía**: Santiago Ciuffo
-- **Redacción**: Carolina Mendez
-- **Tipografía**: Inter por Rasmus Andersson & Playfair Display
-- © 2026 Hermanos Jota. Todos los derechos reservados.
+Las cinco tareas pueden empezar a la vez. Para probar el producto completo, integrar primero las tareas 2 y 3, luego 1, 4 y 5 en cualquier orden.

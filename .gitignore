@@ -24,3 +24,7 @@ dist/
 
 # ---- Empaquetados ----
 *.zip
+
+# ---- Sprint 3-4 (Node/React) ----
+.env
+coverage/
