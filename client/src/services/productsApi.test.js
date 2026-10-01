@@ -24,4 +24,23 @@ describe('getProducts', () => {
       'No pudimos cargar el catálogo. Intentá nuevamente más tarde.',
     );
   });
+
+  it('informa un error de conexión cuando el servidor no responde', async () => {
+    global.fetch = jest.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+
+    await expect(getProducts()).rejects.toThrow(
+      'No pudimos conectarnos con el servidor. Verificá que la API esté en funcionamiento.',
+    );
+  });
+
+  it('rechaza respuestas que no son una lista de productos', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ message: 'inesperado' }),
+    });
+
+    await expect(getProducts()).rejects.toThrow(
+      'No pudimos cargar el catálogo. Intentá nuevamente más tarde.',
+    );
+  });
 });
