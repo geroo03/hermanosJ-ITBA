@@ -13,11 +13,7 @@ Cada tarea tiene archivos propios para que puedan hacerse en paralelo. Los commi
 - Resolver en `App.jsx` los estados de carga, error y éxito.
 - Conectar por props y callbacks las vistas de catálogo, detalle, carrito y contacto; no construir componentes visuales de otros integrantes.
 
-Commits propuestos:
-
-1. `feat(client): create app state and view controller`
-2. `feat(client): fetch products with loading and error states`
-3. `feat(client): integrate child views through props`
+Al integrar, esta tarea debe dejar una aplicación capaz de consultar el catálogo sin depender de datos locales. Los componentes visuales de las demás tareas se conectan desde acá mediante props y callbacks: este archivo es el único dueño del estado global del carrito y de la vista actual.
 
 ## 2. API de productos
 
@@ -27,11 +23,7 @@ Commits propuestos:
 - Implementar `GET /api/productos` y `GET /api/productos/:id` mediante `express.Router` y controladores separados.
 - Responder con 404 en JSON al solicitar un producto inexistente.
 
-Commits propuestos:
-
-1. `feat(api): add local product catalogue`
-2. `feat(api): add product list endpoint`
-3. `feat(api): add product detail endpoint and JSON 404`
+Al terminar, las rutas deben poder probarse de forma independiente con Postman. La respuesta debe ser JSON consistente para que el cliente pueda consumirla sin transformaciones especiales.
 
 ## 3. Servidor y middlewares
 
@@ -41,11 +33,7 @@ Commits propuestos:
 - Agregar middleware global que registre método y URL.
 - Crear manejador de rutas inexistentes y manejador global de errores.
 
-Commits propuestos:
-
-1. `chore(api): initialize Express server`
-2. `feat(api): add CORS JSON and request logger`
-3. `feat(api): add centralized 404 and error handling`
+Esta tarea construye la base común del backend. Debe permitir iniciar el servidor con un script claro y conservar separados el arranque, la configuración de la aplicación y los middlewares.
 
 ## 4. Catálogo y detalle
 
@@ -55,11 +43,7 @@ Commits propuestos:
 - Crear `ProductList` que use `.map()` y `key`, sin hacer consultas HTTP.
 - Crear `ProductDetail` con información extendida, regreso al catálogo y agregado al carrito.
 
-Commits propuestos:
-
-1. `feat(catalogue): add reusable product card`
-2. `feat(catalogue): render product list from props`
-3. `feat(catalogue): add product detail view`
+Los componentes deben ser reutilizables: reciben el producto y las acciones desde `App`, sin administrar el carrito ni hacer consultas HTTP por cuenta propia.
 
 ## 5. Navegación, carrito y contacto
 
@@ -69,15 +53,11 @@ Commits propuestos:
 - Crear carrito controlado por props: incrementar, decrementar, eliminar y calcular total.
 - Crear formulario controlado con `useState`, validación básica y mensaje de envío; completar el footer.
 
-Commits propuestos:
-
-1. `feat(layout): add navbar and footer`
-2. `feat(cart): add cart controls and calculated total`
-3. `feat(contact): add controlled contact form validation`
+El carrito debe modificar únicamente el estado que recibe desde `App` a través de callbacks. El formulario debe evitar envíos inválidos y mostrar una respuesta clara para la persona usuaria.
 
 ## Contrato de integración
 
 - API: `GET http://localhost:3000/api/productos` y `GET http://localhost:3000/api/productos/:id`.
 - Los componentes visuales reciben datos y eventos por props; solo `App.jsx` hace el `fetch` y posee el estado `cart`.
-- Cada integrante trabaja en su rama y abre un PR. Cada PR debe contener commits funcionales del autor.
+- Cada integrante trabaja en su rama y abre un PR. Conviene separar los avances por funcionalidad terminada y comprobable; cada PR debe conservar al menos un commit funcional de su autor.
 - Al finalizar, eliminar `REPARTO_DE_TAREAS.md` y `material-campus/` en un único commit de limpieza antes de la entrega.
