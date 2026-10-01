@@ -1,7 +1,17 @@
 :root {
-  color: #2f241e;
-  background: #f8f4ef;
-  font-family: Arial, Helvetica, sans-serif;
+  --siena: #a0522d;
+  --siena-dark: #71351f;
+  --sage: #87a96b;
+  --alabaster: #f5e6d3;
+  --gold: #d4a437;
+  --dusty-rose: #c47a6d;
+  --ink: #34251f;
+  --paper: #fffdf9;
+  --serif: Georgia, 'Times New Roman', serif;
+
+  color: var(--ink);
+  background: var(--paper);
+  font-family: Inter, 'Segoe UI', Arial, sans-serif;
 }
 
 * {
@@ -23,18 +33,19 @@ button {
 
 .app-header {
   padding: 3rem max(1.5rem, calc((100% - 70rem) / 2));
-  background: #2f241e;
-  color: #fffaf4;
+  background: var(--siena-dark);
+  color: var(--alabaster);
 }
 
 .app-header h1 {
   margin: 0;
+  font-family: var(--serif);
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
 .app-eyebrow {
   margin: 0 0 0.75rem;
-  color: #e7b77c;
+  color: var(--gold);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -57,6 +68,23 @@ button {
   color: inherit;
 }
 
+.app-nav button:hover,
+.app-nav button:focus-visible {
+  background: var(--siena);
+  border-color: var(--siena);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.app-message button,
+.product-preview-list button {
+  color: var(--siena);
+}
+
 .app-content,
 .app-message {
   width: min(70rem, calc(100% - 3rem));
@@ -64,9 +92,9 @@ button {
 }
 
 .app-message--error {
-  border-left: 4px solid #b3261e;
+  border-left: 4px solid var(--dusty-rose);
   padding: 1rem;
-  background: #fff0ee;
+  background: var(--alabaster);
 }
 
 .product-preview-list {
@@ -82,6 +110,7 @@ button {
   gap: 1rem;
   align-items: center;
   padding: 1rem;
+  border: 1px solid rgba(80, 53, 40, 0.16);
   border-radius: 0.5rem;
   background: #fff;
 }
