@@ -4,6 +4,8 @@
 
 Este archivo sirve para coordinar el trabajo y para dejar documentada la responsabilidad de cada integrante. Cada tarea tiene archivos propios para que puedan hacerse en paralelo.
 
+Este trabajo continúa el repositorio del Sprint 1-2: la versión anterior (HTML, CSS y JavaScript) se conserva en `Recursos/` y `assets/`, y la nueva aplicación (`backend/` y `client/`) reutiliza su identidad de marca (paleta, tipografías, imágenes y comportamiento del carrito).
+
 ## 1. Santiago Oroz (`SantiagoOroz`) — Estado raíz, consumo de API y vistas
 
 **Archivos:** `client/src/App.jsx`, `client/src/services/productsApi.js`, `client/src/styles/app.css`.
@@ -12,6 +14,8 @@ Este archivo sirve para coordinar el trabajo y para dejar documentada la respons
 - Implementar el servicio que consulta `GET /api/productos` con `fetch`.
 - Resolver en `App.jsx` los estados de carga, error y éxito.
 - Conectar por props y callbacks las vistas de catálogo, detalle, carrito y contacto; no construir componentes visuales de otros integrantes.
+
+**Estado: completada.** `App.jsx` resuelve carga, error (con reintento sin recargar) y éxito; `productsApi.js` distingue fallas de conexión, respuestas con error y respuestas inválidas, con tests; el carrito se persiste en `localStorage` como en el Sprint 2; `app.css` aplica la paleta oficial de marca.
 
 Al integrar, esta tarea debe dejar una aplicación capaz de consultar el catálogo sin depender de datos locales. Los componentes visuales de las demás tareas se conectan desde acá mediante props y callbacks: este archivo es el único dueño del estado global del carrito y de la vista actual.
 
