@@ -1,0 +1,87 @@
+:root {
+  color: #2f241e;
+  background: #f8f4ef;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.app-header {
+  padding: 3rem max(1.5rem, calc((100% - 70rem) / 2));
+  background: #2f241e;
+  color: #fffaf4;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.app-eyebrow {
+  margin: 0 0 0.75rem;
+  color: #e7b77c;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.app-nav button,
+.app-message button,
+.product-preview-list button {
+  border: 1px solid currentColor;
+  border-radius: 0.35rem;
+  padding: 0.55rem 0.85rem;
+  background: transparent;
+  color: inherit;
+}
+
+.app-content,
+.app-message {
+  width: min(70rem, calc(100% - 3rem));
+  margin: 2.5rem auto;
+}
+
+.app-message--error {
+  border-left: 4px solid #b3261e;
+  padding: 1rem;
+  background: #fff0ee;
+}
+
+.product-preview-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.product-preview-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #fff;
+}
