@@ -28,3 +28,4 @@ dist/
 # ---- Sprint 3-4 (Node/React) ----
 .env
 coverage/
+client/build/
