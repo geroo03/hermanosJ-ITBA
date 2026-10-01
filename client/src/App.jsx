@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getProducts } from './services/productsApi';
 import './styles/app.css';
 
@@ -17,36 +17,36 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
 
+  const loadProducts = useCallback(async (isActive = () => true) => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const catalogue = await getProducts();
+
+      if (isActive()) {
+        setProducts(catalogue);
+      }
+    } catch (requestError) {
+      if (isActive()) {
+        setError(requestError.message);
+      }
+    } finally {
+      if (isActive()) {
+        setLoading(false);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
 
-    async function loadProducts() {
-      setLoading(true);
-      setError('');
-
-      try {
-        const catalogue = await getProducts();
-
-        if (isMounted) {
-          setProducts(catalogue);
-        }
-      } catch (requestError) {
-        if (isMounted) {
-          setError(requestError.message);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    loadProducts();
+    loadProducts(() => isMounted);
 
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [loadProducts]);
 
   const cartItemCount = useMemo(
     () => cart.reduce((total, item) => total + item.quantity, 0),
@@ -146,7 +146,7 @@ function App() {
       {!loading && error && (
         <section className="app-message app-message--error" role="alert">
           <p>{error}</p>
-          <button type="button" onClick={() => window.location.reload()}>
+          <button type="button" onClick={() => loadProducts()}>
             Reintentar
           </button>
         </section>
