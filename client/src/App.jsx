@@ -9,13 +9,32 @@ const VIEWS = {
   CONTACT: 'contact',
 };
 
+const CART_STORAGE_KEY = 'hermanos-jota-cart';
+
+function readStoredCart() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(CART_STORAGE_KEY));
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    return [];
+  }
+}
+
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentView, setCurrentView] = useState(VIEWS.CATALOGUE);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(readStoredCart);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch {
+      // El carrito sigue funcionando en memoria si el almacenamiento no está disponible.
+    }
+  }, [cart]);
 
   const loadProducts = useCallback(async (isActive = () => true) => {
     setLoading(true);
