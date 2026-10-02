@@ -63,5 +63,3 @@ El carrito debe modificar únicamente el estado que recibe desde `App` a través
 
 - API: `GET http://localhost:3000/api/productos` y `GET http://localhost:3000/api/productos/:id`.
 - Los componentes visuales reciben datos y eventos por props; solo `App.jsx` hace el `fetch` y posee el estado `cart`.
-- Cada integrante trabaja en su rama y abre un PR. Conviene separar los avances por funcionalidad terminada y comprobable; cada PR debe conservar al menos un commit funcional de su autor.
-- Al finalizar, eliminar `material-campus/` y el bloque de instrucciones ubicado al principio de este documento. El reparto completado se conserva como evidencia de la responsabilidad de cada integrante.
