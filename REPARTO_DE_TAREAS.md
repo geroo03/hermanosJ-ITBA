@@ -19,13 +19,15 @@ Este trabajo continúa el repositorio del Sprint 1-2: la versión anterior (HTML
 
 Al integrar, esta tarea debe dejar una aplicación capaz de consultar el catálogo sin depender de datos locales. Los componentes visuales de las demás tareas se conectan desde acá mediante props y callbacks: este archivo es el único dueño del estado global del carrito y de la vista actual.
 
-## 2. API de productos
+## 2. Tadeo Piccato (@Flowveep) — API de productos
 
 **Archivos:** `backend/src/data/products.js`, `backend/src/controllers/productsController.js`, `backend/src/routes/productsRouter.js`.
 
 - Definir el catálogo local con `id`, `name`, `price`, `image`, `description` y `category`.
 - Implementar `GET /api/productos` y `GET /api/productos/:id` mediante `express.Router` y controladores separados.
 - Responder con 404 en JSON al solicitar un producto inexistente.
+
+**Estado: completada.** Catálogo de 11 productos con los seis campos del contrato, controladores separados y router en `backend/src/routes/productsRouter.js`. Incluye pruebas HTTP en `backend/tests/products.test.js`, un servidor aislado de prueba y una colección de Postman en `backend/tests/products.postman_collection.json`. La tarea 3 debe montar el router con `app.use('/api/productos', productsRouter)`; las instrucciones de verificación están en `Tadeo Piccato.md`.
 
 Al terminar, las rutas deben poder probarse de forma independiente con Postman. La respuesta debe ser JSON consistente para que el cliente pueda consumirla sin transformaciones especiales.
 

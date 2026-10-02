@@ -1,0 +1,105 @@
+{
+  "info": {
+    "name": "Hermanos Jota — API de productos — Tadeo Piccato",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Verificación independiente de la tarea 2. Iniciar backend/tests/serve-products.js o el servidor final de la tarea 3. IDs de texto; precios numéricos en ARS."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "productId",
+      "value": "sofa-patagonia"
+    }
+  ],
+  "item": [
+    {
+      "name": "Listado completo — 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200 y contenido JSON\", function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "pm.test(\"11 productos con campos válidos e IDs únicos\", function () {",
+              "  const products = pm.response.json();",
+              "  pm.expect(products).to.be.an(\"array\").with.lengthOf(11);",
+              "  pm.expect(new Set(products.map(p => p.id)).size).to.eql(products.length);",
+              "  products.forEach(function (product) {",
+              "    pm.expect(product).to.have.all.keys(\"id\", \"name\", \"price\", \"image\", \"description\", \"category\");",
+              "    [\"id\", \"name\", \"image\", \"description\", \"category\"].forEach(function (field) {",
+              "      pm.expect(product[field]).to.be.a(\"string\").and.not.empty;",
+              "    });",
+              "    pm.expect(product.price).to.be.a(\"number\").and.above(0);",
+              "  });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Detalle por ID — 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200 y contenido JSON\", function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "pm.test(\"Producto con el ID solicitado\", function () {",
+              "  const product = pm.response.json();",
+              "  pm.expect(product).to.have.all.keys(\"id\", \"name\", \"price\", \"image\", \"description\", \"category\");",
+              "  pm.expect(product.id).to.eql(pm.variables.get(\"productId\"));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Producto inexistente — 404",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/inexistente"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 404 y contenido JSON\", function () {",
+              "  pm.response.to.have.status(404);",
+              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "pm.test(\"Error consistente\", function () {",
+              "  pm.expect(pm.response.json()).to.eql({ error: \"Producto no encontrado: inexistente\", status: 404 });",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

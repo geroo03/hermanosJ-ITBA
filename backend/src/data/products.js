@@ -1,3 +1,5 @@
+// Catálogo del Sprint 1-2: mismos IDs, precios en ARS e imágenes de js/data.js.
+// Contrato de la API: id, name, price, image, description y category.
 const products = [
   {
     id: 'aparador-uspallata',
