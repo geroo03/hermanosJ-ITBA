@@ -41,7 +41,7 @@ Al terminar, las rutas deben poder probarse de forma independiente con Postman. 
 
 Esta tarea construye la base común del backend. Debe permitir iniciar el servidor con un script claro y conservar separados el arranque, la configuración de la aplicación y los middlewares.
 
-## 4. Catálogo y detalle
+## 4. Nicolás Benitez (@Nico-5525) Catálogo y detalle
 
 **Archivos:** `client/src/components/ProductCard.jsx`, `client/src/components/ProductList.jsx`, `client/src/components/ProductDetail.jsx`, `client/src/styles/products.css`.
 

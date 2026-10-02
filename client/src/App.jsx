@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getProducts } from './services/productsApi';
+import ProductList from './components/ProductList';
+import ProductDetail from './components/ProductDetail';
 import './styles/app.css';
 
 const VIEWS = {
@@ -185,13 +187,22 @@ function App() {
  * reemplazar cada bloque por ProductList, ProductDetail, Cart y ContactForm.
  * El contrato de datos y callbacks ya está centralizado en sharedProps.
  */
-function ViewBridge({ view, products, cart, selectedProduct, onShowProductDetail }) {
+function ViewBridge({
+  view,
+  products,
+  cart,
+  selectedProduct,
+  onShowProductDetail,
+  onAddToCart,
+  onChangeView,
+}) {
   if (view === VIEWS.DETAIL) {
     return selectedProduct ? (
-      <article>
-        <h2>{selectedProduct.name}</h2>
-        <p>La vista de detalle se conectará con ProductDetail.</p>
-      </article>
+      <ProductDetail
+        product={selectedProduct}
+        onBack={() => onChangeView(VIEWS.CATALOGUE)}
+        onAddToCart={onAddToCart}
+      />
     ) : (
       <p>Seleccioná un producto para ver su detalle.</p>
     );
@@ -208,22 +219,11 @@ function ViewBridge({ view, products, cart, selectedProduct, onShowProductDetail
   return (
     <section>
       <h2>Catálogo</h2>
-      {products.length === 0 ? (
-        <p>No hay productos disponibles por el momento.</p>
-      ) : (
-        <ul className="product-preview-list">
-          {products.map((product) => (
-            <li key={product.id}>
-              <strong>{product.name}</strong>
-              <button type="button" onClick={() => onShowProductDetail(product)}>
-                Ver detalle
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ProductList
+        products={products}
+        onViewDetail={onShowProductDetail}
+        onAddToCart={onAddToCart}
+      />
     </section>
   );
 }
-
-export default App;

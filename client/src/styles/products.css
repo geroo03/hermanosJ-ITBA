@@ -1,0 +1,134 @@
+/* ---------- Botones ---------- */
+.btn {
+  border: 1px solid var(--siena);
+  border-radius: 0.35rem;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn--primary {
+  background: var(--siena);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--siena-dark);
+  border-color: var(--siena-dark);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--siena);
+}
+
+.btn--secondary:hover {
+  background: var(--alabaster);
+}
+
+/* ---------- Listado ---------- */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1.5rem;
+}
+
+/* ---------- Tarjeta ---------- */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(80, 53, 40, 0.16);
+  border-radius: 0.5rem;
+  background: #fff;
+}
+
+.product-card__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--alabaster);
+}
+
+.product-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.product-card__category {
+  margin: 0;
+  color: var(--sage);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-card__name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+}
+
+.product-card__description {
+  flex: 1;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.product-card__price {
+  margin: 0;
+  color: var(--siena-dark);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.product-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ---------- Detalle ---------- */
+.product-detail__layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.product-detail__image {
+  width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  background: var(--alabaster);
+}
+
+.product-detail__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.product-detail__name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.product-detail__price {
+  margin: 0;
+  color: var(--siena-dark);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.product-detail__description {
+  margin: 0;
+  line-height: 1.7;
+}
