@@ -1,0 +1,23 @@
+{
+  "name": "hermanosj-backend",
+  "version": "1.0.0",
+  "description": "Backend API para Mueblería Hermanos Jota - Sprints 3 y 4",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "api",
+    "hermanos-jota"
+  ],
+  "author": "Mateo Bouso (@mbouso420-spec)",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

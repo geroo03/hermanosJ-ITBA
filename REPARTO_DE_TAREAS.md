@@ -31,13 +31,15 @@ Al integrar, esta tarea debe dejar una aplicación capaz de consultar el catálo
 
 Al terminar, las rutas deben poder probarse de forma independiente con Postman. La respuesta debe ser JSON consistente para que el cliente pueda consumirla sin transformaciones especiales.
 
-## 3. Servidor y middlewares
+## 3. Mateo Bouso (@mbouso420-spec) — Servidor y middlewares
 
 **Archivos:** `backend/src/app.js`, `backend/src/server.js`, `backend/src/middlewares/logger.js`, `backend/src/middlewares/notFound.js`, `backend/src/middlewares/errorHandler.js`, `backend/package.json`.
 
 - Configurar Express y montar `express.json()`, `cors` y el router de productos.
 - Agregar middleware global que registre método y URL.
 - Crear manejador de rutas inexistentes y manejador global de errores.
+
+**Estado: completada.** Servidor Express configurado con separación clara entre inicialización (`server.js`), configuración de aplicación (`app.js`) y middlewares modulares (`logger.js`, `notFound.js`, `errorHandler.js`). Configurado `cors` y `express.json()`, montado el router de productos en `/api/productos` e implementado `package.json` con dependencias y scripts (`start`, `dev`, `test`). Incluye suite de pruebas automatizadas en `backend/tests/app.test.js`.
 
 Esta tarea construye la base común del backend. Debe permitir iniciar el servidor con un script claro y conservar separados el arranque, la configuración de la aplicación y los middlewares.
 
