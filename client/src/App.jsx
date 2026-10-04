@@ -2,6 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getProducts } from './services/productsApi';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
+import Navbar from './components/Navbar';
+import Cart from './components/Cart';
+import ContactForm from './components/ContactForm';
+import Footer from './components/Footer';
 import './styles/app.css';
 
 const VIEWS = {
@@ -11,12 +15,29 @@ const VIEWS = {
   CONTACT: 'contact',
 };
 
+const NAV_LINKS = [
+  { view: VIEWS.CATALOGUE, label: 'Catálogo' },
+  { view: VIEWS.CONTACT, label: 'Contacto' },
+];
+
 const CART_STORAGE_KEY = 'hermanos-jota-cart';
 
 function readStoredCart() {
   try {
     const stored = JSON.parse(localStorage.getItem(CART_STORAGE_KEY));
-    return Array.isArray(stored) ? stored : [];
+
+    if (!Array.isArray(stored)) {
+      return [];
+    }
+
+    // Descarta ítems corruptos para que un dato inválido no rompa el render del carrito.
+    return stored.filter(
+      (item) =>
+        item?.product?.id != null &&
+        Number.isFinite(Number(item.product.price)) &&
+        Number.isInteger(item.quantity) &&
+        item.quantity > 0,
+    );
   } catch {
     return [];
   }
@@ -145,40 +166,41 @@ function App() {
   };
 
   return (
-    <main className="app-shell">
-      <header className="app-header">
-        <p className="app-eyebrow">Mueblería Hermanos Jota</p>
-        <h1>Diseño y calidez para tu hogar</h1>
-        <nav aria-label="Navegación principal" className="app-nav">
-          <button type="button" onClick={() => changeView(VIEWS.CATALOGUE)}>
-            Catálogo
-          </button>
-          <button type="button" onClick={() => changeView(VIEWS.CART)}>
-            Carrito ({cartItemCount})
-          </button>
-          <button type="button" onClick={() => changeView(VIEWS.CONTACT)}>
-            Contacto
-          </button>
-        </nav>
-      </header>
+    <div className="app-shell">
+      <Navbar
+        links={NAV_LINKS}
+        currentView={currentView}
+        cartView={VIEWS.CART}
+        cartItemCount={cartItemCount}
+        onChangeView={changeView}
+      />
 
-      {loading && <p className="app-message">Cargando catálogo…</p>}
+      <main>
+        <header className="app-header">
+          <p className="app-eyebrow">Mueblería Hermanos Jota</p>
+          <h1>Diseño y calidez para tu hogar</h1>
+        </header>
 
-      {!loading && error && (
-        <section className="app-message app-message--error" role="alert">
-          <p>{error}</p>
-          <button type="button" onClick={() => loadProducts()}>
-            Reintentar
-          </button>
-        </section>
-      )}
+        {loading && <p className="app-message">Cargando catálogo…</p>}
 
-      {!loading && !error && (
-        <section className="app-content" aria-live="polite">
-          <ViewBridge view={currentView} {...sharedProps} />
-        </section>
-      )}
-    </main>
+        {!loading && error && (
+          <section className="app-message app-message--error" role="alert">
+            <p>{error}</p>
+            <button type="button" onClick={() => loadProducts()}>
+              Reintentar
+            </button>
+          </section>
+        )}
+
+        {!loading && !error && (
+          <section className="app-content" aria-live="polite">
+            <ViewBridge view={currentView} {...sharedProps} />
+          </section>
+        )}
+      </main>
+
+      <Footer />
+    </div>
   );
 }
 
@@ -194,6 +216,9 @@ function ViewBridge({
   selectedProduct,
   onShowProductDetail,
   onAddToCart,
+  onIncreaseQuantity,
+  onDecreaseQuantity,
+  onRemoveFromCart,
   onChangeView,
 }) {
   if (view === VIEWS.DETAIL) {
@@ -209,11 +234,19 @@ function ViewBridge({
   }
 
   if (view === VIEWS.CART) {
-    return <p>Hay {cart.length} tipos de producto en tu carrito.</p>;
+    return (
+      <Cart
+        cart={cart}
+        onIncreaseQuantity={onIncreaseQuantity}
+        onDecreaseQuantity={onDecreaseQuantity}
+        onRemoveFromCart={onRemoveFromCart}
+        onContinueShopping={() => onChangeView(VIEWS.CATALOGUE)}
+      />
+    );
   }
 
   if (view === VIEWS.CONTACT) {
-    return <p>El formulario de contacto estará disponible próximamente.</p>;
+    return <ContactForm />;
   }
 
   return (
@@ -227,3 +260,5 @@ function ViewBridge({
     </section>
   );
 }
+
+export default App;

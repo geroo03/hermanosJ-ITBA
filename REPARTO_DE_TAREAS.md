@@ -53,13 +53,15 @@ Esta tarea construye la base común del backend. Debe permitir iniciar el servid
 
 Los componentes deben ser reutilizables: reciben el producto y las acciones desde `App`, sin administrar el carrito ni hacer consultas HTTP por cuenta propia.
 
-## 5. Navegación, carrito y contacto
+## 5. Sebastián Gerónimo Peralta (@geroo03) — Navegación, carrito y contacto
 
 **Archivos:** `client/src/components/Navbar.jsx`, `client/src/components/Cart.jsx`, `client/src/components/ContactForm.jsx`, `client/src/components/Footer.jsx`, `client/src/styles/layout.css`.
 
 - Crear `Navbar` con branding, navegación y contador del carrito recibido por props.
 - Crear carrito controlado por props: incrementar, decrementar, eliminar y calcular total.
 - Crear formulario controlado con `useState`, validación básica y mensaje de envío; completar el footer.
+
+**Estado: completada.** `Navbar` muestra la marca, la vista activa (`aria-current`) y el contador del carrito recibido por props; `Cart` lista imagen, precio unitario, cantidad y subtotal de cada pieza, con controles para incrementar, decrementar y eliminar que solo llaman a los callbacks de `App`, y calcula el total con `getCartTotal`; `ContactForm` es un formulario controlado con `useState` que valida nombre, email y mensaje, bloquea envíos inválidos y confirma el envío en pantalla; `Footer` reúne la dirección, horarios y canales de la Casa Taller. Se conectaron en `App.jsx` y se cubrieron con pruebas en `client/src/components/layout.test.jsx`. Detalle en `Sebastian Geronimo Peralta.md`.
 
 El carrito debe modificar únicamente el estado que recibe desde `App` a través de callbacks. El formulario debe evitar envíos inválidos y mostrar una respuesta clara para la persona usuaria.
 
