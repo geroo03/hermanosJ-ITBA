@@ -93,7 +93,7 @@ Para que las cinco tareas encajen sin pisarse, todo el equipo respeta estos acue
 
 ---
 
-## Tarea 1. Responsable: **Nicolás Benitez** — (@usuario de GitHub pendiente) — Base de datos, modelo y variables de entorno
+## Tarea 1. Responsable: **Nicolás Benitez** — }@Nico-5525 — Base de datos, modelo y variables de entorno
 
 **Estado: Terminada**
 
