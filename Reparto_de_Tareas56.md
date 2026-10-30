@@ -93,7 +93,9 @@ Para que las cinco tareas encajen sin pisarse, todo el equipo respeta estos acue
 
 ---
 
-## Tarea 1. Responsable: _(escribir nombre y @usuario)_ — Base de datos, modelo y variables de entorno
+## Tarea 1. Responsable: **Nicolás Benitez** — (@usuario de GitHub pendiente) — Base de datos, modelo y variables de entorno
+
+**Estado: Terminada**
 
 **Archivos:** `backend/src/config/db.js`, `backend/src/models/Product.js`, `backend/src/server.js`, `backend/package.json`, `backend/.env.example`, `backend/src/seed.js`.
 
@@ -107,8 +109,17 @@ Para que las cinco tareas encajen sin pisarse, todo el equipo respeta estos acue
 - Crear `backend/.env.example` con las variables necesarias y sin valores reales.
 - Crear un script de **semilla** (`seed.js`, con un script `npm run seed`) que tome los 11 productos de `backend/src/data/products.js`, los convierta a los campos nuevos y los inserte en MongoDB, para que el catálogo no arranque vacío.
 
-**Al terminar:** el servidor debe conectarse a MongoDB Atlas, el modelo debe estar disponible para el resto del equipo y la base debe tener los productos iniciales cargados. Quien haga la Tarea 2 depende del modelo: conviene acordar sus campos antes de empezar y publicar esta tarea primero.
+**Al terminar:** el servidor debe conectarse a MongoDB Atlas, el modelo debe estar disponible para el resto del equipo y la base debe tener los productos iniciales cargados.
 
+### Resumen de la tarea
+
+Se creó y configuró una base de datos en MongoDB Atlas para el proyecto Hermanos Jota. Se instalaron las dependencias `mongoose` y `dotenv`, y se desarrolló el archivo `db.js` para gestionar la conexión con la base de datos mediante variables de entorno.
+
+También se creó el modelo `Product.js`, definiendo los campos `nombre`, `descripcion`, `precio`, `stock` e `imagenUrl`, junto con sus validaciones y fechas automáticas de creación y actualización (`timestamps`).
+
+Se modificó `server.js` para que el backend cargue las variables de entorno y establezca la conexión con MongoDB antes de iniciar el servidor Express. Además, se crearon los archivos `.env` y `.env.example` para separar las credenciales reales de la configuración de ejemplo.
+
+Por último, se desarrolló `seed.js` y se agregó el comando `npm run seed`, que permite cargar los 11 productos iniciales del catálogo en MongoDB, adaptándolos al nuevo modelo. Se comprobó que la conexión funciona correctamente y que los 11 productos quedaron almacenados en MongoDB Atlas.
 ---
 
 ## Tarea 2. Responsable: _(escribir nombre y @usuario)_ — API REST con CRUD completo
