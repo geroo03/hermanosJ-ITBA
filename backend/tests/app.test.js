@@ -1,6 +1,12 @@
 const assert = require('node:assert/strict');
 const { test, before, after } = require('node:test');
+const { installFakeProduct } = require('./helpers/fakeProduct');
 const app = require('../src/app');
+
+const fake = installFakeProduct([
+  { nombre: 'Sofá Patagonia', descripcion: 'Sofá', precio: 100, stock: 1, imagenUrl: '/a.png' },
+  { nombre: 'Mesa Pampa', descripcion: 'Mesa', precio: 200, stock: 1, imagenUrl: '/b.png' },
+]);
 
 let server;
 let baseUrl;
@@ -14,6 +20,7 @@ before(async () => {
 });
 
 after(async () => {
+  fake.restore();
   if (server) {
     await new Promise((resolve, reject) => {
       server.close((error) => (error ? reject(error) : resolve()));
@@ -36,23 +43,25 @@ test('GET /api/productos devuelve el catálogo con status 200 y JSON', async () 
   assert.match(response.headers.get('content-type'), /^application\/json\b/);
   const data = await response.json();
   assert.ok(Array.isArray(data));
-  assert.equal(data.length, 11);
+  assert.equal(data.length, 2);
 });
 
 test('GET /api/productos/:id devuelve el producto seleccionado', async () => {
-  const response = await fetch(`${baseUrl}/api/productos/sofa-patagonia`);
+  const [id] = fake.ids();
+  const response = await fetch(`${baseUrl}/api/productos/${id}`);
   assert.equal(response.status, 200);
   const product = await response.json();
-  assert.equal(product.id, 'sofa-patagonia');
-  assert.equal(product.name, 'Sofá Patagonia');
+  assert.equal(product._id, id);
+  assert.equal(product.nombre, 'Sofá Patagonia');
 });
 
 test('GET /api/productos/:id devuelve 404 para producto inexistente', async () => {
-  const response = await fetch(`${baseUrl}/api/productos/no-existe`);
+  const id = fake.newId();
+  const response = await fetch(`${baseUrl}/api/productos/${id}`);
   assert.equal(response.status, 404);
   const errorBody = await response.json();
   assert.deepEqual(errorBody, {
-    error: 'Producto no encontrado: no-existe',
+    error: `Producto no encontrado: ${id}`,
     status: 404,
   });
 });

@@ -1,16 +1,19 @@
 const assert = require('node:assert/strict');
-const { existsSync, readFileSync } = require('node:fs');
-const path = require('node:path');
-const vm = require('node:vm');
-const { test, before, after } = require('node:test');
-const products = require('../src/data/products');
+const { test, before, after, beforeEach } = require('node:test');
+const { installFakeProduct } = require('./helpers/fakeProduct');
 const app = require('./serve-products');
 
-const projectRoot = path.resolve(__dirname, '../..');
+const initial = [
+  { nombre: 'Sofá Patagonia', descripcion: 'Sofá de tres cuerpos', precio: 100, stock: 3, imagenUrl: '/a.png' },
+  { nombre: 'Mesa Pampa', descripcion: 'Mesa de comedor', precio: 200, stock: 1, imagenUrl: '/b.png' },
+];
+
+let fake;
 let server;
 let baseUrl;
 
 before(async () => {
+  fake = installFakeProduct(initial);
   await new Promise((resolve, reject) => {
     server = app.listen(0, '127.0.0.1', resolve);
     server.once('error', reject);
@@ -19,76 +22,122 @@ before(async () => {
 });
 
 after(async () => {
-  if (server) {
-    await new Promise((resolve, reject) => {
-      server.close((error) => (error ? reject(error) : resolve()));
-      server.closeAllConnections();
-    });
-  }
+  fake.restore();
+  await new Promise((resolve, reject) => {
+    server.close((error) => (error ? reject(error) : resolve()));
+    server.closeAllConnections();
+  });
 });
 
-test('el catálogo tiene 11 productos, IDs únicos y los seis campos válidos', () => {
-  assert.equal(products.length, 11);
-  assert.equal(new Set(products.map((product) => product.id)).size, products.length);
-  const fields = ['category', 'description', 'id', 'image', 'name', 'price'];
+beforeEach(() => fake.reset());
 
-  for (const product of products) {
-    assert.deepEqual(Object.keys(product).sort(), fields);
-    assert.match(product.id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-    for (const field of ['name', 'image', 'description', 'category']) {
-      assert.equal(typeof product[field], 'string');
-      assert.ok(product[field].trim().length > 0);
-    }
-    assert.ok(Number.isFinite(product.price) && product.price > 0);
-    assert.ok(['comedor', 'estudio', 'living', 'dormitorio'].includes(product.category));
-    assert.ok(existsSync(path.join(projectRoot, product.image)), product.image);
-  }
-});
+function send(url, method, body) {
+  return fetch(url, {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+}
 
-test('los datos conservan el catálogo del Sprint 1-2 sin cambios', () => {
-  const context = { window: {} };
-  vm.runInNewContext(readFileSync(path.join(projectRoot, 'js/data.js'), 'utf8'), context);
-  const source = JSON.parse(JSON.stringify(context.window.PRODUCTOS));
-  const catalogue = source.map(({ id, name, price, image, description, category }) => ({
-    id, name, price, image, description, category,
-  }));
-  assert.deepEqual(products, catalogue);
-});
-
-test('GET /api/productos devuelve 200 y un array JSON consumible por React', async () => {
+test('GET /api/productos devuelve 200 y un array JSON', async () => {
   const response = await fetch(baseUrl);
   assert.equal(response.status, 200);
   assert.match(response.headers.get('content-type'), /^application\/json\b/);
-  assert.deepEqual(await response.json(), products);
+  const data = await response.json();
+  assert.equal(data.length, 2);
+  assert.ok(data[0]._id);
+  assert.equal(data[0].nombre, 'Sofá Patagonia');
 });
 
-test('GET /api/productos/:id devuelve cada uno de los 11 productos', async () => {
-  for (const product of products) {
-    const response = await fetch(`${baseUrl}/${product.id}`);
-    assert.equal(response.status, 200, product.id);
-    assert.match(response.headers.get('content-type'), /^application\/json\b/);
-    assert.deepEqual(await response.json(), product);
-  }
-});
-
-test('un ID inexistente devuelve 404 con un error JSON consistente', async () => {
-  for (const id of ['inexistente', '123', 'SOFA-PATAGONIA', 'sofa-patagonia-extra']) {
-    const response = await fetch(`${baseUrl}/${id}`);
-    assert.equal(response.status, 404, id);
-    assert.match(response.headers.get('content-type'), /^application\/json\b/);
-    assert.deepEqual(await response.json(), {
-      error: `Producto no encontrado: ${id}`,
-      status: 404,
-    });
-  }
-});
-
-test('las consultas repetidas no alteran el catálogo', async () => {
-  const initial = JSON.stringify(products);
-  await fetch(`${baseUrl}/inexistente`);
-  await fetch(`${baseUrl}/${products[0].id}`);
-  const response = await fetch(baseUrl);
+test('GET /api/productos/:id devuelve el producto por _id', async () => {
+  const [id] = fake.ids();
+  const response = await fetch(`${baseUrl}/${id}`);
   assert.equal(response.status, 200);
-  assert.equal(JSON.stringify(products), initial);
-  assert.deepEqual(await response.json(), JSON.parse(initial));
+  const product = await response.json();
+  assert.equal(product._id, id);
+  assert.equal(product.precio, 100);
+});
+
+test('GET con _id inexistente devuelve 404 en JSON', async () => {
+  const id = fake.newId();
+  const response = await fetch(`${baseUrl}/${id}`);
+  assert.equal(response.status, 404);
+  assert.deepEqual(await response.json(), { error: `Producto no encontrado: ${id}`, status: 404 });
+});
+
+test('un _id mal formado devuelve 400 en GET, PUT y DELETE', async () => {
+  for (const [method, body] of [['GET'], ['PUT', { nombre: 'x' }], ['DELETE']]) {
+    const response = await send(`${baseUrl}/abc`, method, body);
+    assert.equal(response.status, 400, method);
+    const data = await response.json();
+    assert.equal(data.status, 400);
+    assert.match(data.error, /no es válido/);
+  }
+});
+
+test('POST crea el producto y responde 201', async () => {
+  const response = await send(baseUrl, 'POST', {
+    nombre: 'Butaca Mendoza', precio: 300, stock: 5, campoAjeno: 'ignorado',
+  });
+  assert.equal(response.status, 201);
+  const created = await response.json();
+  assert.ok(created._id);
+  assert.equal(created.nombre, 'Butaca Mendoza');
+  assert.equal(created.campoAjeno, undefined);
+  assert.equal(fake.ids().length, 3);
+});
+
+test('POST sin nombre o precio devuelve 400 con el mensaje de validación', async () => {
+  const response = await send(baseUrl, 'POST', { descripcion: 'sin datos' });
+  assert.equal(response.status, 400);
+  const data = await response.json();
+  assert.equal(data.status, 400);
+  assert.match(data.error, /nombre del producto es obligatorio/);
+  assert.match(data.error, /precio del producto es obligatorio/);
+});
+
+test('POST con precio negativo devuelve 400', async () => {
+  const response = await send(baseUrl, 'POST', { nombre: 'Silla', precio: -1 });
+  assert.equal(response.status, 400);
+});
+
+test('PUT actualiza y devuelve el documento actualizado', async () => {
+  const [id] = fake.ids();
+  const response = await send(`${baseUrl}/${id}`, 'PUT', { precio: 150, stock: 9 });
+  assert.equal(response.status, 200);
+  const updated = await response.json();
+  assert.equal(updated.precio, 150);
+  assert.equal(updated.stock, 9);
+  assert.equal(updated.nombre, 'Sofá Patagonia');
+});
+
+test('PUT con datos inválidos devuelve 400 y con _id inexistente 404', async () => {
+  const [id] = fake.ids();
+  const invalid = await send(`${baseUrl}/${id}`, 'PUT', { precio: -5 });
+  assert.equal(invalid.status, 400);
+
+  const missing = await send(`${baseUrl}/${fake.newId()}`, 'PUT', { precio: 5 });
+  assert.equal(missing.status, 404);
+  assert.equal((await missing.json()).status, 404);
+});
+
+test('DELETE elimina el producto y luego responde 404', async () => {
+  const [id] = fake.ids();
+  const response = await send(`${baseUrl}/${id}`, 'DELETE');
+  assert.equal(response.status, 200);
+  assert.equal((await response.json())._id, id);
+  assert.equal(fake.ids().length, 1);
+
+  const again = await send(`${baseUrl}/${id}`, 'DELETE');
+  assert.equal(again.status, 404);
+});
+
+test('un JSON mal formado en el cuerpo devuelve 400', async () => {
+  const response = await fetch(baseUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: '{nombre:',
+  });
+  assert.equal(response.status, 400);
+  assert.match((await response.json()).error, /JSON/);
 });
