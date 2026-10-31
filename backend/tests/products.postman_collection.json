@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Hermanos Jota — API de productos — Tadeo Piccato",
+    "name": "Hermanos Jota — API de productos (CRUD)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Verificación independiente de la tarea 2. Iniciar backend/tests/serve-products.js o el servidor final de la tarea 3. IDs de texto; precios numéricos en ARS."
+    "description": "Ejecutar en orden con el Collection Runner contra una API conectada a MongoDB. \"Crear\" guarda el _id en la variable productId, que usan las demás solicitudes; \"Eliminar\" lo borra al final."
   },
   "variable": [
     {
@@ -11,12 +11,16 @@
     },
     {
       "key": "productId",
-      "value": "sofa-patagonia"
+      "value": ""
+    },
+    {
+      "key": "missingId",
+      "value": "000000000000000000000000"
     }
   ],
   "item": [
     {
-      "name": "Listado completo — 200",
+      "name": "Listado — 200",
       "request": {
         "method": "GET",
         "header": [],
@@ -28,29 +32,76 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"Estado 200 y contenido JSON\", function () {",
-              "  pm.response.to.have.status(200);",
-              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
-              "});",
-              "pm.test(\"11 productos con campos válidos e IDs únicos\", function () {",
-              "  const products = pm.response.json();",
-              "  pm.expect(products).to.be.an(\"array\").with.lengthOf(11);",
-              "  pm.expect(new Set(products.map(p => p.id)).size).to.eql(products.length);",
-              "  products.forEach(function (product) {",
-              "    pm.expect(product).to.have.all.keys(\"id\", \"name\", \"price\", \"image\", \"description\", \"category\");",
-              "    [\"id\", \"name\", \"image\", \"description\", \"category\"].forEach(function (field) {",
-              "      pm.expect(product[field]).to.be.a(\"string\").and.not.empty;",
-              "    });",
-              "    pm.expect(product.price).to.be.a(\"number\").and.above(0);",
-              "  });",
-              "});"
+              "pm.test(\"Estado 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Es un array con _id y nombre\", function () { const l = pm.response.json(); pm.expect(l).to.be.an(\"array\"); l.forEach(function (p) { pm.expect(p).to.have.property(\"_id\"); pm.expect(p).to.have.property(\"nombre\"); pm.expect(p).to.have.property(\"precio\"); }); });"
             ]
           }
         }
       ]
     },
     {
-      "name": "Detalle por ID — 200",
+      "name": "Crear — 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Mesa de prueba\",\n  \"descripcion\": \"Producto de prueba\",\n  \"precio\": 12345,\n  \"stock\": 2,\n  \"imagenUrl\": \"/assets/images/mesa-comedor-pampa.png\"\n}"
+        },
+        "url": "{{baseUrl}}/api/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 201\", function () { pm.response.to.have.status(201); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Devuelve el producto creado\", function () { const p = pm.response.json(); pm.expect(p).to.have.property(\"_id\"); pm.expect(p.nombre).to.eql(\"Mesa de prueba\"); pm.collectionVariables.set(\"productId\", p._id); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crear sin nombre ni precio — 400",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descripcion\": \"incompleto\"\n}"
+        },
+        "url": "{{baseUrl}}/api/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 400\", function () { pm.response.to.have.status(400); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Error con formato { error, status }\", function () { const b = pm.response.json(); pm.expect(b.status).to.eql(400); pm.expect(b.error).to.be.a(\"string\").and.match(/obligatorio/); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Detalle — 200",
       "request": {
         "method": "GET",
         "header": [],
@@ -62,26 +113,20 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"Estado 200 y contenido JSON\", function () {",
-              "  pm.response.to.have.status(200);",
-              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
-              "});",
-              "pm.test(\"Producto con el ID solicitado\", function () {",
-              "  const product = pm.response.json();",
-              "  pm.expect(product).to.have.all.keys(\"id\", \"name\", \"price\", \"image\", \"description\", \"category\");",
-              "  pm.expect(product.id).to.eql(pm.variables.get(\"productId\"));",
-              "});"
+              "pm.test(\"Estado 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Es el producto pedido\", function () { pm.expect(pm.response.json()._id).to.eql(pm.collectionVariables.get(\"productId\")); });"
             ]
           }
         }
       ]
     },
     {
-      "name": "Producto inexistente — 404",
+      "name": "Detalle inexistente — 404",
       "request": {
         "method": "GET",
         "header": [],
-        "url": "{{baseUrl}}/api/productos/inexistente"
+        "url": "{{baseUrl}}/api/productos/{{missingId}}"
       },
       "event": [
         {
@@ -89,13 +134,161 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"Estado 404 y contenido JSON\", function () {",
-              "  pm.response.to.have.status(404);",
-              "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
-              "});",
-              "pm.test(\"Error consistente\", function () {",
-              "  pm.expect(pm.response.json()).to.eql({ error: \"Producto no encontrado: inexistente\", status: 404 });",
-              "});"
+              "pm.test(\"Estado 404\", function () { pm.response.to.have.status(404); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Error con formato { error, status }\", function () { const b = pm.response.json(); pm.expect(b.status).to.eql(404); pm.expect(b.error).to.be.a(\"string\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Detalle con _id mal formado — 400",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/abc"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 400\", function () { pm.response.to.have.status(400); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Error con formato { error, status }\", function () { const b = pm.response.json(); pm.expect(b.status).to.eql(400); pm.expect(b.error).to.be.a(\"string\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Actualizar — 200",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"precio\": 20000,\n  \"stock\": 7\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Devuelve el documento actualizado\", function () { const p = pm.response.json(); pm.expect(p.precio).to.eql(20000); pm.expect(p.stock).to.eql(7); pm.expect(p.nombre).to.eql(\"Mesa de prueba\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Actualizar con precio negativo — 400",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"precio\": -1\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 400\", function () { pm.response.to.have.status(400); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Error con formato { error, status }\", function () { const b = pm.response.json(); pm.expect(b.status).to.eql(400); pm.expect(b.error).to.be.a(\"string\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Actualizar inexistente — 404",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"precio\": 1\n}"
+        },
+        "url": "{{baseUrl}}/api/productos/{{missingId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 404\", function () { pm.response.to.have.status(404); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Error con formato { error, status }\", function () { const b = pm.response.json(); pm.expect(b.status).to.eql(404); pm.expect(b.error).to.be.a(\"string\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Eliminar — 200",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Eliminar de nuevo — 404",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos/{{productId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 404\", function () { pm.response.to.have.status(404); });",
+              "pm.test(\"Respuesta JSON\", function () { pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\"); });",
+              "pm.test(\"Error con formato { error, status }\", function () { const b = pm.response.json(); pm.expect(b.status).to.eql(404); pm.expect(b.error).to.be.a(\"string\"); });"
             ]
           }
         }
