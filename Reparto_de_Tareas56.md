@@ -122,7 +122,9 @@ Se modificó `server.js` para que el backend cargue las variables de entorno y e
 Por último, se desarrolló `seed.js` y se agregó el comando `npm run seed`, que permite cargar los 11 productos iniciales del catálogo en MongoDB, adaptándolos al nuevo modelo. Se comprobó que la conexión funciona correctamente y que los 11 productos quedaron almacenados en MongoDB Atlas.
 ---
 
-## Tarea 2. Responsable: _(escribir nombre y @usuario)_ — API REST con CRUD completo
+## Tarea 2. Responsable: **Santiago Oroz** (@SantiagoOroz) — API REST con CRUD completo
+
+**Estado: completada**
 
 **Archivos:** `backend/src/controllers/productsController.js`, `backend/src/routes/productsRouter.js`, `backend/src/middlewares/errorHandler.js`, `backend/tests/products.test.js`, `backend/tests/products.postman_collection.json`.
 
@@ -140,6 +142,14 @@ Por último, se desarrolló `seed.js` y se agregó el comando `npm run seed`, qu
 - Actualizar las pruebas automatizadas y la colección de Postman: deben probar los cinco endpoints y los casos de error. Como las pruebas actuales dependen del catálogo local, hay que adaptarlas al nuevo contrato (campos en español y `_id`).
 
 **Al terminar:** las cinco rutas deben poder probarse de forma independiente con Postman contra la base real, y las respuestas deben ser JSON consistentes para que el cliente las use sin transformaciones especiales.
+
+### Resumen de la tarea
+
+Se reescribió `productsController.js` para trabajar con el modelo `Product` de Mongoose mediante `async/await`, con los cinco endpoints del CRUD: listar, obtener por `_id`, crear (201), actualizar con `new: true` y `runValidators: true`, y eliminar. `productsRouter.js` registra las cinco rutas.
+
+Se ajustó `errorHandler.js` para responder 400 ante datos que no pasan la validación del modelo, `_id` con formato inválido y JSON mal formado, y 404 cuando el producto no existe, siempre con el formato `{ error, status }`.
+
+Las pruebas automatizadas (`products.test.js` y `app.test.js`) se adaptaron al contrato con campos en español y `_id`: cubren los cinco endpoints y los casos de error, y corren sin base de datos real gracias a un modelo simulado en memoria (`tests/helpers/fakeProduct.js`). La colección de Postman se rehízo con un flujo completo de crear, leer, actualizar y eliminar. El detalle y los comandos de verificación están en `Santiago Oroz.md`.
 
 ---
 
