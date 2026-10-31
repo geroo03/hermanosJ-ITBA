@@ -1,5 +1,39 @@
 # Resumen de Entrega — Mateo Bouso
 
+## Sprint 5-6 — Ruteo del cliente y consumo de la API
+
+**Responsable:** Mateo Bouso (@mbouso420-spec).  
+**Asignación:** tarea 3 de `Reparto_de_Tareas56.md`.
+
+---
+
+### Trabajo Realizado
+
+| Archivo | Responsabilidad / Trabajo |
+|---|---|
+| `client/package.json` | Instalación de `react-router-dom` (v6) compatible con React 18 y Create React App (`react-scripts`). |
+| `client/.env.example` | Documentación de la variable de entorno `REACT_APP_API_URL=http://localhost:3000/api`. |
+| `client/src/index.js` | Envoltura de `<App />` con `<BrowserRouter>` para habilitar ruteo declarativo en el navegador. |
+| `client/src/services/productsApi.js` | Servicio completo de comunicación con la API usando `fetch` y `REACT_APP_API_URL`: `getProducts`, `getProductById`, `createProduct`, `updateProduct` y `deleteProduct`, propagando errores de red y mensajes `{ error, status }` del backend. |
+| `client/src/App.jsx` | Reemplazo de `currentView`/`ViewBridge` por `<Routes>` y `<Route>` (`/`, `/productos`, `/productos/:id`, `/contacto`, `/carrito`, `/admin/crear-producto`, `/admin/editar-producto/:id` y `*`), migración del carrito y `readStoredCart` a `_id` y `precio`, y actualización automática del catálogo al navegar a `/productos`. |
+| `client/src/pages/Home.jsx` | Página de Inicio (`/`) con identidad de marca de la Casa Taller, acceso directo al catálogo y vista previa de piezas destacadas. |
+| `client/src/pages/Catalogo.jsx` | Página de Catálogo (`/productos`) con estados de carga, alerta de error con reintento, acceso a alta de producto y renderizado de `ProductList`. |
+| `client/src/components/Navbar.jsx` | Migración de botones a `<Link>` y `<NavLink>` (con estado activo accesible `aria-current="page"` automático) conservando el contador en vivo del carrito. |
+| `client/src/components/ProductList.jsx` y `ProductCard.jsx` | Migración de `key` a `product._id`, adaptación a `nombre`, `descripcion`, `precio` e `imagenUrl`, y enlaces `<Link>` hacia `/productos/:id`. |
+| `client/src/components/Cart.jsx` | Migración a `_id`, `nombre`, `precio` e `imagenUrl`, cálculo de total actualizado y enlaces `<Link>` hacia `/productos` y el detalle de cada pieza. |
+| `client/src/services/productsApi.test.js` y `client/src/components/layout.test.jsx` | Pruebas automatizadas actualizadas para los cinco métodos de `productsApi`, navegación con `MemoryRouter`, carrito con `_id` y formulario de contacto. |
+
+### Cómo verificarlo
+
+```powershell
+cd client
+npm install
+npm test -- --watchAll=false
+npm run build
+```
+
+---
+
 ## Sprint 3-4 — Servidor y middlewares
 
 **Responsable:** Mateo Bouso (@mbouso420-spec).  

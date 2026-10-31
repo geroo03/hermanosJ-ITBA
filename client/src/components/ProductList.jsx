@@ -1,7 +1,7 @@
 import ProductCard from './ProductCard';
 import '../styles/products.css';
 
-function ProductList({ products, onViewDetail, onAddToCart }) {
+function ProductList({ products, onAddToCart }) {
   if (products.length === 0) {
     return <p>No hay productos disponibles por el momento.</p>;
   }
@@ -10,9 +10,8 @@ function ProductList({ products, onViewDetail, onAddToCart }) {
     <div className="product-list">
       {products.map((product) => (
         <ProductCard
-          key={product.id}
+          key={product._id}
           product={product}
-          onViewDetail={onViewDetail}
           onAddToCart={onAddToCart}
         />
       ))}

@@ -1,47 +1,44 @@
+import { Link, NavLink } from 'react-router-dom';
 import '../styles/layout.css';
 
-function Navbar({ links, currentView, cartView, cartItemCount, onChangeView }) {
+const DEFAULT_LINKS = [
+  { to: '/', label: 'Inicio', end: true },
+  { to: '/productos', label: 'Catálogo' },
+  { to: '/contacto', label: 'Contacto' },
+  { to: '/admin/crear-producto', label: 'Crear producto' },
+];
+
+function Navbar({ links = DEFAULT_LINKS, cartItemCount = 0 }) {
   const cartLabel = cartItemCount === 1 ? '1 producto' : `${cartItemCount} productos`;
 
   return (
     <header className="navbar">
       <div className="navbar__inner">
-        <button
-          type="button"
-          className="navbar__brand"
-          onClick={() => onChangeView(links[0].view)}
-        >
+        <Link to="/" className="navbar__brand">
           <span className="navbar__brand-name">Hermanos Jota</span>
-          <span className="navbar__brand-tagline">Casa Taller &amp; Ebanistería</span>
-        </button>
+          <span className="navbar__brand-tagline">Casa Taller y Ebanistería</span>
+        </Link>
 
         <nav aria-label="Navegación principal">
           <ul className="navbar__links">
-            {links.map(({ view, label }) => (
-              <li key={view}>
-                <button
-                  type="button"
-                  className="navbar__link"
-                  aria-current={currentView === view ? 'page' : undefined}
-                  onClick={() => onChangeView(view)}
-                >
+            {links.map(({ to, label, end }) => (
+              <li key={to}>
+                <NavLink to={to} end={end} className="navbar__link">
                   {label}
-                </button>
+                </NavLink>
               </li>
             ))}
             <li>
-              <button
-                type="button"
+              <NavLink
+                to="/carrito"
                 className="navbar__link navbar__cart"
-                aria-current={currentView === cartView ? 'page' : undefined}
                 aria-label={`Carrito, ${cartLabel}`}
-                onClick={() => onChangeView(cartView)}
               >
                 Carrito
                 <span className="navbar__cart-count" aria-hidden="true">
                   {cartItemCount}
                 </span>
-              </button>
+              </NavLink>
             </li>
           </ul>
         </nav>

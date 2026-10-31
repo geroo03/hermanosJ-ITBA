@@ -153,7 +153,9 @@ Las pruebas automatizadas (`products.test.js` y `app.test.js`) se adaptaron al c
 
 ---
 
-## Tarea 3. Responsable: _(escribir nombre y @usuario)_ — Ruteo del cliente y consumo de la API
+## Tarea 3. Responsable: **Mateo Bouso** (@mbouso420-spec) — Ruteo del cliente y consumo de la API
+
+**Estado: completada**
 
 **Archivos:** `client/package.json`, `client/src/index.js`, `client/src/App.jsx`, `client/src/services/productsApi.js`, `client/src/components/Navbar.jsx`, `client/src/components/ProductList.jsx`, `client/src/components/ProductCard.jsx`, `client/src/components/Cart.jsx`, `client/src/pages/Home.jsx`, `client/src/pages/Catalogo.jsx`, `client/.env.example`.
 
@@ -168,6 +170,14 @@ Las pruebas automatizadas (`products.test.js` y `app.test.js`) se adaptaron al c
 - Mantener los estados de carga y error con reintento al pedir el catálogo.
 
 **Al terminar:** se puede navegar entre Inicio, Catálogo, Contacto y el carrito con la URL cambiando, el catálogo se lee de MongoDB a través de la API y el carrito sigue funcionando con los nuevos identificadores.
+
+### Resumen de la tarea
+
+Se instaló `react-router-dom` en `client/` y se envolvió la aplicación con `BrowserRouter` en `index.js`. En `App.jsx` se reemplazó la navegación por estado local (`currentView` / `ViewBridge`) por rutas reales con `Routes` y `Route` para `/` (`Home`), `/productos` (`Catalogo`), `/productos/:id`, `/contacto` (`ContactForm`), `/carrito` (`Cart`), `/admin/crear-producto` y `/admin/editar-producto/:id`, dejando listos los componentes provisorios para la Tarea 4 y la recarga automática del catálogo al regresar a `/productos`.
+
+Se crearon las páginas `Home.jsx` (con la identidad de marca de la Casa Taller, acceso al catálogo y vista previa de piezas) y `Catalogo.jsx` (conservando estados de carga, alerta de error con reintento y listado), además de `client/.env.example` documentando `REACT_APP_API_URL`.
+
+Se completó `services/productsApi.js` con las cinco operaciones CRUD (`getProducts`, `getProductById`, `createProduct`, `updateProduct` y `deleteProduct`) con manejo consistente de errores de red y propagación de mensajes/códigos de la API. Por último, se reemplazaron los botones de navegación por `Link` y `NavLink` en `Navbar`, `ProductCard`, `ProductList` y `Cart`, migrando todo el flujo de productos y la persistencia del carrito en `localStorage` a `_id` y a los campos en español (`nombre`, `descripcion`, `precio`, `stock`, `imagenUrl`), junto con las pruebas automatizadas del cliente. Detalles y comandos de verificación en `Mateo Bouso.md`.
 
 ---
 

@@ -1,23 +1,56 @@
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
+import { MemoryRouter, useLocation } from 'react-router-dom';
+import App, { readStoredCart } from '../App';
 import Cart, { getCartTotal } from './Cart';
 import ContactForm, { validateContact } from './ContactForm';
 import Navbar from './Navbar';
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-const sofa = { id: 'sofa-patagonia', name: 'Sofá Patagonia', price: 2490000, image: 'assets/images/sofa.png' };
-const mesa = { id: 'mesa-aconcagua', name: 'Mesa de Noche Aconcagua', price: 525000, image: 'assets/images/mesa.png' };
+const sofa = {
+  _id: '65f000000000000000000001',
+  nombre: 'Sofá Patagonia',
+  descripcion: 'Sofá de tres cuerpos en madera maciza y tapizado natural.',
+  precio: 2490000,
+  stock: 3,
+  imagenUrl: 'assets/images/sofa-patagonia.png',
+};
+
+const mesa = {
+  _id: '65f000000000000000000002',
+  nombre: 'Mesa de Noche Aconcagua',
+  descripcion: 'Mesa de luz en petiribí con cajón oculto.',
+  precio: 525000,
+  stock: 6,
+  imagenUrl: 'assets/images/mesa-de-noche-aconcagua.png',
+};
 
 let container;
 let root;
 
-function render(element) {
-  act(() => root.render(element));
+function LocationProbe() {
+  const location = useLocation();
+  return <output data-testid="current-path">{location.pathname}</output>;
+}
+
+const ROUTER_FUTURE = { v7_startTransition: true, v7_relativeSplatPath: true };
+
+function render(element, initialEntries = ['/']) {
+  act(() => {
+    root.render(
+      <MemoryRouter initialEntries={initialEntries} future={ROUTER_FUTURE}>
+        <LocationProbe />
+        {element}
+      </MemoryRouter>,
+    );
+  });
 }
 
 function click(element) {
-  act(() => element.dispatchEvent(new MouseEvent('click', { bubbles: true })));
+  act(() => {
+    element.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }));
+  });
 }
 
 function type(field, value) {
@@ -30,47 +63,39 @@ function type(field, value) {
   });
 }
 
-function getButton(label) {
-  return [...container.querySelectorAll('button')].find(
-    (button) => button.textContent.trim() === label || button.getAttribute('aria-label') === label,
+function getInteractive(label) {
+  return [...container.querySelectorAll('button, a')].find(
+    (element) => element.textContent.trim() === label || element.getAttribute('aria-label') === label,
   );
 }
 
 beforeEach(() => {
+  localStorage.clear();
   container = document.createElement('div');
   document.body.appendChild(container);
   root = createRoot(container);
 });
 
 afterEach(() => {
+  jest.restoreAllMocks();
   act(() => root.unmount());
   container.remove();
 });
 
-describe('Navbar', () => {
-  it('muestra el contador del carrito y navega con el callback recibido', () => {
-    const onChangeView = jest.fn();
+describe('Navbar con React Router', () => {
+  it('marca el enlace activo con aria-current y navega al carrito cambiando la ruta', () => {
+    render(<Navbar cartItemCount={3} />, ['/productos']);
 
-    render(
-      <Navbar
-        links={[{ view: 'catalogue', label: 'Catálogo' }]}
-        currentView="catalogue"
-        cartView="cart"
-        cartItemCount={3}
-        onChangeView={onChangeView}
-      />,
-    );
+    const cartLink = getInteractive('Carrito, 3 productos');
+    expect(cartLink.textContent).toContain('3');
+    expect(getInteractive('Catálogo').getAttribute('aria-current')).toBe('page');
 
-    const cartButton = getButton('Carrito, 3 productos');
-    expect(cartButton.textContent).toContain('3');
-    expect(getButton('Catálogo').getAttribute('aria-current')).toBe('page');
-
-    click(cartButton);
-    expect(onChangeView).toHaveBeenCalledWith('cart');
+    click(cartLink);
+    expect(container.querySelector('[data-testid="current-path"]').textContent).toBe('/carrito');
   });
 });
 
-describe('Cart', () => {
+describe('Cart con identificadores _id y campos en español', () => {
   const cart = [
     { product: sofa, quantity: 2 },
     { product: mesa, quantity: 1 },
@@ -81,36 +106,89 @@ describe('Cart', () => {
     expect(getCartTotal([])).toBe(0);
   });
 
-  it('muestra el total y delega incrementar, decrementar y eliminar en App', () => {
+  it('muestra el total y delega incrementar, decrementar y eliminar con _id', () => {
     const handlers = {
       onIncreaseQuantity: jest.fn(),
       onDecreaseQuantity: jest.fn(),
       onRemoveFromCart: jest.fn(),
-      onContinueShopping: jest.fn(),
     };
 
-    render(<Cart cart={cart} {...handlers} />);
+    render(<Cart cart={cart} {...handlers} />, ['/carrito']);
 
     expect(container.querySelectorAll('.cart-item')).toHaveLength(2);
     expect(container.querySelector('.cart__total').textContent).toMatch(/5\.505\.000/);
 
-    click(getButton('Agregar una unidad de Sofá Patagonia'));
-    click(getButton('Quitar una unidad de Mesa de Noche Aconcagua'));
+    click(getInteractive('Agregar una unidad de Sofá Patagonia'));
+    click(getInteractive('Quitar una unidad de Mesa de Noche Aconcagua'));
     click(container.querySelectorAll('.cart-item__remove')[0]);
 
-    expect(handlers.onIncreaseQuantity).toHaveBeenCalledWith('sofa-patagonia');
-    expect(handlers.onDecreaseQuantity).toHaveBeenCalledWith('mesa-aconcagua');
-    expect(handlers.onRemoveFromCart).toHaveBeenCalledWith('sofa-patagonia');
+    expect(handlers.onIncreaseQuantity).toHaveBeenCalledWith(sofa._id);
+    expect(handlers.onDecreaseQuantity).toHaveBeenCalledWith(mesa._id);
+    expect(handlers.onRemoveFromCart).toHaveBeenCalledWith(sofa._id);
   });
 
-  it('ofrece volver al catálogo cuando está vacío', () => {
-    const onContinueShopping = jest.fn();
-
-    render(<Cart cart={[]} onContinueShopping={onContinueShopping} />);
+  it('ofrece enlace al catálogo cuando el carrito está vacío', () => {
+    render(<Cart cart={[]} />, ['/carrito']);
 
     expect(container.textContent).toContain('Todavía no agregaste piezas');
-    click(getButton('Ver el catálogo'));
-    expect(onContinueShopping).toHaveBeenCalled();
+    click(getInteractive('Ver el catálogo'));
+    expect(container.querySelector('[data-testid="current-path"]').textContent).toBe('/productos');
+  });
+
+  it('readStoredCart conserva ítems con _id y descarta formato antiguo o inválido', () => {
+    localStorage.setItem(
+      'hermanos-jota-cart',
+      JSON.stringify([
+        { product: sofa, quantity: 2 },
+        { product: { id: 'viejo-id', price: 1000 }, quantity: 1 },
+      ]),
+    );
+
+    expect(readStoredCart()).toEqual([{ product: sofa, quantity: 2 }]);
+  });
+});
+
+describe('Ruteo en App', () => {
+  it('navega entre Inicio (/), Catálogo (/productos) y Detalle (/productos/:id)', async () => {
+    global.fetch = jest.fn((url) => {
+      if (url.endsWith(`/productos/${sofa._id}`)) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(sofa),
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve([sofa, mesa]),
+      });
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/']} future={ROUTER_FUTURE}>
+          <LocationProbe />
+          <App />
+        </MemoryRouter>,
+      );
+    });
+
+    expect(container.textContent).toContain('Muebles de madera maciza hechos para perdurar');
+
+    await act(async () => {
+      click(getInteractive('Explorar catálogo'));
+    });
+
+    expect(container.querySelector('[data-testid="current-path"]').textContent).toBe('/productos');
+    expect(container.textContent).toContain('Sofá Patagonia');
+
+    await act(async () => {
+      click(getInteractive('Sofá Patagonia'));
+    });
+
+    expect(container.querySelector('[data-testid="current-path"]').textContent).toBe(
+      `/productos/${sofa._id}`,
+    );
+    expect(container.textContent).toContain('Sofá de tres cuerpos en madera maciza');
   });
 });
 
@@ -127,9 +205,9 @@ describe('ContactForm', () => {
   });
 
   it('no envía un formulario inválido y muestra los errores', () => {
-    render(<ContactForm />);
+    render(<ContactForm />, ['/contacto']);
 
-    click(getButton('Enviar consulta'));
+    click(getInteractive('Enviar consulta'));
 
     expect(container.querySelectorAll('.contact__error')).toHaveLength(3);
     expect(container.querySelector('#contact-email').getAttribute('aria-invalid')).toBe('true');
@@ -137,16 +215,16 @@ describe('ContactForm', () => {
   });
 
   it('muestra la confirmación al enviar datos válidos', () => {
-    render(<ContactForm />);
+    render(<ContactForm />, ['/contacto']);
 
     type(container.querySelector('#contact-name'), 'Ana');
     type(container.querySelector('#contact-email'), 'ana@correo.com');
     type(container.querySelector('#contact-message'), 'Quiero un sofá a medida.');
-    click(getButton('Enviar consulta'));
+    click(getInteractive('Enviar consulta'));
 
     expect(container.querySelector('[role="status"]').textContent).toContain('¡Gracias, Ana!');
 
-    click(getButton('Enviar otra consulta'));
+    click(getInteractive('Enviar otra consulta'));
     expect(container.querySelector('#contact-name').value).toBe('');
   });
 });
