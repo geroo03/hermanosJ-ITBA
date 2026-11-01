@@ -58,6 +58,19 @@ describe('Home', () => {
   });
 });
 
+describe('Estados de carga de Home', () => {
+  it('avisa mientras carga y permite reintentar si la API falla', () => {
+    const onRetry = jest.fn();
+    render(<Home loading />);
+    expect(container.querySelector('[role="status"]').textContent).toContain('Cargando piezas');
+
+    render(<Home error="No pudimos cargar el catálogo." onRetry={onRetry} />);
+    expect(container.querySelector('[role="alert"]').textContent).toContain('No pudimos cargar');
+    click(container.querySelector('[role="alert"] button'));
+    expect(onRetry).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('InstagramPost', () => {
   it('alterna me gusta y guardado', () => {
     render(<Home />);

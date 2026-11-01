@@ -1,0 +1,435 @@
+/*
+ * Capa visual "vidrio sobre madera". Se importa al final para ajustar los estilos
+ * de cada componente sin cambiar su estructura.
+ */
+:root {
+  --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --sans: Inter, 'Segoe UI', Arial, sans-serif;
+  --nav-height: 5.5rem;
+  --radius-panel: 1.5rem;
+  --glass-fill: rgba(255, 253, 249, 0.58);
+  --glass-fill-strong: rgba(255, 253, 249, 0.76);
+  --glass-edge: rgba(255, 255, 255, 0.72);
+  --glass-blur: blur(22px) saturate(165%);
+  --glass-depth:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(113, 53, 31, 0.08),
+    0 18px 40px -22px rgba(52, 37, 31, 0.45);
+}
+
+html {
+  background: #e8d6c0;
+}
+
+body {
+  background: transparent;
+}
+
+/* Fondo fijo: la foto del taller, desenfocada, le da al vidrio algo que refractar */
+body::before {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  inset: -4rem;
+  background:
+    linear-gradient(rgba(245, 230, 211, 0.74), rgba(245, 230, 211, 0.82)),
+    var(--taller-photo) center / cover no-repeat;
+  filter: blur(26px) saturate(135%);
+}
+
+/* ---------- Superficies de vidrio ---------- */
+.navbar__inner,
+.product-card,
+.home-pillar,
+.home-workshop,
+.ig-post,
+.cart-item,
+.cart__summary,
+.product-form,
+.contact,
+.contact-aside,
+.product-detail__layout,
+.app-message--error,
+.product-feedback {
+  border: 1px solid var(--glass-edge);
+  background: var(--glass-fill);
+  box-shadow: var(--glass-depth);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.product-card,
+.home-pillar,
+.home-workshop,
+.ig-post,
+.cart-item,
+.cart__summary,
+.product-form,
+.contact,
+.contact-aside,
+.product-detail__layout,
+.app-message--error,
+.product-feedback {
+  border-radius: var(--radius-panel);
+}
+
+/* ---------- Navegación flotante ---------- */
+.navbar {
+  top: 0.75rem;
+  z-index: 20;
+  height: var(--nav-height);
+  padding-top: 0.75rem;
+  border-bottom: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+.navbar__inner {
+  flex-wrap: nowrap;
+  width: min(74rem, calc(100% - 1.5rem));
+  padding: 0.5rem 0.65rem 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--glass-fill-strong);
+  pointer-events: auto;
+}
+
+.navbar__brand {
+  flex-shrink: 0;
+}
+
+.navbar__brand-tagline {
+  color: var(--ink);
+}
+
+.navbar__links {
+  flex-wrap: nowrap;
+}
+
+.navbar__link {
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.navbar__link:hover {
+  background: rgba(160, 82, 45, 0.12);
+}
+
+.navbar__link[aria-current='page'] {
+  background: var(--siena-dark);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  color: var(--surface);
+}
+
+.navbar__link[aria-current='page'] .navbar__cart-count {
+  background: var(--surface);
+  color: var(--siena-dark);
+}
+
+.navbar__cart-count {
+  animation: cart-count-bump 0.35s ease-out;
+}
+
+@keyframes cart-count-bump {
+  45% { transform: scale(1.35); }
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  border-radius: 999px;
+  padding: 0.65rem 1.25rem;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  border-color: var(--siena-dark);
+  background: linear-gradient(180deg, #ad5c35 0%, var(--siena-dark) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 8px 16px -10px rgba(113, 53, 31, 0.9);
+}
+
+.btn--secondary {
+  border-color: rgba(113, 53, 31, 0.45);
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--siena-dark);
+}
+
+.btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* ---------- Portada: el panel de vidrio es el elemento protagonista ---------- */
+.home-hero {
+  margin-top: calc(var(--nav-height) * -1);
+  padding: calc(var(--nav-height) + 2.5rem) 0 3.5rem;
+  min-height: min(92vh, 52rem);
+}
+
+.home-hero__scrim {
+  background: linear-gradient(100deg, rgba(31, 20, 14, 0.62), rgba(31, 20, 14, 0.2));
+}
+
+.home-hero__inner {
+  width: min(74rem, calc(100% - 1.5rem));
+}
+
+.home-hero__glass {
+  width: min(46rem, 100%);
+  padding: clamp(1.35rem, 3.5vw, 2.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 2rem;
+  background: rgba(31, 20, 14, 0.44);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 1px 0 0 rgba(255, 255, 255, 0.1),
+    0 30px 70px -30px rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+
+.home-hero__title {
+  max-width: none;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.home-hero__secondary {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--surface);
+}
+
+.home-hero__secondary:hover {
+  border-color: var(--surface);
+  background: var(--surface);
+  color: var(--siena-dark);
+}
+
+.home-hero__cta {
+  background: linear-gradient(180deg, #e5b955 0%, var(--gold) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Secciones de inicio ---------- */
+.home-tag {
+  color: var(--siena-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.home-workshop__image {
+  background: var(--alabaster);
+  object-fit: contain;
+}
+
+.home-workshop {
+  width: min(70rem, calc(100% - 3rem));
+}
+
+.instagram-section {
+  border-top: 0;
+  background: transparent;
+}
+
+.ig-meta {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---------- Catálogo y detalle ---------- */
+.catalogo-search input {
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  padding-inline: 1.25rem;
+  background: var(--glass-fill-strong);
+  box-shadow: inset 0 1px 3px rgba(52, 37, 31, 0.14);
+}
+
+/* Muestra el mueble completo: con cover se cortaban patas y estantes */
+.product-card__image,
+.product-detail__image {
+  object-fit: contain;
+}
+
+.product-card .product-card__actions {
+  flex-direction: column;
+  margin-top: 0.35rem;
+}
+
+.product-card .product-card__actions .btn {
+  width: 100%;
+  text-align: center;
+}
+
+.product-detail__layout {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.product-detail__image,
+.product-detail__placeholder {
+  border-radius: 1rem;
+}
+
+/* ---------- Carrito, formularios y contacto ---------- */
+.cart-item__image {
+  border-radius: 0.75rem;
+  object-fit: contain;
+}
+
+.cart-item__quantity {
+  border-color: rgba(113, 53, 31, 0.3);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.cart-item__remove {
+  color: var(--siena-dark);
+}
+
+.product-form__field input,
+.product-form__field textarea,
+.contact__field input,
+.contact__field textarea {
+  border-color: rgba(92, 70, 60, 0.5);
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.contact-page {
+  display: grid;
+  align-items: start;
+  gap: 1.5rem;
+}
+
+@media (min-width: 56rem) {
+  .contact-page {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+}
+
+.contact {
+  max-width: none;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.contact-aside {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  line-height: 1.6;
+}
+
+.contact-aside h2 {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
+}
+
+.contact-aside h3 {
+  margin: 1.25rem 0 0.25rem;
+  font-size: 1rem;
+}
+
+.contact-aside p {
+  margin: 0;
+}
+
+.contact-aside a {
+  color: var(--siena-dark);
+}
+
+.app-message--loading {
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+/* ---------- Pie ---------- */
+.footer {
+  background: linear-gradient(180deg, var(--siena-dark) 0%, #4f2415 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* ---------- Teléfono ---------- */
+@media (max-width: 48rem) {
+  :root {
+    --nav-height: 7.75rem;
+  }
+
+  .navbar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.35rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 1.5rem;
+  }
+
+  .navbar__logo {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .navbar__brand-name {
+    font-size: 1.15rem;
+  }
+
+  .navbar__brand-tagline {
+    display: none;
+  }
+
+  /* Una sola línea desplazable para que la barra fija no tape media pantalla */
+  .navbar__links {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .navbar__link {
+    padding: 0.4rem 0.55rem;
+    font-size: 0.86rem;
+  }
+
+  /* El carrito sube junto a la marca: siempre visible, sin desplazar la lista */
+  .navbar__links li:last-child {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.65rem;
+  }
+
+  .home-hero__title {
+    font-size: clamp(1.75rem, 8.4vw, 2.4rem);
+  }
+
+  .home-hero__scrim {
+    background: rgba(31, 20, 14, 0.5);
+  }
+
+  .home-hero__actions .btn {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+}
+
+/* ---------- Preferencias y compatibilidad ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-fill: #fffdf9;
+    --glass-fill-strong: #fffdf9;
+  }
+
+  .home-hero__glass {
+    background: #2a1b13;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-fill: #fffdf9;
+    --glass-fill-strong: #fffdf9;
+  }
+
+  .home-hero__glass {
+    background: rgba(31, 20, 14, 0.86);
+  }
+}

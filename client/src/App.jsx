@@ -11,6 +11,7 @@ import ProductDetail from './components/ProductDetail';
 import CrearProducto from './pages/CrearProducto';
 import EditarProducto from './pages/EditarProducto';
 import './styles/app.css';
+import './styles/glass.css';
 
 const CART_STORAGE_KEY = 'hermanos-jota-cart';
 
@@ -179,6 +180,8 @@ function App() {
               <Home
                 products={products}
                 loading={loading}
+                error={error}
+                onRetry={() => loadProducts()}
                 onAddToCart={addToCart}
               />
             }
@@ -215,8 +218,19 @@ function App() {
           <Route
             path="/contacto"
             element={
-              <div className="app-content">
+              <div className="app-content contact-page">
                 <ContactForm />
+                <aside className="contact-aside" aria-labelledby="contact-aside-title">
+                  <h2 id="contact-aside-title">Casa Taller y showroom</h2>
+                  <p>Av. San Juan 2847 (C1232AAB)<br />San Cristóbal, CABA</p>
+                  <h3>Horarios</h3>
+                  <p>Lunes a viernes: 10:00 a 19:00 hs<br />Sábados: 10:00 a 14:00 hs</p>
+                  <h3>Canales</h3>
+                  <p>
+                    <a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a><br />
+                    <a href="https://wa.me/541145678900" target="_blank" rel="noopener noreferrer">WhatsApp +54 11 4567-8900</a>
+                  </p>
+                </aside>
               </div>
             }
           />

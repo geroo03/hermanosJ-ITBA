@@ -9,8 +9,8 @@ const HERO_STATS = [
   { value: '0%', label: 'Plásticos de un solo uso' },
 ];
 
-function Home({ products = [], loading = false, onAddToCart }) {
-  const featuredProducts = products.slice(0, 3);
+function Home({ products = [], loading = false, error = null, onRetry, onAddToCart }) {
+  const featuredProducts = products.slice(0, 4);
 
   return (
     <div className="home">
@@ -32,29 +32,31 @@ function Home({ products = [], loading = false, onAddToCart }) {
         </div>
 
         <div className="home-hero__inner">
-          <p className="home-hero__label">Herencia &amp; Innovación</p>
-          <h1 id="home-hero-title" className="home-hero__title">
-            El redescubrimiento de un arte <span>olvidado</span>
-          </h1>
-          <p className="home-hero__lede">
-            Donde la calidez del optimismo de los años 60 se encuentra con la conciencia de la sustentabilidad del 2026. Cada pieza cuenta la historia de manos expertas y materiales nobles.
-          </p>
-          <div className="home-hero__actions">
-            <Link to="/productos" className="btn btn--primary home-hero__cta">
-              Explorar catálogo
-            </Link>
-            <Link to="/contacto" className="btn btn--secondary home-hero__secondary">
-              Visitar Casa Taller
-            </Link>
+          <div className="home-hero__glass">
+            <p className="home-hero__label">Herencia &amp; Innovación</p>
+            <h1 id="home-hero-title" className="home-hero__title">
+              El redescubrimiento de un arte <span>olvidado</span>
+            </h1>
+            <p className="home-hero__lede">
+              Donde la calidez del optimismo de los años 60 se encuentra con la conciencia de la sustentabilidad del 2026. Cada pieza cuenta la historia de manos expertas y materiales nobles.
+            </p>
+            <div className="home-hero__actions">
+              <Link to="/productos" className="btn btn--primary home-hero__cta">
+                Explorar catálogo
+              </Link>
+              <Link to="/contacto" className="btn btn--secondary home-hero__secondary">
+                Visitar Casa Taller
+              </Link>
+            </div>
+            <dl className="home-hero__stats">
+              {HERO_STATS.map(({ value, label }) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <dl className="home-hero__stats">
-            {HERO_STATS.map(({ value, label }) => (
-              <div key={label}>
-                <dt>{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
@@ -83,7 +85,22 @@ function Home({ products = [], loading = false, onAddToCart }) {
         </div>
       </section>
 
-      {!loading && featuredProducts.length > 0 && (
+      {loading && (
+        <p className="app-message app-message--loading" role="status">
+          Cargando piezas del catálogo… La primera visita puede tardar hasta un minuto.
+        </p>
+      )}
+
+      {!loading && error && (
+        <section className="app-message app-message--error" role="alert">
+          <p>{error}</p>
+          <button type="button" className="btn btn--secondary" onClick={onRetry}>
+            Reintentar
+          </button>
+        </section>
+      )}
+
+      {!loading && !error && featuredProducts.length > 0 && (
         <section className="app-content home-featured" aria-labelledby="home-featured-title">
           <div className="section-heading">
             <h2 id="home-featured-title" className="section-heading__title">

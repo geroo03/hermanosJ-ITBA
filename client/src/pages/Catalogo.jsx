@@ -31,7 +31,7 @@ function Catalogo({ products, loading, error, onRetry, onAddToCart }) {
         </Link>
       </div>
 
-      {loading && <p className="app-message">Cargando catálogo…</p>}
+      {loading && <p className="app-message app-message--loading" role="status">Cargando catálogo… La primera visita puede tardar hasta un minuto.</p>}
 
       {!loading && error && (
         <section className="app-message app-message--error" role="alert">

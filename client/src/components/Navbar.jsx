@@ -39,7 +39,7 @@ function Navbar({ links = DEFAULT_LINKS, cartItemCount = 0 }) {
                 aria-label={`Carrito, ${cartLabel}`}
               >
                 Carrito
-                <span className="navbar__cart-count" aria-hidden="true">
+                <span key={cartItemCount} className="navbar__cart-count" aria-hidden="true">
                   {cartItemCount}
                 </span>
               </NavLink>

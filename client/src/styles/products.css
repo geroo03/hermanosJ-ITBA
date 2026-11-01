@@ -58,15 +58,6 @@
   padding: 1rem;
 }
 
-.product-card__category {
-  margin: 0;
-  color: var(--sage);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .product-card__name {
   margin: 0;
   font-family: var(--serif);

@@ -77,7 +77,9 @@ function ProductDetailContent({ id, onAddToCart, onProductDeleted }) {
           <h1 id="product-title" className="product-detail__name">{product.nombre}</h1>
           <p className="product-detail__price">{formatPrice(product.precio)}</p>
           <p className="product-detail__stock">
-            {typeof product.stock === 'number' ? `Stock disponible: ${product.stock}` : 'Stock no informado'}
+            {typeof product.stock !== 'number'
+              ? 'Stock no informado'
+              : product.stock > 0 ? `Stock disponible: ${product.stock}` : 'Disponible a pedido'}
           </p>
           <p className="product-detail__description">{product.descripcion || 'Sin descripción disponible.'}</p>
           <button type="button" className="btn btn--primary" disabled={deleting} onClick={() => {
