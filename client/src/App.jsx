@@ -56,6 +56,11 @@ function App() {
     }
   }, [cart]);
 
+  // Cada pantalla nueva arranca desde arriba, no en el scroll de la anterior.
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+  }, [location.pathname]);
+
   const loadProducts = useCallback(async (isActive = () => true) => {
     setLoading(true);
     setError('');

@@ -231,6 +231,24 @@ describe('API despertando', () => {
   });
 });
 
+describe('Navegación', () => {
+  it('vuelve arriba de la página al cambiar de pantalla', async () => {
+    const originalFetch = global.fetch;
+    global.fetch = jest.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve(products) });
+
+    await act(async () => {
+      root.render(<MemoryRouter initialEntries={['/productos']} future={ROUTER_FUTURE}><App /></MemoryRouter>);
+    });
+    document.documentElement.scrollTop = 500;
+    await act(async () => {
+      click(container.querySelector('a[href="/carrito"]'));
+    });
+    expect(document.documentElement.scrollTop).toBe(0);
+
+    global.fetch = originalFetch;
+  });
+});
+
 describe('Finalizar compra', () => {
   it('vacía el carrito y confirma el total aclarando que no hubo cobro', () => {
     const stored = [{ product: { ...products[0], imagenUrl: '' }, quantity: 2 }];
@@ -249,6 +267,6 @@ describe('Finalizar compra', () => {
     expect(container.querySelector('h1').textContent).toBe('¡Gracias por tu compra!');
     expect(container.textContent).toContain('$');
     expect(container.textContent).toContain('200');
-    expect(container.textContent).toContain('no se realizó ningún cobro');
+    expect(container.textContent).toContain('no se guardó ningún pedido ni se realizó ningún cobro');
   });
 });
