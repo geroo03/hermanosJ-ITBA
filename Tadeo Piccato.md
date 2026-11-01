@@ -1,5 +1,11 @@
 # Resumen de Entrega — Tadeo Piccato
 
+## Sprint 5-6 — Tarea 4
+
+El registro completo del detalle de producto y los formularios de alta/edición, con archivos modificados, decisiones y verificaciones del 1 de noviembre de 2026, está en [Tade Piccato.md](<Tade Piccato.md>).
+
+---
+
 ## Sprint 3-4 — API de productos
 
 **Responsable:** Tadeo Piccato (@Flowveep).  

@@ -96,13 +96,14 @@
 /* ---------- Detalle ---------- */
 .product-detail__layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   gap: 2rem;
   margin-top: 1.5rem;
 }
 
 .product-detail__image {
   width: 100%;
+  aspect-ratio: 4 / 3;
   border-radius: 0.5rem;
   object-fit: cover;
   background: var(--alabaster);
@@ -113,6 +114,8 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 0.75rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .product-detail__name {
@@ -131,4 +134,79 @@
 .product-detail__description {
   margin: 0;
   line-height: 1.7;
+  white-space: pre-line;
+}
+
+.product-detail__placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--alabaster);
+  color: var(--ink-muted);
+}
+
+.product-detail__stock,
+.product-detail__notice {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+.product-detail__management {
+  width: 100%;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1rem;
+}
+
+.product-detail__management h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.product-detail__error {
+  color: var(--error-ink);
+  line-height: 1.5;
+}
+
+.product-feedback {
+  border-left: 4px solid var(--sage);
+  border-radius: 0.35rem;
+  padding: 1rem 1.25rem;
+  background: var(--alabaster);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.btn--danger {
+  border-color: var(--error-ink);
+  background: var(--surface);
+  color: var(--error-ink);
+}
+
+.btn--danger:hover {
+  background: var(--error-ink);
+  color: var(--surface);
+}
+
+.product-detail .btn,
+.product-form .btn {
+  min-height: 2.75rem;
+}
+
+.product-detail :focus-visible,
+.product-form :focus-visible {
+  outline: 3px solid var(--siena-dark);
+  outline-offset: 3px;
+}
+
+.product-detail button:disabled,
+.product-form button:disabled,
+.product-form fieldset:disabled,
+.product-detail [aria-disabled='true'],
+.product-form [aria-disabled='true'] {
+  opacity: 0.65;
+  cursor: wait;
 }

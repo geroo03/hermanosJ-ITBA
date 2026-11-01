@@ -1,0 +1,96 @@
+.admin-page {
+  max-width: 44rem;
+}
+
+.product-form {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  background: var(--surface);
+}
+
+.product-form fieldset {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.product-form__legend {
+  margin-bottom: 1rem;
+  padding: 0;
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.product-form__field {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.product-form__field label {
+  font-weight: 600;
+}
+
+.product-form__field input,
+.product-form__field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid var(--ink-muted);
+  border-radius: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.product-form__field textarea {
+  resize: vertical;
+}
+
+.product-form__field [aria-invalid='true'] {
+  border: 2px solid var(--error-ink);
+}
+
+.product-form__numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 1.25rem;
+}
+
+.product-form__hint,
+.product-form__error {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.product-form__hint {
+  color: var(--ink-muted);
+}
+
+.product-form__error {
+  color: var(--error-ink);
+}
+
+.product-form__api-error {
+  border-left: 4px solid var(--error-ink);
+  padding: 0.75rem;
+  background: var(--alabaster);
+}
+
+.product-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}

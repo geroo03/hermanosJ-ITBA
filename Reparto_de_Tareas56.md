@@ -181,7 +181,9 @@ Se completó `services/productsApi.js` con las cinco operaciones CRUD (`getProdu
 
 ---
 
-## Tarea 4. Responsable: _(escribir nombre y @usuario)_ — Detalle de producto y formularios de alta/edición
+## Tarea 4. Responsable: **Tadeo Piccato (@Flowveep)** — Detalle de producto y formularios de alta/edición
+
+**Estado: completada**
 
 **Archivos:** `client/src/components/ProductDetail.jsx`, `client/src/components/ProductForm.jsx`, `client/src/pages/CrearProducto.jsx`, `client/src/pages/EditarProducto.jsx`, `client/src/styles/products.css`, `client/src/styles/admin.css`.
 
@@ -196,6 +198,14 @@ Se completó `services/productsApi.js` con las cinco operaciones CRUD (`getProdu
 - Aplicar los estilos con la paleta de marca en `products.css` y `admin.css`.
 
 **Al terminar:** desde el navegador se puede crear, editar y eliminar un producto y ver el cambio reflejado en MongoDB. Esta tarea usa las funciones de `productsApi.js` de la Tarea 3 y las rutas montadas en `App.jsx`: conviene coordinar los nombres de las funciones al comienzo.
+
+### Resumen de la tarea
+
+Se reemplazaron las pantallas provisorias de `App.jsx` por el detalle de producto y las páginas de alta y edición. `ProductDetail.jsx` obtiene el producto por el identificador de la URL, muestra sus datos, permite agregarlo al carrito y ofrece edición y eliminación con confirmación. Incluye carga, reintento, errores de la API, producto inexistente y respaldo para imágenes ausentes o que no cargan.
+
+Se creó `ProductForm.jsx`, reutilizable y controlado, con los cinco campos del contrato, validación de nombre y precio obligatorios y de números finitos no negativos, mensajes asociados a cada campo y bloqueo de envíos duplicados. `CrearProducto.jsx` usa `createProduct` y vuelve al catálogo; `EditarProducto.jsx` precarga los datos, usa `updateProduct` y vuelve al detalle. Las tres operaciones muestran confirmaciones de éxito o errores, y las respuestas tardías no cambian la pantalla si el usuario ya salió.
+
+Se agregó `hooks/useProduct.js` para compartir la carga y descartar respuestas obsoletas. Se aplicaron los estilos de marca en `products.css` y `admin.css`, y se sincronizan los datos del carrito al editar o eliminar productos. Se agregaron 23 pruebas en `productManagement.test.jsx`: el cliente completo pasa **42/42**, el backend existente **17/17** y la compilación de producción finaliza correctamente. Se revisaron alta, edición, detalle y cancelación del borrado en Chrome contra el router y los controladores reales con persistencia simulada. La escritura en MongoDB Atlas queda por verificar en un entorno con `MONGODB_URI`, ya que este checkout no tiene credenciales. El detalle de archivos, decisiones, comandos y alcance de la verificación está en `Tade Piccato.md`.
 
 ---
 

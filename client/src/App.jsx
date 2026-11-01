@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
-import { getProductById, getProducts } from './services/productsApi';
-import { formatPrice, getImageUrl } from './utils/productHelpers';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { getProducts } from './services/productsApi';
 import Navbar from './components/Navbar';
 import Cart from './components/Cart';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
+import ProductDetail from './components/ProductDetail';
+import CrearProducto from './pages/CrearProducto';
+import EditarProducto from './pages/EditarProducto';
 import './styles/app.css';
 
 const CART_STORAGE_KEY = 'hermanos-jota-cart';
@@ -148,11 +150,28 @@ function App() {
     );
   }
 
+  function handleProductUpdated(product) {
+    setProducts((current) => current.map((item) => item._id === product._id ? product : item));
+    setCart((current) => current.map((item) =>
+      item.product._id === product._id ? { ...item, product } : item,
+    ));
+  }
+
+  function handleProductDeleted(productId) {
+    setProducts((current) => current.filter((item) => item._id !== productId));
+    removeFromCart(productId);
+  }
+
   return (
     <div className="app-shell">
       <Navbar cartItemCount={cartItemCount} />
 
       <main className="app-main">
+        {location.state?.success && (
+          <p className="app-content product-feedback" role="status">
+            {location.state.success}
+          </p>
+        )}
         <Routes>
           <Route
             path="/"
@@ -178,21 +197,19 @@ function App() {
             }
           />
 
-          {/* Punto de integración Tarea 4: reemplazar estos tres elementos provisorios
-              por ProductDetail, CrearProducto y EditarProducto cuando estén listos. */}
           <Route
             path="/productos/:id"
-            element={<ProvisionalProductDetail onAddToCart={addToCart} />}
+            element={<ProductDetail onAddToCart={addToCart} onProductDeleted={handleProductDeleted} />}
           />
 
           <Route
             path="/admin/crear-producto"
-            element={<ProvisionalCreateProduct />}
+            element={<CrearProducto />}
           />
 
           <Route
             path="/admin/editar-producto/:id"
-            element={<ProvisionalEditProduct />}
+            element={<EditarProducto onProductUpdated={handleProductUpdated} />}
           />
 
           <Route
@@ -224,131 +241,6 @@ function App() {
 
       <Footer />
     </div>
-  );
-}
-
-function ProvisionalProductDetail({ onAddToCart }) {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    setError('');
-
-    getProductById(id)
-      .then((data) => {
-        if (isMounted) {
-          setProduct(data);
-        }
-      })
-      .catch((requestError) => {
-        if (isMounted) {
-          setError(requestError.message);
-        }
-      })
-      .finally(() => {
-        if (isMounted) {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
-
-  if (loading) {
-    return <p className="app-message">Cargando producto…</p>;
-  }
-
-  if (error || !product) {
-    return (
-      <section className="app-message app-message--error" role="alert">
-        <p>{error || 'Producto no encontrado.'}</p>
-        <Link to="/productos" className="btn btn--secondary">
-          Volver al catálogo
-        </Link>
-      </section>
-    );
-  }
-
-  const imageSrc = getImageUrl(product.imagenUrl);
-
-  return (
-    <article className="app-content provisional-detail">
-      <Link to="/productos" className="btn btn--secondary">
-        Volver al catálogo
-      </Link>
-
-      <div className="product-detail__layout">
-        {imageSrc ? (
-          <img
-            className="product-detail__image"
-            src={imageSrc}
-            alt={product.nombre}
-          />
-        ) : (
-          <div className="product-detail__image product-card__image--placeholder" aria-hidden="true" />
-        )}
-
-        <div className="product-detail__info">
-          <h1 className="product-detail__name">{product.nombre}</h1>
-          <p className="product-detail__price">{formatPrice(product.precio)}</p>
-          {typeof product.stock === 'number' && (
-            <p className="provisional-detail__stock">Stock disponible: {product.stock}</p>
-          )}
-          {product.descripcion && (
-            <p className="product-detail__description">{product.descripcion}</p>
-          )}
-
-          <div className="product-card__actions">
-            <button
-              type="button"
-              className="btn btn--primary"
-              onClick={() => onAddToCart(product)}
-            >
-              Agregar al carrito
-            </button>
-            <Link to={`/admin/editar-producto/${product._id}`} className="btn btn--secondary">
-              Editar
-            </Link>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function ProvisionalCreateProduct() {
-  return (
-    <section className="app-content provisional-panel" aria-labelledby="crear-title">
-      <h1 id="crear-title" className="section-heading__title">Alta de producto</h1>
-      <p>
-        Ruta montada en <code>/admin/crear-producto</code>. El formulario controlado corresponde a la Tarea 4.
-      </p>
-      <Link to="/productos" className="btn btn--secondary">
-        Volver al catálogo
-      </Link>
-    </section>
-  );
-}
-
-function ProvisionalEditProduct() {
-  const { id } = useParams();
-
-  return (
-    <section className="app-content provisional-panel" aria-labelledby="editar-title">
-      <h1 id="editar-title" className="section-heading__title">Edición de producto</h1>
-      <p>
-        Ruta montada para el identificador <code>{id}</code>. El formulario precargado corresponde a la Tarea 4.
-      </p>
-      <Link to={`/productos/${id}`} className="btn btn--secondary">
-        Volver al detalle
-      </Link>
-    </section>
   );
 }
 
