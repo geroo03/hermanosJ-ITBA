@@ -1,7 +1,5 @@
 # Reparto de tareas — Sprints 5 y 6
 
-> **Antes de la entrega final:** quien realice cada una de las tareas 1 a 5 debe completar la línea **Responsable** de su tarea con su nombre y usuario de GitHub, usando el formato `Nombre Apellido (@usuario)`. Por ejemplo: `Nombre Apellido (@usuario) — Modelo y conexión a MongoDB`. Así el resto del equipo sabe quién hizo cada parte. También se marca el **Estado** como `completada` y se agrega una breve descripción de lo que se hizo. Este bloque de instrucciones se elimina en el último commit; el resto del documento se conserva como registro del aporte de cada integrante.
-
 Este archivo sirve para coordinar el trabajo y para dejar documentada la responsabilidad de cada integrante. Hay **5 tareas, una por integrante**. Cada tarea tiene archivos propios para que puedan hacerse en paralelo. Ninguna tarea está asignada de antemano: cada persona elige una libre y escribe su nombre en ella.
 
 Este trabajo continúa el repositorio del Sprint 3-4: la API de Express (`backend/`) y la aplicación de React (`client/`) ya existen, con el catálogo cargado en un archivo local. En estos sprints se las conecta a una base de datos real y se agregan rutas y formularios. La identidad de marca (paleta, tipografías, imágenes) y el carrito se conservan.
@@ -93,7 +91,7 @@ Para que las cinco tareas encajen sin pisarse, todo el equipo respeta estos acue
 
 ---
 
-## Tarea 1. Responsable: **Nicolás Benitez** — }@Nico-5525 — Base de datos, modelo y variables de entorno
+## Tarea 1. Responsable: **Nicolás Benitez** (@Nico-5525) — Base de datos, modelo y variables de entorno
 
 **Estado: Terminada**
 
@@ -211,7 +209,13 @@ Se agregó `hooks/useProduct.js` para compartir la carga y descartar respuestas 
 
 ## Tarea 5. Responsable: **Sebastián Gerónimo Peralta** (@geroo03) — Despliegue, CORS, README y revisión final
 
-**Estado: en curso** (código listo; faltan los despliegues y la revisión final)
+**Estado: completada**
+
+### Resumen de la tarea
+
+Se publicó el backend en Render (https://hermanos-jota-api-a94j.onrender.com/api/productos) y el frontend en Vercel (https://hermanos-j-itba.vercel.app). Se limitó CORS al origen de `CLIENT_URL` y a `localhost`, se agregó `client/vercel.json` para que recargar una ruta no dé 404 y se copiaron las imágenes del catálogo a `client/public/assets/images`, porque ningún servicio las publicaba. También se separaron los puertos locales (API 3000, cliente 3001) y se reescribió el `README.md`.
+
+Se recorrió la aplicación publicada con el checklist de entrega: catálogo, detalle, recarga de rutas, carrito, contacto, errores de `_id` y alta, edición y borrado contra MongoDB Atlas con un producto temporal, que se eliminó al terminar. El catálogo conserva sus 11 productos.
 
 **Archivos:** `backend/src/app.js` (configuración de CORS), `README.md`, `client/vercel.json` o `client/public/_redirects`, `backend/.env.example` y `client/.env.example` (revisión), configuración de Render y de Vercel/Netlify.
 
@@ -232,13 +236,13 @@ Se agregó `hooks/useProduct.js` para compartir la carga y descartar respuestas 
 
 Cuando las cinco tareas estén integradas, el equipo verifica en la aplicación **desplegada**:
 
-- [ ] El catálogo en `/productos` muestra los productos que están en MongoDB.
-- [ ] `/productos/:id` muestra el detalle correcto, y recargar la página en esa URL no da error.
-- [ ] Crear un producto desde `/admin/crear-producto` lo guarda en la base y lo muestra en el catálogo.
-- [ ] Editar un producto actualiza sus datos en la base.
-- [ ] Eliminar un producto lo borra de la base y lleva de vuelta al catálogo.
-- [ ] Un `_id` inexistente o mal formado muestra un mensaje de error claro, no una pantalla en blanco.
-- [ ] El carrito y el formulario de contacto siguen funcionando.
-- [ ] No hay archivos `.env` ni credenciales en el repositorio.
-- [ ] El README incluye los enlaces de ambos despliegues y las variables de entorno.
-- [ ] Cada integrante escribió su nombre y usuario en su tarea de este archivo.
+- [x] El catálogo en `/productos` muestra los productos que están en MongoDB.
+- [x] `/productos/:id` muestra el detalle correcto, y recargar la página en esa URL no da error.
+- [x] Crear un producto desde `/admin/crear-producto` lo guarda en la base y lo muestra en el catálogo.
+- [x] Editar un producto actualiza sus datos en la base.
+- [x] Eliminar un producto lo borra de la base y lleva de vuelta al catálogo.
+- [x] Un `_id` inexistente o mal formado muestra un mensaje de error claro, no una pantalla en blanco.
+- [x] El carrito y el formulario de contacto siguen funcionando.
+- [x] No hay archivos `.env` ni credenciales en el repositorio.
+- [x] El README incluye los enlaces de ambos despliegues y las variables de entorno.
+- [x] Cada integrante escribió su nombre y usuario en su tarea de este archivo.

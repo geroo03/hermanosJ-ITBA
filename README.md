@@ -6,8 +6,8 @@ La aplicación se compone de un cliente en React, una API REST en Express y una 
 
 ## Enlaces
 
-- **Frontend (Vercel):** _pendiente de despliegue_
-- **Backend (Render):** _pendiente de despliegue_
+- **Frontend (Vercel):** https://hermanos-j-itba.vercel.app
+- **Backend (Render):** https://hermanos-jota-api-a94j.onrender.com/api/productos
 
 ## Tecnologías
 
