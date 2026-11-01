@@ -40,6 +40,18 @@ describe('productsApi', () => {
       );
     });
 
+    it('marca como reintentable una respuesta HTML sin mostrar el error técnico', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockRejectedValue(new SyntaxError("Unexpected token '<'")),
+      });
+
+      await expect(getProducts()).rejects.toMatchObject({
+        message: 'No pudimos cargar el catálogo. Intentá nuevamente más tarde.',
+        retryable: true,
+      });
+    });
+
     it('rechaza respuestas que no son una lista de productos', async () => {
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,

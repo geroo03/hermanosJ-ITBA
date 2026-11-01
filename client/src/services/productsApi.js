@@ -16,6 +16,21 @@ async function requestApi(url, options) {
   }
 }
 
+// Mientras la API arranca, el servicio de hosting responde con una página HTML o un 5xx de pasarela.
+function buildWakingError(message) {
+  const error = new Error(message);
+  error.retryable = true;
+  return error;
+}
+
+async function readJson(response, fallbackMessage) {
+  try {
+    return await response.json();
+  } catch {
+    throw buildWakingError(fallbackMessage);
+  }
+}
+
 async function buildResponseError(response, fallbackMessage) {
   let message = fallbackMessage;
   let status = response.status;
@@ -47,10 +62,13 @@ export async function getProducts() {
   const response = await requestApi(`${API_URL}/productos`);
 
   if (!response.ok) {
+    if ([502, 503, 504].includes(response.status)) {
+      throw buildWakingError(LOAD_ERROR);
+    }
     throw new Error(LOAD_ERROR);
   }
 
-  const products = await response.json();
+  const products = await readJson(response, LOAD_ERROR);
 
   if (!Array.isArray(products)) {
     throw new Error(LOAD_ERROR);
@@ -66,7 +84,7 @@ export async function getProductById(id) {
     throw await buildResponseError(response, DETAIL_ERROR);
   }
 
-  const product = await response.json();
+  const product = await readJson(response, DETAIL_ERROR);
 
   if (!isPlainObject(product)) {
     throw new Error(DETAIL_ERROR);
@@ -86,7 +104,7 @@ export async function createProduct(productData) {
     throw await buildResponseError(response, CREATE_ERROR);
   }
 
-  const created = await response.json();
+  const created = await readJson(response, CREATE_ERROR);
 
   if (!isPlainObject(created)) {
     throw new Error(CREATE_ERROR);
@@ -106,7 +124,7 @@ export async function updateProduct(id, productData) {
     throw await buildResponseError(response, UPDATE_ERROR);
   }
 
-  const updated = await response.json();
+  const updated = await readJson(response, UPDATE_ERROR);
 
   if (!isPlainObject(updated)) {
     throw new Error(UPDATE_ERROR);

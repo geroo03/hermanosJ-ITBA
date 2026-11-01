@@ -36,6 +36,10 @@ export function readStoredCart() {
   }
 }
 
+// La API puede tardar cerca de un minuto en despertar: reintenta durante 90 segundos.
+const WAKE_RETRY_DELAY = 5000;
+const WAKE_MAX_ATTEMPTS = 18;
+
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,20 +60,27 @@ function App() {
     setLoading(true);
     setError('');
 
-    try {
-      const catalogue = await getProducts();
+    for (let attempt = 1; attempt <= WAKE_MAX_ATTEMPTS; attempt += 1) {
+      try {
+        const catalogue = await getProducts();
 
-      if (isActive()) {
-        setProducts(catalogue);
+        if (isActive()) {
+          setProducts(catalogue);
+          setLoading(false);
+        }
+        return;
+      } catch (requestError) {
+        if (!requestError.retryable || attempt === WAKE_MAX_ATTEMPTS) {
+          if (isActive()) {
+            setError(requestError.message);
+            setLoading(false);
+          }
+          return;
+        }
       }
-    } catch (requestError) {
-      if (isActive()) {
-        setError(requestError.message);
-      }
-    } finally {
-      if (isActive()) {
-        setLoading(false);
-      }
+
+      await new Promise((resolve) => setTimeout(resolve, WAKE_RETRY_DELAY));
+      if (!isActive()) return;
     }
   }, []);
 

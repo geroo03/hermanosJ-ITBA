@@ -1,6 +1,7 @@
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter } from 'react-router-dom';
+import App from '../App';
 import Catalogo from '../pages/Catalogo';
 import Home from '../pages/Home';
 import Cart from './Cart';
@@ -199,5 +200,33 @@ describe('Imágenes que no cargan', () => {
     failImage();
     expect(container.querySelector('img')).toBeNull();
     expect(container.querySelector('.cart-item__image')).not.toBeNull();
+  });
+});
+
+describe('API despertando', () => {
+  it('sigue cargando y reintenta solo hasta recibir el catálogo', async () => {
+    jest.useFakeTimers();
+    const originalFetch = global.fetch;
+    global.fetch = jest.fn()
+      .mockResolvedValueOnce({ ok: true, json: () => Promise.reject(new SyntaxError("Unexpected token '<'")) })
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve(products) });
+
+    await act(async () => {
+      root.render(<MemoryRouter initialEntries={['/productos']} future={ROUTER_FUTURE}><App /></MemoryRouter>);
+    });
+    expect(container.textContent).toContain('Cargando catálogo');
+    expect(container.textContent).not.toContain('Unexpected token');
+
+    await act(async () => {
+      jest.advanceTimersByTime(5000);
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(container.textContent).toContain('Sofá Patagonia');
+
+    global.fetch = originalFetch;
+    jest.useRealTimers();
   });
 });
