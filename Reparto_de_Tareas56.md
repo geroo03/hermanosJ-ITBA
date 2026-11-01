@@ -217,6 +217,8 @@ Se publicó el backend en Render (https://hermanos-jota-api-a94j.onrender.com/ap
 
 Se recorrió la aplicación publicada con el checklist de entrega: catálogo, detalle, recarga de rutas, carrito, contacto, errores de `_id` y alta, edición y borrado contra MongoDB Atlas con un producto temporal, que se eliminó al terminar. El catálogo conserva sus 11 productos.
 
+En la revisión final se detectó que la portada con video, la sección de filosofía, la publicación interactiva de Instagram y el logo del sitio original no se habían pasado a React. Se incorporaron a la página de inicio y se agregó un buscador al catálogo.
+
 **Archivos:** `backend/src/app.js` (configuración de CORS), `README.md`, `client/vercel.json` o `client/public/_redirects`, `backend/.env.example` y `client/.env.example` (revisión), configuración de Render y de Vercel/Netlify.
 
 **Qué hay que hacer:**

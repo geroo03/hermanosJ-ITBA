@@ -172,7 +172,7 @@ describe('Ruteo en App', () => {
       );
     });
 
-    expect(container.textContent).toContain('Muebles de madera maciza hechos para perdurar');
+    expect(container.textContent).toContain('El redescubrimiento de un arte olvidado');
 
     await act(async () => {
       click(getInteractive('Explorar catálogo'));

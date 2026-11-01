@@ -20,14 +20,25 @@
 
 .navbar__brand {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 0.7rem;
   border: 0;
   padding: 0;
   background: none;
   color: var(--siena);
   text-align: left;
   text-decoration: none;
+}
+
+.navbar__logo {
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: contain;
+}
+
+.navbar__brand-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .navbar__brand-name {

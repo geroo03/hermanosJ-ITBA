@@ -1,5 +1,13 @@
 import { Link } from 'react-router-dom';
+import InstagramPost from '../components/InstagramPost';
 import ProductList from '../components/ProductList';
+import { getImageUrl } from '../utils/productHelpers';
+
+const HERO_STATS = [
+  { value: '10 Años', label: 'Garantía Estructural' },
+  { value: '100%', label: 'Madera Certificada FSC' },
+  { value: '0%', label: 'Plásticos de un solo uso' },
+];
 
 function Home({ products = [], loading = false, onAddToCart }) {
   const featuredProducts = products.slice(0, 3);
@@ -7,22 +15,46 @@ function Home({ products = [], loading = false, onAddToCart }) {
   return (
     <div className="home">
       <section className="home-hero" aria-labelledby="home-hero-title">
+        <div className="home-hero__media" aria-hidden="true">
+          <video
+            className="home-hero__video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={getImageUrl('assets/images/historia-taller.jpg')}
+            tabIndex={-1}
+          >
+            <source src={getImageUrl('assets/video/historia-inmueble.mp4')} type="video/mp4" />
+          </video>
+          <div className="home-hero__scrim" />
+        </div>
+
         <div className="home-hero__inner">
-          <p className="home-hero__label">Casa Taller en San Cristóbal, Buenos Aires</p>
+          <p className="home-hero__label">Herencia &amp; Innovación</p>
           <h1 id="home-hero-title" className="home-hero__title">
-            Muebles de madera maciza hechos para perdurar
+            El redescubrimiento de un arte <span>olvidado</span>
           </h1>
           <p className="home-hero__lede">
-            Diseñamos y construimos piezas de autor con maderas nativas certificadas, encastres tradicionales y acabados al aceite natural.
+            Donde la calidez del optimismo de los años 60 se encuentra con la conciencia de la sustentabilidad del 2026. Cada pieza cuenta la historia de manos expertas y materiales nobles.
           </p>
           <div className="home-hero__actions">
             <Link to="/productos" className="btn btn--primary home-hero__cta">
               Explorar catálogo
             </Link>
             <Link to="/contacto" className="btn btn--secondary home-hero__secondary">
-              Consultar a medida
+              Visitar Casa Taller
             </Link>
           </div>
+          <dl className="home-hero__stats">
+            {HERO_STATS.map(({ value, label }) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -64,6 +96,29 @@ function Home({ products = [], loading = false, onAddToCart }) {
           <ProductList products={featuredProducts} onAddToCart={onAddToCart} />
         </section>
       )}
+
+      <section className="app-content home-workshop" aria-labelledby="home-workshop-title">
+        <img
+          src={getImageUrl('assets/images/aparador-uspallata.png')}
+          alt="Casa Taller Hermanos Jota"
+          className="home-workshop__image"
+          loading="lazy"
+        />
+        <div className="home-workshop__text">
+          <p className="home-tag">Casa Taller</p>
+          <h2 id="home-workshop-title" className="home-workshop__title">
+            El arte de escuchar la madera
+          </h2>
+          <p className="home-workshop__description">
+            En Hermanos Jota entendemos la madera no como un insumo industrial, sino como un material vivo que cuenta una historia. Cada veta, nudo y textura define el alma de la pieza final en nuestro taller de San Cristóbal.
+          </p>
+          <Link to="/contacto" className="btn btn--primary">
+            Conocé Nuestra Casa Taller
+          </Link>
+        </div>
+      </section>
+
+      <InstagramPost />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
+import { getImageUrl } from '../utils/productHelpers';
 import '../styles/layout.css';
 
 const DEFAULT_LINKS = [
@@ -15,8 +16,11 @@ function Navbar({ links = DEFAULT_LINKS, cartItemCount = 0 }) {
     <header className="navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__brand">
-          <span className="navbar__brand-name">Hermanos Jota</span>
-          <span className="navbar__brand-tagline">Casa Taller y Ebanistería</span>
+          <img src={getImageUrl('assets/images/logo.svg')} alt="" className="navbar__logo" width="44" height="44" />
+          <span className="navbar__brand-text">
+            <span className="navbar__brand-name">Hermanos Jota</span>
+            <span className="navbar__brand-tagline">Casa Taller y Ebanistería</span>
+          </span>
         </Link>
 
         <nav aria-label="Navegación principal">
