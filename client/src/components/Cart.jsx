@@ -38,7 +38,7 @@ function Cart({ cart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart, 
       <section className="cart cart--empty cart--completed" aria-labelledby="cart-title">
         <h1 id="cart-title" className="cart__title">¡Gracias por tu compra!</h1>
         <p role="status">
-          Registramos tu pedido por {formatPrice(completedTotal)}. Esta tienda es una demostración: no se realizó ningún cobro.
+          El total de tu compra fue {formatPrice(completedTotal)}. Esta tienda es una demostración: no se guardó ningún pedido ni se realizó ningún cobro.
         </p>
         <Link to="/productos" className="btn btn--primary">
           Ver el catálogo
