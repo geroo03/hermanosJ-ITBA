@@ -209,7 +209,9 @@ Se agregó `hooks/useProduct.js` para compartir la carga y descartar respuestas 
 
 ---
 
-## Tarea 5. Responsable: _(escribir nombre y @usuario)_ — Despliegue, CORS, README y revisión final
+## Tarea 5. Responsable: **Sebastián Gerónimo Peralta** (@geroo03) — Despliegue, CORS, README y revisión final
+
+**Estado: en curso** (código listo; faltan los despliegues y la revisión final)
 
 **Archivos:** `backend/src/app.js` (configuración de CORS), `README.md`, `client/vercel.json` o `client/public/_redirects`, `backend/.env.example` y `client/.env.example` (revisión), configuración de Render y de Vercel/Netlify.
 

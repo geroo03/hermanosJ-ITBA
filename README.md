@@ -1,33 +1,103 @@
 # Mueblería Hermanos Jota
 
-Tienda online de muebles desarrollada como proyecto integrador de los sprints 3 y 4 de Full Stack Developer en ITBA.
+Tienda online de muebles desarrollada como proyecto integrador de Full Stack Developer en ITBA (Sprints 5 y 6).
 
-La aplicación se compone de una API REST creada con Node.js y Express, y un cliente construido con React. El catálogo se consulta desde la API y permite navegar productos, ver su detalle, administrar un carrito y enviar una consulta desde el formulario de contacto.
+La aplicación se compone de un cliente en React, una API REST en Express y una base de datos MongoDB en la nube. Permite navegar el catálogo, administrar un carrito, enviar una consulta y crear, editar o eliminar productos.
 
-## Funcionalidades
+## Enlaces
 
-- Catálogo de productos consumido desde una API propia.
-- Detalle de producto mediante renderizado condicional.
-- Carrito con cantidades, eliminación de ítems y total.
-- Formulario de contacto controlado y validado.
-- Estados de carga y error al consultar la API.
+- **Frontend (Vercel):** _pendiente de despliegue_
+- **Backend (Render):** _pendiente de despliegue_
 
 ## Tecnologías
 
-- Node.js + Express
-- React
-- JavaScript, HTML y CSS
+- **Frontend:** React, React Router DOM
+- **Backend:** Node.js, Express
+- **Base de datos:** MongoDB Atlas, Mongoose
 
 ## Estructura
 
 ```text
-backend/    API Express y datos de productos
-client/     Interfaz React
+backend/
+  src/
+    config/        Conexión a MongoDB
+    controllers/   Lógica del CRUD de productos
+    data/          Catálogo inicial para la semilla
+    middlewares/   Logger, 404 y manejo de errores
+    models/        Modelo Product
+    routes/        Rutas de /api/productos
+    seed.js        Carga inicial de productos
+  tests/           Pruebas y colección de Postman
+client/
+  public/          HTML e imágenes del catálogo
+  src/
+    components/    Componentes de la interfaz
+    hooks/         Hooks reutilizables
+    pages/         Páginas de cada ruta
+    services/      Consumo de la API
+    styles/        Hojas de estilo
+    utils/         Funciones auxiliares
 ```
 
-## Puesta en marcha
+## Puesta en marcha local
 
-Las instrucciones de instalación y ejecución se completarán junto con cada aplicación una vez creados `backend/package.json` y `client/package.json`.
+Requisitos: Node.js 20 o superior y una base de datos en MongoDB Atlas.
+
+**1. Backend**, en una terminal:
+
+```bash
+cd backend
+npm install
+cp .env.example .env    # completar MONGODB_URI
+npm run seed            # opcional, ver la advertencia
+npm run dev
+```
+
+La API queda disponible en `http://localhost:3000/api/productos`.
+
+> **Advertencia:** `npm run seed` borra todos los productos de la base a la que apunta `MONGODB_URI` y carga los 11 iniciales.
+
+**2. Frontend**, en otra terminal:
+
+```bash
+cd client
+npm install
+cp .env.example .env
+npm start
+```
+
+La aplicación se abre en `http://localhost:3001`.
+
+**Pruebas:** `npm test` dentro de `backend/` y de `client/`.
+
+## Variables de entorno
+
+Los archivos `.env` no se suben al repositorio. En producción, las variables se cargan desde el panel de cada servicio.
+
+**Backend (`backend/.env`, Render)**
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `MONGODB_URI` | Cadena de conexión a MongoDB Atlas | `mongodb+srv://USUARIO:CONTRASEÑA@CLUSTER.mongodb.net/NOMBRE_BASE_DATOS` |
+| `CLIENT_URL` | Origen del frontend permitido por CORS | `https://tu-sitio.vercel.app` |
+| `PORT` | Puerto del servidor. Render lo define solo | `3000` |
+
+**Frontend (`client/.env`, Vercel)**
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `REACT_APP_API_URL` | URL de la API, terminada en `/api` | `https://tu-api.onrender.com/api` |
+| `PORT` | Puerto de desarrollo local | `3001` |
+
+## API
+
+| Método | Ruta | Qué hace |
+|---|---|---|
+| `GET` | `/api/productos` | Devuelve todos los productos |
+| `GET` | `/api/productos/:id` | Devuelve un producto por su `_id` |
+| `POST` | `/api/productos` | Crea un producto |
+| `PUT` | `/api/productos/:id` | Actualiza un producto |
+| `DELETE` | `/api/productos/:id` | Elimina un producto |
 
 ## Equipo
 
@@ -36,5 +106,3 @@ Las instrucciones de instalación y ejecución se completarán junto con cada ap
 - Mateo Bouso
 - Nicolás Benítez
 - Tadeo Piccato
-
-> El detalle interno del reparto de tareas está en `REPARTO_DE_TAREAS.md`. Es un documento transitorio de organización y no formará parte de la entrega final.

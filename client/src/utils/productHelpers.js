@@ -1,6 +1,6 @@
 // Obtiene la URL base para los assets desde las variables de entorno de React.
-// Si no está definida REACT_APP_ASSETS_URL, usa 'http://localhost:3000' como valor por defecto (mecanismo Nullish Coalescing ??)
-const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_URL ?? 'http://localhost:3000';
+// Si no está definida REACT_APP_ASSETS_URL, usa el mismo origen del cliente, que sirve las imágenes desde public/assets (mecanismo Nullish Coalescing ??)
+const ASSETS_BASE_URL = process.env.REACT_APP_ASSETS_URL ?? '';
 
 // Crea una instancia reusable del formateador de números nativo de JavaScript (Intl.NumberFormat)
 // Configurada para moneda local de Argentina (ARS, pesos argentinos) y sin decimales
@@ -21,7 +21,7 @@ export function formatPrice(value) {
 
 /**
  * Construye la URL completa de una imagen recibida como parámetro.
- * Ejemplo: 'assets/images/sofa.png' -> 'http://localhost:3000/assets/images/sofa.png'
+ * Ejemplo: 'assets/images/sofa.png' -> '/assets/images/sofa.png'
  */
 export function getImageUrl(image) {
   // Si no se proporciona ninguna ruta de imagen, retorna un string vacío

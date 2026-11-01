@@ -29,12 +29,40 @@ after(async () => {
   }
 });
 
-test('la aplicación configura encabezados CORS', async () => {
+test('CORS permite localhost para desarrollo', async () => {
   const response = await fetch(`${baseUrl}/api/productos`, {
     headers: { Origin: 'http://localhost:5173' },
   });
   assert.equal(response.status, 200);
-  assert.equal(response.headers.get('access-control-allow-origin'), '*');
+  assert.equal(response.headers.get('access-control-allow-origin'), 'http://localhost:5173');
+});
+
+test('CORS permite el preflight de DELETE desde CLIENT_URL, aunque tenga barra final', async () => {
+  process.env.CLIENT_URL = 'https://hermanos-jota.vercel.app/';
+  try {
+    const response = await fetch(`${baseUrl}/api/productos/1`, {
+      method: 'OPTIONS',
+      headers: {
+        Origin: 'https://hermanos-jota.vercel.app',
+        'Access-Control-Request-Method': 'DELETE',
+      },
+    });
+    assert.equal(response.status, 204);
+    assert.equal(
+      response.headers.get('access-control-allow-origin'),
+      'https://hermanos-jota.vercel.app'
+    );
+    assert.match(response.headers.get('access-control-allow-methods'), /DELETE/);
+  } finally {
+    delete process.env.CLIENT_URL;
+  }
+});
+
+test('CORS no autoriza otros orígenes', async () => {
+  const response = await fetch(`${baseUrl}/api/productos`, {
+    headers: { Origin: 'https://otro-sitio.example' },
+  });
+  assert.equal(response.headers.get('access-control-allow-origin'), null);
 });
 
 test('GET /api/productos devuelve el catálogo con status 200 y JSON', async () => {
