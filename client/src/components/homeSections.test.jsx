@@ -58,6 +58,38 @@ describe('Home', () => {
   });
 });
 
+describe('Portada', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  const hero = () => container.querySelector('.home-hero');
+  const toggle = () => container.querySelector('.home-hero__toggle');
+
+  it('se achica sola para dejar ver el video y el botón la vuelve a abrir', () => {
+    render(<Home />);
+    expect(hero().className).not.toContain('home-hero--video-visible');
+    expect(toggle().textContent).toBe('Ver el video');
+
+    act(() => jest.advanceTimersByTime(4500));
+    expect(hero().className).toContain('home-hero--video-visible');
+    expect(toggle().textContent).toBe('Mostrar texto');
+
+    click(toggle());
+    expect(hero().className).not.toContain('home-hero--video-visible');
+
+    act(() => jest.advanceTimersByTime(10000));
+    expect(hero().className).not.toContain('home-hero--video-visible');
+  });
+
+  it('no se achica sola si la persona pidió menos movimiento', () => {
+    window.matchMedia = jest.fn(() => ({ matches: true }));
+    render(<Home />);
+    act(() => jest.advanceTimersByTime(10000));
+    expect(hero().className).not.toContain('home-hero--video-visible');
+    delete window.matchMedia;
+  });
+});
+
 describe('Estados de carga de Home', () => {
   it('avisa mientras carga y permite reintentar si la API falla', () => {
     const onRetry = jest.fn();

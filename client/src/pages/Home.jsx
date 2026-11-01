@@ -1,64 +1,16 @@
 import { Link } from 'react-router-dom';
+import HomeHero from '../components/HomeHero';
 import InstagramPost from '../components/InstagramPost';
 import ProductList from '../components/ProductList';
 import { getImageUrl } from '../utils/productHelpers';
 
-const HERO_STATS = [
-  { value: '10 Años', label: 'Garantía Estructural' },
-  { value: '100%', label: 'Madera Certificada FSC' },
-  { value: '0%', label: 'Plásticos de un solo uso' },
-];
 
 function Home({ products = [], loading = false, error = null, onRetry, onAddToCart }) {
   const featuredProducts = products.slice(0, 4);
 
   return (
     <div className="home">
-      <section className="home-hero" aria-labelledby="home-hero-title">
-        <div className="home-hero__media" aria-hidden="true">
-          <video
-            className="home-hero__video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={getImageUrl('assets/images/historia-taller.jpg')}
-            tabIndex={-1}
-          >
-            <source src={getImageUrl('assets/video/historia-inmueble.mp4')} type="video/mp4" />
-          </video>
-          <div className="home-hero__scrim" />
-        </div>
-
-        <div className="home-hero__inner">
-          <div className="home-hero__glass">
-            <p className="home-hero__label">Herencia &amp; Innovación</p>
-            <h1 id="home-hero-title" className="home-hero__title">
-              El redescubrimiento de un arte <span>olvidado</span>
-            </h1>
-            <p className="home-hero__lede">
-              Donde la calidez del optimismo de los años 60 se encuentra con la conciencia de la sustentabilidad del 2026. Cada pieza cuenta la historia de manos expertas y materiales nobles.
-            </p>
-            <div className="home-hero__actions">
-              <Link to="/productos" className="btn btn--primary home-hero__cta">
-                Explorar catálogo
-              </Link>
-              <Link to="/contacto" className="btn btn--secondary home-hero__secondary">
-                Visitar Casa Taller
-              </Link>
-            </div>
-            <dl className="home-hero__stats">
-              {HERO_STATS.map(({ value, label }) => (
-                <div key={label}>
-                  <dt>{label}</dt>
-                  <dd>{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
 
       <section className="app-content home-pillars" aria-label="Nuestro oficio">
         <div className="home-pillars__grid">

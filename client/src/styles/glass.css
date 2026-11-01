@@ -212,6 +212,63 @@ body::before {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
+/* El panel se achica para dejar ver el video */
+.home-hero {
+  align-items: flex-end;
+  min-height: max(min(92vh, 52rem), 46rem);
+}
+
+.home-hero__scrim {
+  transition: opacity 0.7s ease;
+}
+
+.home-hero__glass {
+  transition: background 0.7s ease, padding-top 0.7s ease, -webkit-backdrop-filter 0.7s ease, backdrop-filter 0.7s ease;
+}
+
+.home-hero__collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows 0.7s ease, opacity 0.4s ease;
+}
+
+.home-hero__collapsible > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.home-hero__stats {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+}
+
+.home-hero__toggle {
+  padding: 0.65rem 0.5rem;
+  border: 0;
+  background: none;
+  color: var(--alabaster);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.home-hero--video-visible .home-hero__scrim {
+  opacity: 0.25;
+}
+
+.home-hero--video-visible .home-hero__glass {
+  padding-top: clamp(1rem, 2.5vw, 1.5rem);
+  background: rgba(31, 20, 14, 0.36);
+  -webkit-backdrop-filter: blur(7px) saturate(130%);
+  backdrop-filter: blur(7px) saturate(130%);
+}
+
+.home-hero--video-visible .home-hero__collapsible {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
 /* ---------- Secciones de inicio ---------- */
 .home-tag {
   color: var(--siena-dark);
@@ -399,6 +456,12 @@ body::before {
 
   .home-hero__title {
     font-size: clamp(1.75rem, 8.4vw, 2.4rem);
+  }
+
+  /* Altura fija y panel arriba: al achicarse no mueve la página y el video queda debajo */
+  .home-hero {
+    align-items: flex-start;
+    min-height: 62rem;
   }
 
   .home-hero__scrim {
