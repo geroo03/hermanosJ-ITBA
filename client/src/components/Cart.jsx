@@ -25,7 +25,28 @@ function CartItemImage({ product }) {
   );
 }
 
-function Cart({ cart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart }) {
+function Cart({ cart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart, onCheckout }) {
+  const [completedTotal, setCompletedTotal] = useState(null);
+
+  function handleCheckout() {
+    setCompletedTotal(getCartTotal(cart));
+    onCheckout();
+  }
+
+  if (cart.length === 0 && completedTotal !== null) {
+    return (
+      <section className="cart cart--empty cart--completed" aria-labelledby="cart-title">
+        <h1 id="cart-title" className="cart__title">¡Gracias por tu compra!</h1>
+        <p role="status">
+          Registramos tu pedido por {formatPrice(completedTotal)}. Esta tienda es una demostración: no se realizó ningún cobro.
+        </p>
+        <Link to="/productos" className="btn btn--primary">
+          Ver el catálogo
+        </Link>
+      </section>
+    );
+  }
+
   if (cart.length === 0) {
     return (
       <section className="cart cart--empty" aria-labelledby="cart-title">
@@ -95,9 +116,14 @@ function Cart({ cart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart }
         <p className="cart__total">
           Total <strong>{formatPrice(total)}</strong>
         </p>
-        <Link to="/productos" className="btn btn--secondary">
-          Seguir comprando
-        </Link>
+        <div className="cart__actions">
+          <Link to="/productos" className="btn btn--secondary">
+            Seguir comprando
+          </Link>
+          <button type="button" className="btn btn--primary" onClick={handleCheckout}>
+            Finalizar compra
+          </button>
+        </div>
       </div>
     </section>
   );

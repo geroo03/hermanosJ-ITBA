@@ -255,6 +255,7 @@ function App() {
                   onIncreaseQuantity={increaseQuantity}
                   onDecreaseQuantity={decreaseQuantity}
                   onRemoveFromCart={removeFromCart}
+                  onCheckout={() => setCart([])}
                 />
               </div>
             }

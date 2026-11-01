@@ -230,3 +230,25 @@ describe('API despertando', () => {
     jest.useRealTimers();
   });
 });
+
+describe('Finalizar compra', () => {
+  it('vacía el carrito y confirma el total aclarando que no hubo cobro', () => {
+    const stored = [{ product: { ...products[0], imagenUrl: '' }, quantity: 2 }];
+    const onCheckout = jest.fn();
+
+    function Harness({ cart }) {
+      return <Cart cart={cart} onCheckout={onCheckout} />;
+    }
+
+    render(<Harness cart={stored} />);
+    const button = [...container.querySelectorAll('button')].find((item) => item.textContent === 'Finalizar compra');
+    click(button);
+    expect(onCheckout).toHaveBeenCalledTimes(1);
+
+    render(<Harness cart={[]} />);
+    expect(container.querySelector('h1').textContent).toBe('¡Gracias por tu compra!');
+    expect(container.textContent).toContain('$');
+    expect(container.textContent).toContain('200');
+    expect(container.textContent).toContain('no se realizó ningún cobro');
+  });
+});

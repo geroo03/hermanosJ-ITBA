@@ -403,6 +403,28 @@ body::before {
   line-height: 1.6;
 }
 
+.cart__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.cart--completed {
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-panel);
+  background: var(--glass-fill);
+  box-shadow: var(--glass-depth);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+.cart--completed p {
+  margin: 0 0 0.5rem;
+  line-height: 1.6;
+}
+
 /* ---------- Pie ---------- */
 .footer {
   background: linear-gradient(180deg, var(--siena-dark) 0%, #4f2415 100%);
@@ -470,6 +492,16 @@ body::before {
 
   .home-hero__actions .btn {
     flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .cart__actions {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .cart__actions .btn {
+    width: 100%;
     text-align: center;
   }
 }
