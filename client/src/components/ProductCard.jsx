@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice, getImageUrl, truncate } from '../utils/productHelpers';
 import '../styles/products.css';
@@ -9,16 +10,18 @@ function ProductCard({ product, onAddToCart }) {
   const { _id, nombre, descripcion, precio, imagenUrl } = product;
   const detailPath = `/productos/${_id}`;
   const imageSrc = getImageUrl(imagenUrl);
+  const [imageFailed, setImageFailed] = useState(false);
 
   return (
     <article className="product-card">
-      {imageSrc ? (
+      {imageSrc && !imageFailed ? (
         <Link to={detailPath} className="product-card__media-link" tabIndex={-1} aria-hidden="true">
           <img
             className="product-card__image"
             src={imageSrc}
             alt=""
             loading="lazy"
+            onError={() => setImageFailed(true)}
           />
         </Link>
       ) : (

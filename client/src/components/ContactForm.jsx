@@ -60,7 +60,7 @@ function ContactForm() {
     return (
       <section className="contact" aria-labelledby="contact-title">
         <div className="contact__success" role="status">
-          <h2 id="contact-title" className="contact__title">¡Gracias, {submittedName}!</h2>
+          <h1 id="contact-title" className="contact__title">¡Gracias, {submittedName}!</h1>
           <p>Recibimos tu mensaje. Te vamos a responder dentro de las próximas 48 horas hábiles.</p>
           <button type="button" className="btn btn--secondary" onClick={() => setSubmittedName('')}>
             Enviar otra consulta
@@ -72,7 +72,7 @@ function ContactForm() {
 
   return (
     <section className="contact" aria-labelledby="contact-title">
-      <h2 id="contact-title" className="contact__title">Contacto</h2>
+      <h1 id="contact-title" className="contact__title">Contacto</h1>
       <p className="contact__intro">
         ¿Tenés una consulta sobre una pieza o un proyecto a medida? Escribinos.
       </p>

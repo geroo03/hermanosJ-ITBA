@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice, getImageUrl } from '../utils/productHelpers';
 import '../styles/layout.css';
@@ -6,11 +7,29 @@ export function getCartTotal(cart) {
   return cart.reduce((total, item) => total + Number(item.product.precio) * item.quantity, 0);
 }
 
+function CartItemImage({ product }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const imageSrc = getImageUrl(product.imagenUrl);
+
+  if (!imageSrc || imageFailed) {
+    return <div className="cart-item__image" aria-hidden="true" />;
+  }
+
+  return (
+    <img
+      className="cart-item__image"
+      src={imageSrc}
+      alt={product.nombre}
+      onError={() => setImageFailed(true)}
+    />
+  );
+}
+
 function Cart({ cart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart }) {
   if (cart.length === 0) {
     return (
       <section className="cart cart--empty" aria-labelledby="cart-title">
-        <h2 id="cart-title" className="cart__title">Tu carrito</h2>
+        <h1 id="cart-title" className="cart__title">Tu carrito</h1>
         <p>Todavía no agregaste piezas a tu carrito.</p>
         <Link to="/productos" className="btn btn--primary">
           Ver el catálogo
@@ -23,30 +42,20 @@ function Cart({ cart, onIncreaseQuantity, onDecreaseQuantity, onRemoveFromCart }
 
   return (
     <section className="cart" aria-labelledby="cart-title">
-      <h2 id="cart-title" className="cart__title">Tu carrito</h2>
+      <h1 id="cart-title" className="cart__title">Tu carrito</h1>
 
       <ul className="cart__items">
         {cart.map(({ product, quantity }) => {
-          const imageSrc = getImageUrl(product.imagenUrl);
-
           return (
             <li key={product._id} className="cart-item">
-              {imageSrc ? (
-                <img
-                  className="cart-item__image"
-                  src={imageSrc}
-                  alt={product.nombre}
-                />
-              ) : (
-                <div className="cart-item__image" aria-hidden="true" />
-              )}
+              <CartItemImage product={product} />
 
               <div className="cart-item__info">
-                <h3 className="cart-item__name">
+                <h2 className="cart-item__name">
                   <Link to={`/productos/${product._id}`} className="cart-item__link">
                     {product.nombre}
                   </Link>
-                </h3>
+                </h2>
                 <p className="cart-item__unit-price">{formatPrice(product.precio)} c/u</p>
               </div>
 

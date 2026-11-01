@@ -1,5 +1,39 @@
 # Resumen de Entrega — Sebastián Gerónimo Peralta
 
+## Sprint 5-6 — Despliegue, CORS, README y revisión final
+
+**Responsable:** Sebastián Gerónimo Peralta (@geroo03).  
+**Fecha de trabajo:** 1 de noviembre de 2026.  
+**Asignación:** tarea 5 de `Reparto_de_Tareas56.md`.
+
+### Despliegues
+
+- **Frontend (Vercel):** https://hermanos-j-itba.vercel.app
+- **Backend (Render):** https://hermanos-jota-api-a94j.onrender.com/api/productos
+
+### Trabajo realizado
+
+| Archivo | Trabajo |
+|---|---|
+| `backend/src/app.js` | CORS limitado a `CLIENT_URL` y `localhost`, con pruebas en `backend/tests/app.test.js`. |
+| `client/vercel.json` | Redirige las rutas a `index.html` para que recargar una página no dé 404. |
+| `client/public/assets/` | Imágenes y videos publicados por el cliente, porque ningún servicio los servía. |
+| `README.md` y `.env.example` | Enlaces, instrucciones locales, variables de entorno y puertos separados (API 3000, cliente 3001). |
+| `client/src/components/HomeHero.jsx` e `InstagramPost.jsx` | Portada con video y publicación interactiva recuperadas del sitio del Sprint 1-2. |
+| `client/src/pages/Home.jsx` y `Catalogo.jsx` | Filosofía del taller, estados de carga y error en inicio, y buscador en el catálogo. |
+| `client/src/styles/glass.css` | Capa visual de vidrio y tipografías de marca. |
+
+### Verificación
+
+Se instaló el proyecto desde un clon limpio y pasaron las pruebas del backend y del cliente. En el sitio publicado se recorrió el checklist de entrega: catálogo, detalle, recarga de rutas, carrito, contacto, errores de `_id` y alta, edición y borrado contra MongoDB Atlas con productos temporales, eliminados al terminar. No hay archivos `.env` ni credenciales en el repositorio ni en su historial.
+
+### Limitaciones conocidas
+
+- El formulario de contacto valida los datos pero no los envía a un servidor.
+- Las rutas de administración no tienen autenticación, porque la consigna no la pide.
+
+---
+
 ## Sprint 3-4 — Navegación, carrito y contacto
 
 **Responsable:** Sebastián Gerónimo Peralta (@geroo03).  

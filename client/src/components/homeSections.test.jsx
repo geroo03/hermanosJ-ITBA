@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { MemoryRouter } from 'react-router-dom';
 import Catalogo from '../pages/Catalogo';
 import Home from '../pages/Home';
+import Cart from './Cart';
+import ProductCard from './ProductCard';
 
 const ROUTER_FUTURE = { v7_startTransition: true, v7_relativeSplatPath: true };
 
@@ -173,5 +175,29 @@ describe('Buscador del catálogo', () => {
 
     type(search, 'zzz');
     expect(container.textContent).toContain('No encontramos piezas para “zzz”.');
+  });
+});
+
+describe('Imágenes que no cargan', () => {
+  const product = { ...products[0], imagenUrl: 'assets/images/noexiste.png' };
+
+  function failImage() {
+    act(() => {
+      container.querySelector('img').dispatchEvent(new Event('error'));
+    });
+  }
+
+  it('la tarjeta muestra el respaldo en lugar de una imagen rota', () => {
+    render(<ProductCard product={product} onAddToCart={() => {}} />);
+    failImage();
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('.product-card__image--placeholder')).not.toBeNull();
+  });
+
+  it('el carrito muestra el respaldo en lugar de una imagen rota', () => {
+    render(<Cart cart={[{ product, quantity: 1 }]} />);
+    failImage();
+    expect(container.querySelector('img')).toBeNull();
+    expect(container.querySelector('.cart-item__image')).not.toBeNull();
   });
 });
