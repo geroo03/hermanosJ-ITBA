@@ -125,11 +125,11 @@ Se agregaron 11 pruebas en `auth.test.js` (con un modelo `User` simulado en memo
 
 ---
 
-## Tarea 2. Responsable: **(sin asignar)** — Backend de pedidos y protección de rutas de la API
+## Tarea 2. Responsable: **Mateo Bouso** (@mbouso420-spec) — Backend de pedidos y protección de rutas de la API
 
-**Estado: Pendiente**
+**Estado: Terminada**
 
-**Archivos:** `backend/src/models/Order.js`, `backend/src/controllers/ordersController.js`, `backend/src/routes/ordersRouter.js`, `backend/src/routes/productsRouter.js`, `backend/src/app.js`, `backend/tests/orders.test.js`, `backend/tests/products.test.js`, `backend/tests/helpers/` (simulados de `Order`), `backend/tests/orders.postman_collection.json`.
+**Archivos:** `backend/src/models/Order.js`, `backend/src/controllers/ordersController.js`, `backend/src/routes/ordersRouter.js`, `backend/src/routes/productsRouter.js`, `backend/src/app.js`, `backend/tests/orders.test.js`, `backend/tests/products.test.js`, `backend/tests/helpers/fakeOrder.js`, `backend/tests/orders.postman_collection.json`, `backend/tests/products.postman_collection.json`.
 
 **Qué hay que hacer:**
 
@@ -142,6 +142,14 @@ Se agregaron 11 pruebas en `auth.test.js` (con un modelo `User` simulado en memo
 - Escribir pruebas automatizadas y la colección de Postman de pedidos, incluyendo el caso sin token (**401**), precios manipulados por el cliente (deben ignorarse) y pedidos de otro usuario (no deben aparecer).
 
 **Al terminar:** un usuario autenticado puede crear un pedido y listar los suyos con Postman, el total lo calcula siempre el servidor y las escrituras de productos exigen sesión.
+
+### Resumen de la tarea
+
+Se creó el modelo `Order` (`backend/src/models/Order.js`) con `usuario` (referencia a `User`, obligatorio e indexado), `items` (array no vacío de subdocumentos `{ producto, nombre, precio, cantidad }` con cantidades enteras mayores a cero), `total` (`min: 0`) y `timestamps`. En `backend/src/controllers/ordersController.js` se implementaron `createOrder` (`POST /api/pedidos`) y `getMyOrders` (`GET /api/pedidos/mis-pedidos`), registrados en `backend/src/routes/ordersRouter.js` bajo `/api/pedidos` (montado en `backend/src/app.js`), ambos protegidos con `verifyToken`.
+
+`createOrder` valida el formato de `items`, consolida productos repetidos preservando el orden de aparición, consulta cada producto en la base de datos (respondiendo **404** si no existe), copia siempre `nombre` y `precio` desde la base, calcula `total` en el servidor y asocia el pedido a `req.user.id`, ignorando cualquier precio, nombre, total o usuario enviado por el cliente. **Política de stock** (coherente con `seed.js` y `ProductDetail.jsx`): si `product.stock > 0`, se valida disponibilidad en todos los ítems antes de modificar la base (rechazando con **400** y sin descuentos parciales si no alcanza) y se descuenta al confirmar con reversión si falla el guardado del pedido; si `product.stock === 0`, la pieza se trata como «Disponible a pedido» (taller artesanal), se permite el pedido y el stock se mantiene en `0`. `getMyOrders` devuelve únicamente los pedidos del usuario autenticado ordenados del más nuevo al más viejo (`createdAt: -1`).
+
+En `backend/src/routes/productsRouter.js` se mantuvieron públicas las lecturas (`GET /` y `GET /:id`) y se protegieron con `verifyToken` las escrituras (`POST /`, `PUT /:id` y `DELETE /:id`), actualizando `products.test.js` (13 pruebas) y `products.postman_collection.json` (16 solicitudes con autenticación y casos 401). Se agregaron `backend/tests/helpers/fakeOrder.js` (almacén en memoria con validación real de Mongoose y timestamps monotónicos), 12 pruebas en `backend/tests/orders.test.js` y la colección `backend/tests/orders.postman_collection.json` (11 solicitudes). La suite completa del backend suma **44 pruebas** (`app.test.js`: 8, `auth.test.js`: 11, `products.test.js`: 13, `orders.test.js`: 12). La verificación contra MongoDB Atlas queda pendiente de un entorno con `MONGODB_URI`, ya que este checkout no tiene credenciales. Detalles y comandos en `Mateo Bouso.md`.
 
 ---
 

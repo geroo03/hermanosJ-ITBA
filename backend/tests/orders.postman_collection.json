@@ -1,0 +1,234 @@
+{
+  "info": {
+    "name": "Hermanos Jota - Pedidos (Sprint 7)",
+    "description": "Flujo completo de pedidos autenticados y verificación de stock. Ejecutar en orden con el Collection Runner contra una API conectada a MongoDB: registra/inicia sesión, crea un producto temporal con stock, prueba creación y listado de pedidos (incluyendo errores 401, 400 y 404) y elimina el producto temporal al final.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "email", "value": "pedidos.postman@correo.com" },
+    { "key": "password", "value": "secreto123" },
+    { "key": "token", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "productId", "value": "" },
+    { "key": "orderId", "value": "" },
+    { "key": "missingId", "value": "000000000000000000000000" }
+  ],
+  "item": [
+    {
+      "name": "1. Registro de usuario de prueba (201 o 409)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('201 Created o 409 si la cuenta ya existía', () => {",
+        "  pm.expect([201, 409]).to.include(pm.response.code);",
+        "});",
+        "if (pm.response.code === 201) {",
+        "  const data = pm.response.json();",
+        "  pm.collectionVariables.set('token', data.token);",
+        "  pm.collectionVariables.set('userId', data.user._id);",
+        "}"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/register",
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Cliente Pedidos\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}" }
+      }
+    },
+    {
+      "name": "2. Login de usuario de prueba (200)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "const data = pm.response.json();",
+        "pm.test('devuelve token y usuario', () => {",
+        "  pm.expect(data.token).to.be.a('string');",
+        "  pm.expect(data.user._id).to.be.a('string');",
+        "});",
+        "pm.collectionVariables.set('token', data.token);",
+        "pm.collectionVariables.set('userId', data.user._id);"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}" }
+      }
+    },
+    {
+      "name": "3. Crear producto temporal con stock (201)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('201 Created', () => pm.response.to.have.status(201));",
+        "const product = pm.response.json();",
+        "pm.test('guarda el producto temporal con stock 3', () => {",
+        "  pm.expect(product._id).to.be.a('string');",
+        "  pm.expect(product.precio).to.eql(25000);",
+        "  pm.expect(product.stock).to.eql(3);",
+        "});",
+        "pm.collectionVariables.set('productId', product._id);"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/productos",
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Silla Temporal Pedidos\",\n  \"descripcion\": \"Producto temporal para pruebas de pedidos\",\n  \"precio\": 25000,\n  \"stock\": 3,\n  \"imagenUrl\": \"/assets/images/silla-cordoba.png\"\n}" }
+      }
+    },
+    {
+      "name": "4. Crear pedido sin token (401)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));",
+        "pm.test('formato { error, status }', () => {",
+        "  const data = pm.response.json();",
+        "  pm.expect(data.status).to.eql(401);",
+        "  pm.expect(data.error).to.be.a('string');",
+        "});"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/pedidos",
+        "body": { "mode": "raw", "raw": "{\n  \"items\": [\n    { \"producto\": \"{{productId}}\", \"cantidad\": 1 }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "5. Crear pedido válido ignorando precios manipulados (201)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('201 Created', () => pm.response.to.have.status(201));",
+        "const order = pm.response.json();",
+        "pm.test('calcula precio, nombre y total desde la base', () => {",
+        "  pm.expect(order._id).to.be.a('string');",
+        "  pm.expect(order.usuario).to.eql(pm.collectionVariables.get('userId'));",
+        "  pm.expect(order.items).to.be.an('array').with.lengthOf(1);",
+        "  pm.expect(order.items[0].producto).to.eql(pm.collectionVariables.get('productId'));",
+        "  pm.expect(order.items[0].nombre).to.eql('Silla Temporal Pedidos');",
+        "  pm.expect(order.items[0].precio).to.eql(25000);",
+        "  pm.expect(order.items[0].cantidad).to.eql(2);",
+        "  pm.expect(order.total).to.eql(50000);",
+        "});",
+        "pm.collectionVariables.set('orderId', order._id);"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/pedidos",
+        "body": { "mode": "raw", "raw": "{\n  \"items\": [\n    {\n      \"producto\": \"{{productId}}\",\n      \"nombre\": \"Nombre Manipulado\",\n      \"precio\": 1,\n      \"cantidad\": 2\n    }\n  ],\n  \"total\": 1\n}" }
+      }
+    },
+    {
+      "name": "6. Crear pedido con stock insuficiente (400)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('400 Bad Request', () => pm.response.to.have.status(400));",
+        "pm.test('rechaza por stock insuficiente tras el descuento previo', () => {",
+        "  const data = pm.response.json();",
+        "  pm.expect(data.status).to.eql(400);",
+        "  pm.expect(data.error).to.be.a('string').and.match(/stock insuficiente/i);",
+        "});"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/pedidos",
+        "body": { "mode": "raw", "raw": "{\n  \"items\": [\n    { \"producto\": \"{{productId}}\", \"cantidad\": 2 }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "7. Crear pedido con items vacíos (400)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('400 Bad Request', () => pm.response.to.have.status(400));",
+        "pm.test('formato { error, status }', () => {",
+        "  const data = pm.response.json();",
+        "  pm.expect(data.status).to.eql(400);",
+        "  pm.expect(data.error).to.be.a('string');",
+        "});"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/pedidos",
+        "body": { "mode": "raw", "raw": "{\n  \"items\": []\n}" }
+      }
+    },
+    {
+      "name": "8. Crear pedido con producto inexistente (404)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('404 Not Found', () => pm.response.to.have.status(404));",
+        "pm.test('formato { error, status }', () => {",
+        "  const data = pm.response.json();",
+        "  pm.expect(data.status).to.eql(404);",
+        "  pm.expect(data.error).to.be.a('string');",
+        "});"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/pedidos",
+        "body": { "mode": "raw", "raw": "{\n  \"items\": [\n    { \"producto\": \"{{missingId}}\", \"cantidad\": 1 }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "9. Listar mis pedidos sin token (401)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));",
+        "pm.test('formato { error, status }', () => {",
+        "  const data = pm.response.json();",
+        "  pm.expect(data.status).to.eql(401);",
+        "  pm.expect(data.error).to.be.a('string');",
+        "});"
+      ] } }],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/pedidos/mis-pedidos"
+      }
+    },
+    {
+      "name": "10. Listar mis pedidos con token (200)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "const orders = pm.response.json();",
+        "pm.test('devuelve los pedidos del usuario ordenados del más nuevo al más viejo', () => {",
+        "  pm.expect(orders).to.be.an('array');",
+        "  pm.expect(orders.length).to.be.at.least(1);",
+        "  pm.expect(orders[0]._id).to.eql(pm.collectionVariables.get('orderId'));",
+        "  pm.expect(orders[0].total).to.eql(50000);",
+        "  orders.forEach((order) => {",
+        "    pm.expect(order.usuario).to.eql(pm.collectionVariables.get('userId'));",
+        "  });",
+        "});"
+      ] } }],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/pedidos/mis-pedidos"
+      }
+    },
+    {
+      "name": "11. Eliminar producto temporal (200)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "pm.test('elimina el producto temporal', () => {",
+        "  pm.expect(pm.response.json()._id).to.eql(pm.collectionVariables.get('productId'));",
+        "});"
+      ] } }],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/productos/{{productId}}"
+      }
+    }
+  ]
+}

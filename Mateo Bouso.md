@@ -1,5 +1,62 @@
 # Resumen de Entrega — Mateo Bouso
 
+## Sprint 7-8 — Backend de pedidos y protección de rutas de la API
+
+**Responsable:** Mateo Bouso (@mbouso420-spec).  
+**Asignación:** tarea 2 de `Reparto_de_Tareas78.md`.
+
+---
+
+### Punto de partida
+
+La tarea 1 dejó listos el modelo `User`, los endpoints `/api/auth` con bcrypt y JWT (`utils/token.js`) y el middleware `verifyToken` (`middlewares/auth.js`). Las rutas de `/api/productos` seguían completamente abiertas y todavía no existían el modelo ni los endpoints de pedidos.
+
+### Trabajo Realizado
+
+| Archivo | Responsabilidad / Trabajo |
+|---|---|
+| `backend/src/models/Order.js` | Esquema Mongoose de pedidos: `usuario` (`ObjectId` ref `User`, obligatorio e indexado), `items` (array no vacío de subdocumentos `{ producto, nombre, precio, cantidad }` con `cantidad` entera `>= 1`), `total` (`Number`, `min: 0`) y `timestamps`. |
+| `backend/src/controllers/ordersController.js` | Implementación de `createOrder` (`POST /api/pedidos`) y `getMyOrders` (`GET /api/pedidos/mis-pedidos`). Valida `items`, consolida IDs repetidos, consulta productos en MongoDB, copia `nombre` y `precio` desde la base, calcula `total` en el servidor, asocia `usuario` a `req.user.id`, aplica la política de stock sin descuentos parciales (con reversión ante fallos al guardar) y lista los pedidos del usuario ordenados del más nuevo al más viejo. |
+| `backend/src/routes/ordersRouter.js` | Router de pedidos con `POST /` y `GET /mis-pedidos`, ambos protegidos por `verifyToken`. |
+| `backend/src/routes/productsRouter.js` | Mantiene públicas las lecturas (`GET /` y `GET /:id`) y protege con `verifyToken` las escrituras (`POST /`, `PUT /:id` y `DELETE /:id`). |
+| `backend/src/app.js` | Montaje de `app.use('/api/pedidos', ordersRouter)` junto a `/api/auth` y `/api/productos`. |
+| `backend/tests/helpers/fakeOrder.js` | Almacén en memoria para `Order` usando `mock.method` de `node:test`, conservando la validación real de Mongoose, timestamps monotónicos deterministas y filtrado/ordenamiento en `Order.find(...).sort({ createdAt: -1 })`. |
+| `backend/tests/orders.test.js` | Doce pruebas HTTP sobre `/api/pedidos` y `/api/pedidos/mis-pedidos`: creación 201, recálculo en servidor ignorando valores manipulados, consolidación de ítems repetidos, descuento y rechazo de stock sin descuentos parciales, piezas «Disponible a pedido» (`stock: 0`), validaciones 400, producto inexistente 404, protección 401 (sin token, inválido y vencido), lista vacía, aislamiento por usuario y orden del más nuevo al más viejo. |
+| `backend/tests/products.test.js` | Adaptado para enviar token Bearer en `POST`, `PUT` y `DELETE`, manteniendo `GET` público, más pruebas 401 por token ausente, inválido o vencido (13 pruebas en total). |
+| `backend/tests/orders.postman_collection.json` | Colección Postman v2.1.0 de 11 solicitudes en orden: registro/login, creación de producto temporal con stock, `POST /api/pedidos` sin token (401), pedido válido ignorando precios manipulados (201), stock insuficiente (400), ítems vacíos (400), producto inexistente (404), `GET /api/pedidos/mis-pedidos` sin token (401) y con token (200), y eliminación del producto temporal. |
+| `backend/tests/products.postman_collection.json` | Actualizada con registro/login, `Authorization: Bearer {{token}}` en escrituras y casos 401 sin token (16 solicitudes). |
+| `Reparto_de_Tareas78.md` | Asignación de la tarea 2 a `Mateo Bouso (@mbouso420-spec)`, cambio de estado a `Terminada` y resumen de la implementación. |
+
+### Política de stock
+
+Coherente con `backend/src/seed.js` y `client/src/components/ProductDetail.jsx`:
+
+- **`stock > 0`:** se valida que `cantidad <= product.stock` en **todos** los ítems (incluyendo productos repetidos consolidados) antes de modificar la base. Si no alcanza, se responde **400** sin descontar stock de ningún otro producto del pedido; si alcanza, se descuenta al confirmar y se revierte automáticamente si falla el guardado del pedido.
+- **`stock === 0`:** corresponde a piezas «Disponible a pedido» del taller artesanal; el pedido se permite y el stock permanece en `0`.
+
+### Contrato de la API
+
+| Solicitud | Autenticación | Estado | Respuesta |
+|---|---|---|---|
+| `POST /api/pedidos` | Bearer JWT | 201 / 400 / 401 / 404 | Pedido creado con `nombre`, `precio` y `total` calculados desde la base, o `{ error, status }`. |
+| `GET /api/pedidos/mis-pedidos` | Bearer JWT | 200 / 401 | Array de pedidos del usuario del token, del más nuevo al más viejo, o `{ error, status }`. |
+| `GET /api/productos` y `GET /api/productos/:id` | Pública | 200 / 400 / 404 | Catálogo o detalle del producto. |
+| `POST`, `PUT`, `DELETE /api/productos` | Bearer JWT | 201 / 200 / 400 / 401 / 404 | Resultado del CRUD, o `{ error, status }`. |
+
+### Cómo verificarlo
+
+Pruebas automáticas (no requieren base de datos; 44 pruebas en total: `app.test.js` 8, `auth.test.js` 11, `products.test.js` 13, `orders.test.js` 12):
+
+```powershell
+cd backend
+npm install
+npm test
+```
+
+Prueba manual con Postman contra la base real: configurar `MONGODB_URI` y `JWT_SECRET` en `backend/.env`, iniciar el servidor con `npm start` e importar `backend/tests/orders.postman_collection.json` y `backend/tests/products.postman_collection.json` en el Collection Runner. Contra MongoDB Atlas queda pendiente de un entorno con credenciales (`MONGODB_URI`).
+
+---
+
 ## Sprint 5-6 — Ruteo del cliente y consumo de la API
 
 **Responsable:** Mateo Bouso (@mbouso420-spec).  

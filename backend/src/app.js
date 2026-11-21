@@ -6,6 +6,7 @@ const notFound = require('./middlewares/notFound');
 const errorHandler = require('./middlewares/errorHandler');
 const productsRouter = require('./routes/productsRouter');
 const authRouter = require('./routes/authRouter');
+const ordersRouter = require('./routes/ordersRouter');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(logger);
 // Rutas principales de la API
 app.use('/api/auth', authRouter);
 app.use('/api/productos', productsRouter);
+app.use('/api/pedidos', ordersRouter);
 
 // Manejo de rutas inexistentes (404)
 app.use(notFound);
