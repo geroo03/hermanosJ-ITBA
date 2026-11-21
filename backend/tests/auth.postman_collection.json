@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "Hermanos Jota - Autenticación (Sprint 7)",
+    "description": "Registro, login y perfil protegido. Ejecutar en orden: el registro guarda el token en la variable de colección `token`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "email", "value": "prueba.postman@correo.com" },
+    { "key": "password", "value": "secreto123" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Registro correcto (201)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('201 Created', () => pm.response.to.have.status(201));",
+        "const data = pm.response.json();",
+        "pm.test('devuelve token y usuario sin hash', () => {",
+        "  pm.expect(data.token).to.be.a('string');",
+        "  pm.expect(data.user).to.not.have.property('password');",
+        "  pm.expect(data.user.rol).to.eql('cliente');",
+        "});",
+        "pm.collectionVariables.set('token', data.token);"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/register",
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Cliente de Prueba\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}" }
+      }
+    },
+    {
+      "name": "2. Registro con email repetido (409)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('409 Conflict', () => pm.response.to.have.status(409));",
+        "pm.test('formato { error, status }', () => {",
+        "  const data = pm.response.json();",
+        "  pm.expect(data.error).to.be.a('string');",
+        "  pm.expect(data.status).to.eql(409);",
+        "});"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/register",
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Cliente de Prueba\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}" }
+      }
+    },
+    {
+      "name": "3. Registro con contraseña corta (400)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('400 Bad Request', () => pm.response.to.have.status(400));"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/register",
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Otra Persona\",\n  \"email\": \"otra.persona@correo.com\",\n  \"password\": \"123\"\n}" }
+      }
+    },
+    {
+      "name": "4. Login correcto (200)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "const data = pm.response.json();",
+        "pm.test('devuelve token', () => pm.expect(data.token).to.be.a('string'));",
+        "pm.collectionVariables.set('token', data.token);"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}" }
+      }
+    },
+    {
+      "name": "5. Login con contraseña incorrecta (401)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));"
+      ] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"clave-incorrecta\"\n}" }
+      }
+    },
+    {
+      "name": "6. Perfil con token (200)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('200 OK', () => pm.response.to.have.status(200));",
+        "pm.test('es el usuario del token', () => pm.expect(pm.response.json().email).to.eql(pm.collectionVariables.get('email')));"
+      ] } }],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/auth/perfil"
+      }
+    },
+    {
+      "name": "7. Perfil sin token (401)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));"
+      ] } }],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/auth/perfil"
+      }
+    },
+    {
+      "name": "8. Perfil con token inválido (401)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));"
+      ] } }],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer token.invalido.123" }],
+        "url": "{{baseUrl}}/auth/perfil"
+      }
+    }
+  ]
+}

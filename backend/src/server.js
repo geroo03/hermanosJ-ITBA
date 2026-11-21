@@ -8,6 +8,10 @@ const connectDB = require('./config/db');
 // Iniciar el servidor después de conectar con MongoDB
 const startServer = async () => {
   try {
+    if (!process.env.JWT_SECRET) {
+      throw new Error('Falta la variable de entorno JWT_SECRET');
+    }
+
     await connectDB();
 
     const PORT = process.env.PORT || 3000;
@@ -23,7 +27,7 @@ const startServer = async () => {
     });
 
   } catch (error) {
-    console.error('No se pudo iniciar el servidor porque falló la conexión con MongoDB.');
+    console.error(`No se pudo iniciar el servidor: ${error.message}`);
     process.exitCode = 1;
   }
 };

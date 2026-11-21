@@ -5,6 +5,7 @@ const logger = require('./middlewares/logger');
 const notFound = require('./middlewares/notFound');
 const errorHandler = require('./middlewares/errorHandler');
 const productsRouter = require('./routes/productsRouter');
+const authRouter = require('./routes/authRouter');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(logger);
 
 // Rutas principales de la API
+app.use('/api/auth', authRouter);
 app.use('/api/productos', productsRouter);
 
 // Manejo de rutas inexistentes (404)

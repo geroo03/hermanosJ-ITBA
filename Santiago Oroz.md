@@ -44,3 +44,47 @@ npm test
 ```
 
 Prueba manual con Postman contra la base real: crear `backend/.env` a partir de `.env.example`, ejecutar `node tests/serve-products.js` (o `npm start`) e importar `backend/tests/products.postman_collection.json` en el Collection Runner.
+
+
+---
+
+## Sprint 7-8 — Backend de autenticación: usuarios, bcrypt, JWT y middleware
+
+**Asignación:** tarea 1 de `Reparto_de_Tareas78.md`.
+
+### Punto de partida
+
+La API ya tenía el CRUD de productos sobre MongoDB, sin ningún concepto de usuario ni rutas protegidas.
+
+### Trabajo realizado
+
+| Archivo | Trabajo |
+|---|---|
+| `backend/package.json` | Se suman `bcryptjs` (JavaScript puro, compila igual en Windows y en Render) y `jsonwebtoken`. |
+| `backend/src/models/User.js` | `nombre`, `email` (único, minúsculas, formato validado), `password` (`select: false`), `rol` (`cliente` o `admin`) y `timestamps`. `toJSON` elimina siempre el hash. |
+| `backend/src/controllers/authController.js` | `register` (contraseña de al menos 6 caracteres, 409 ante email repetido, hash con bcrypt, 201 con `{ token, user }`, rol siempre `cliente`), `login` (mismo 401 para email inexistente y contraseña incorrecta) y `getProfile`. |
+| `backend/src/utils/token.js` | Firma y verifica JWT con payload `{ id, rol }`, `JWT_SECRET` y `JWT_EXPIRES_IN` (7 días por defecto). |
+| `backend/src/middlewares/auth.js` | `verifyToken` (header `Authorization: Bearer`, deja `req.user`, 401 con `{ error, status }`) y `requireRole` (403). |
+| `backend/src/routes/authRouter.js`, `app.js` | `POST /api/auth/register`, `POST /api/auth/login` y `GET /api/auth/perfil` (protegida). |
+| `backend/src/server.js`, `.env.example` | El servidor no arranca sin `JWT_SECRET`; se documentan `JWT_SECRET` y `JWT_EXPIRES_IN`. |
+| `backend/tests/auth.test.js`, `helpers/fakeUser.js` | Once pruebas HTTP con un modelo `User` simulado en memoria que conserva la validación real del esquema. |
+| `backend/tests/auth.postman_collection.json` | Ocho solicitudes en orden: registro, email repetido, contraseña corta, login, credenciales erróneas y perfil con token, sin token y con token inválido. |
+
+### Contrato de la API
+
+| Solicitud | Estado | Respuesta |
+|---|---|---|
+| `POST /api/auth/register` | 201 / 400 / 409 | `{ token, user }`, o error. |
+| `POST /api/auth/login` | 200 / 400 / 401 | `{ token, user }`, o error. |
+| `GET /api/auth/perfil` | 200 / 401 | Usuario del token, o error. |
+
+### Cómo verificarlo
+
+Pruebas automáticas (no requieren base de datos):
+
+```bash
+cd backend
+npm test
+```
+
+Prueba manual: agregar `JWT_SECRET` a `backend/.env`, ejecutar `npm start` e importar `backend/tests/auth.postman_collection.json` en el Collection Runner. Contra MongoDB Atlas no se verificó: este checkout no tiene `MONGODB_URI`.
