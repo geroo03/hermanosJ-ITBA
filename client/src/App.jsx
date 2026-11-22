@@ -10,6 +10,8 @@ import Catalogo from './pages/Catalogo';
 import ProductDetail from './components/ProductDetail';
 import CrearProducto from './pages/CrearProducto';
 import EditarProducto from './pages/EditarProducto';
+import Login from './pages/Login';
+import Registro from './pages/Registro';
 import './styles/app.css';
 import './styles/glass.css';
 
@@ -265,6 +267,9 @@ function App() {
               </div>
             }
           />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

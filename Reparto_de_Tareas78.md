@@ -153,11 +153,11 @@ En `backend/src/routes/productsRouter.js` se mantuvieron públicas las lecturas 
 
 ---
 
-## Tarea 3. Responsable: **(sin asignar)** — Frontend: `AuthContext`, `ProtectedRoute` y páginas de registro y login
+## Tarea 3. Responsable: **Tadeo Piccato** (@Flowveep) — Frontend: `AuthContext`, `ProtectedRoute` y páginas de registro y login
 
-**Estado: Pendiente**
+**Estado: Terminada**
 
-**Archivos:** `client/src/context/AuthContext.jsx`, `client/src/services/authApi.js`, `client/src/components/ProtectedRoute.jsx`, `client/src/components/AuthForm.jsx`, `client/src/pages/Registro.jsx`, `client/src/pages/Login.jsx`, `client/src/index.js`, `client/src/styles/auth.css`, y las pruebas correspondientes.
+**Archivos:** `client/src/context/AuthContext.jsx`, `client/src/services/authApi.js`, `client/src/components/ProtectedRoute.jsx`, `client/src/components/AuthForm.jsx`, `client/src/pages/Registro.jsx`, `client/src/pages/Login.jsx`, `client/src/index.js`, `client/src/App.jsx`, `client/src/styles/auth.css`, `client/src/services/authApi.test.js`, `client/src/components/auth.test.jsx`.
 
 **Qué hay que hacer:**
 
@@ -169,6 +169,14 @@ En `backend/src/routes/productsRouter.js` se mantuvieron públicas las lecturas 
 - Agregar pruebas del contexto, de `ProtectedRoute` y de los formularios.
 
 **Al terminar:** se puede registrar una cuenta e iniciar sesión desde el navegador, la sesión sobrevive a recargar la página, y existe un `ProtectedRoute` listo para envolver cualquier ruta privada.
+
+### Resumen de la tarea
+
+Se implementó `client/src/services/authApi.js` con `registerUser`, `loginUser` y `getProfile` usando `fetch` y `REACT_APP_API_URL`, conservando el manejo de errores de red y respuestas JSON `{ error, status }` de `productsApi.js`. En `client/src/context/AuthContext.jsx` se crearon `AuthContext`, `AuthProvider` y `useAuthContext()` (lanza un error claro si se usa fuera del provider), con persistencia en `localStorage` bajo `hermanos-jota-token`, decodificación Base64URL del payload JWT (`decodeJwtPayload` e `isTokenExpired`), restauración de sesión al recargar validando contra `GET /api/auth/perfil` (descartando tokens vencidos o rechazados con 401 y evitando condiciones de carrera con `logout`/`login`), acciones `login`, `register` y `logout` en `useCallback`, y `value` memoizado con `useMemo`.
+
+Se creó `client/src/components/ProtectedRoute.jsx` (muestra estado de espera mientras `loading`, redirige a `/login` preservando `state.from` si no hay sesión y soporta tanto `children` como `<Outlet />`), `client/src/components/AuthForm.jsx` (formulario controlado reutilizable para registro y login, validación por campo, foco al primer error, errores de API y bloqueo de envíos duplicados), las páginas `client/src/pages/Login.jsx` y `client/src/pages/Registro.jsx` (navegación de retorno a `state.from` o `/`, redirección automática si ya hay sesión y preservación de `state.from` entre ambas pantallas) y los estilos en `client/src/styles/auth.css`. Se montó `<AuthProvider>` en `client/src/index.js` y se registraron `/login` y `/registro` en `client/src/App.jsx` manteniendo intactas las rutas y pruebas existentes para coordinar sin fricciones con la Tarea 4.
+
+Se agregaron **34 pruebas nuevas** (`client/src/services/authApi.test.js`: 12 y `client/src/components/auth.test.jsx`: 22). La verificación pasó completa: **90/90 pruebas del cliente en 6 suites**, `CI=true npm run build` sin errores ni advertencias, y **44/44 pruebas del backend** (**134/134** en total). También se unificaron los registros históricos de `Tade Piccato.md` y `Tadeo Piccato.md` en `Tadeo Piccato.md`. Detalles y comandos en `Tadeo Piccato.md`.
 
 ---
 
