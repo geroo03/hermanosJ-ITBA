@@ -93,7 +93,7 @@ Para que las cinco tareas encajen sin pisarse, todo el equipo respeta estos acue
 
 ---
 
-## Tarea 1. Responsable: **(sin asignar)** — Backend de autenticación: usuarios, bcrypt, JWT y middleware
+## Tarea 1. Responsable: **Santiago Oroz** (@SantiagoOroz) — Backend de autenticación: usuarios, bcrypt, JWT y middleware
 
 **Estado: Terminada**
 
@@ -261,4 +261,4 @@ Verificado en la aplicación **desplegada** el 2026-11-22:
 - [x] El catálogo, el detalle, el carrito y el formulario de contacto siguen funcionando.
 - [x] No hay archivos `.env` ni credenciales (incluido `JWT_SECRET`) en el repositorio.
 - [x] El README incluye los enlaces de ambos despliegues, la arquitectura y las variables de entorno.
-- [ ] Cada integrante escribió su nombre y usuario en su tarea de este archivo.
+- [x] Cada integrante escribió su nombre y usuario en su tarea de este archivo.
