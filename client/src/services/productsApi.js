@@ -1,3 +1,4 @@
+import { TOKEN_STORAGE_KEY } from '../context/AuthContext';
 const API_URL = (process.env.REACT_APP_API_URL ?? 'http://localhost:3000/api').replace(/\/+$/, '');
 
 const CONNECTION_ERROR =
@@ -7,6 +8,16 @@ const DETAIL_ERROR = 'No pudimos cargar el producto solicitado.';
 const CREATE_ERROR = 'No pudimos crear el producto. Revisá los datos e intentá nuevamente.';
 const UPDATE_ERROR = 'No pudimos actualizar el producto. Revisá los datos e intentá nuevamente.';
 const DELETE_ERROR = 'No pudimos eliminar el producto. Intentá nuevamente más tarde.';
+
+// Las escrituras de productos requieren el JWT de la sesión (lo guarda AuthContext).
+function authHeaders() {
+  try {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  } catch {
+    return {};
+  }
+}
 
 async function requestApi(url, options) {
   try {
@@ -96,7 +107,7 @@ export async function getProductById(id) {
 export async function createProduct(productData) {
   const response = await requestApi(`${API_URL}/productos`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(productData),
   });
 
@@ -116,7 +127,7 @@ export async function createProduct(productData) {
 export async function updateProduct(id, productData) {
   const response = await requestApi(`${API_URL}/productos/${encodeURIComponent(id)}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(productData),
   });
 
@@ -136,6 +147,7 @@ export async function updateProduct(id, productData) {
 export async function deleteProduct(id) {
   const response = await requestApi(`${API_URL}/productos/${encodeURIComponent(id)}`, {
     method: 'DELETE',
+    headers: authHeaders(),
   });
 
   if (!response.ok) {

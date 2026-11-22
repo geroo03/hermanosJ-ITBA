@@ -227,9 +227,9 @@ Archivos principales:
 client/src/context/CartContext.jsx, client/src/services/ordersApi.js, client/src/components/Cart.jsx, client/src/components/Navbar.jsx, client/src/pages/Perfil.jsx, client/src/pages/MisPedidos.jsx, client/src/App.jsx, client/src/index.js, client/src/styles/orders.css y los archivos de pruebas correspondientes.
 ---
 
-## Tarea 5. Responsable: **(sin asignar)** — Sprint 8: despliegue, variables de producción, README y revisión final
+## Tarea 5. Responsable: **Sebastián Gerónimo Peralta** (@geroo03) — Sprint 8: despliegue, variables de producción, README y revisión final
 
-**Estado: Pendiente**
+**Estado: En curso** (tareas 1 a 4 integradas; flujo completo probado en local contra MongoDB Atlas: registro, sesión persistente, compra, «Mis pedidos», perfil y alta/baja de productos; se corrigió que crear, editar y eliminar productos no enviaban el token; README final y CORS con token listos. Falta cargar `JWT_SECRET` en Render, redesplegar y verificar en producción)
 
 **Archivos:** `README.md`, `backend/.env.example` y `client/.env.example` (revisión), `backend/src/app.js` (CORS, si hace falta), configuración de Render, Vercel/Netlify y MongoDB Atlas, y este archivo.
 

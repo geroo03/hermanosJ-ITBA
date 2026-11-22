@@ -162,6 +162,7 @@ describe('productsApi', () => {
       await expect(deleteProduct(id)).resolves.toEqual(deleted);
       expect(global.fetch).toHaveBeenCalledWith(`http://localhost:3000/api/productos/${id}`, {
         method: 'DELETE',
+        headers: {},
       });
     });
 
@@ -171,6 +172,30 @@ describe('productsApi', () => {
       await expect(deleteProduct('65f000000000000000000002')).rejects.toThrow(
         'No pudimos conectarnos con el servidor. Verificá que la API esté en funcionamiento.',
       );
+    });
+  });
+  describe('token de sesión', () => {
+    afterEach(() => localStorage.removeItem('hermanos-jota-token'));
+
+    it('crear, editar y eliminar envían el JWT guardado en Authorization', async () => {
+      localStorage.setItem('hermanos-jota-token', 'abc.def.ghi');
+      const product = { _id: '65f000000000000000000001', nombre: 'Sofá Patagonia', precio: 1 };
+      global.fetch = jest.fn().mockResolvedValue({ ok: true, json: jest.fn().mockResolvedValue(product) });
+
+      await createProduct({ nombre: 'Sofá Patagonia', precio: 1 });
+      await updateProduct(product._id, { precio: 2 });
+      await deleteProduct(product._id);
+
+      const sentHeaders = global.fetch.mock.calls.map(([, options]) => options.headers.Authorization);
+      expect(sentHeaders).toEqual(['Bearer abc.def.ghi', 'Bearer abc.def.ghi', 'Bearer abc.def.ghi']);
+    });
+
+    it('sin sesión no envía Authorization', async () => {
+      global.fetch = jest.fn().mockResolvedValue({ ok: true, json: jest.fn().mockResolvedValue(null) });
+
+      await deleteProduct('65f000000000000000000001');
+
+      expect(global.fetch.mock.calls[0][1].headers.Authorization).toBeUndefined();
     });
   });
 });

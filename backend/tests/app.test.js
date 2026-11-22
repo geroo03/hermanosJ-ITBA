@@ -58,6 +58,28 @@ test('CORS permite el preflight de DELETE desde CLIENT_URL, aunque tenga barra f
   }
 });
 
+test('CORS permite enviar el token en el preflight de POST /api/pedidos', async () => {
+  process.env.CLIENT_URL = 'https://hermanos-jota.vercel.app';
+  try {
+    const response = await fetch(`${baseUrl}/api/pedidos`, {
+      method: 'OPTIONS',
+      headers: {
+        Origin: 'https://hermanos-jota.vercel.app',
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'authorization,content-type',
+      },
+    });
+    assert.equal(response.status, 204);
+    assert.equal(
+      response.headers.get('access-control-allow-origin'),
+      'https://hermanos-jota.vercel.app'
+    );
+    assert.match(response.headers.get('access-control-allow-headers'), /authorization/i);
+  } finally {
+    delete process.env.CLIENT_URL;
+  }
+});
+
 test('CORS no autoriza otros orígenes', async () => {
   const response = await fetch(`${baseUrl}/api/productos`, {
     headers: { Origin: 'https://otro-sitio.example' },
