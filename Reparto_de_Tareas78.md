@@ -1,6 +1,6 @@
 # Reparto de tareas — Sprints 7 y 8
 
-Este archivo sirve para coordinar el trabajo y para dejar documentada la responsabilidad de cada integrante. Hay **5 tareas, una por integrante**. Cada tarea tiene archivos propios para que puedan hacerse en paralelo. Ninguna tarea está asignada de antemano: cada persona elige una libre y escribe su nombre y usuario en ella.
+Este archivo sirve para coordinar el trabajo y para dejar documentada la responsabilidad de cada integrante. Hay **5 tareas, una por integrante**. Cada tarea tiene archivos propios para que puedan hacerse en paralelo.
 
 Este trabajo continúa el repositorio del Sprint 5-6: la API de Express con MongoDB y el CRUD de productos, y la aplicación de React con React Router, el detalle y los formularios de alta/edición ya existen y están desplegados (Render y Vercel). En estos sprints se agregan **usuarios con autenticación**, **estado global con Context API**, **pedidos asociados al cliente** y el **lanzamiento final**. La identidad de marca (paleta, tipografías, imágenes), el catálogo y el CRUD se conservan.
 
@@ -229,7 +229,7 @@ client/src/context/CartContext.jsx, client/src/services/ordersApi.js, client/src
 
 ## Tarea 5. Responsable: **Sebastián Gerónimo Peralta** (@geroo03) — Sprint 8: despliegue, variables de producción, README y revisión final
 
-**Estado: En curso** (tareas 1 a 4 integradas; flujo completo probado en local contra MongoDB Atlas: registro, sesión persistente, compra, «Mis pedidos», perfil y alta/baja de productos; se corrigió que crear, editar y eliminar productos no enviaban el token; README final y CORS con token listos. Falta cargar `JWT_SECRET` en Render, redesplegar y verificar en producción)
+**Estado: Terminada** (2026-11-22: `JWT_SECRET` cargada en Render y ambos sitios redesplegados desde `main`; checklist final recorrido en la aplicación publicada; se corrigió que crear, editar y eliminar productos no enviaban el token; README final; CORS con `Authorization` verificado y cubierto por test; sin credenciales en el repositorio ni en el historial; datos de prueba eliminados de la base)
 
 **Archivos:** `README.md`, `backend/.env.example` y `client/.env.example` (revisión), `backend/src/app.js` (CORS, si hace falta), configuración de Render, Vercel/Netlify y MongoDB Atlas, y este archivo.
 
@@ -247,18 +247,18 @@ client/src/context/CartContext.jsx, client/src/services/ordersApi.js, client/src
 
 ## Checklist de entrega final
 
-Cuando las cinco tareas estén integradas, el equipo verifica en la aplicación **desplegada**:
+Verificado en la aplicación **desplegada** el 2026-11-22:
 
-- [ ] Se puede crear una cuenta en `/registro` y la contraseña queda hasheada en la base (nunca en texto plano).
-- [ ] `/login` con credenciales correctas inicia sesión, y con credenciales incorrectas muestra un error claro.
-- [ ] Recargar la página mantiene la sesión iniciada.
-- [ ] La barra de navegación cambia según haya o no sesión, y «Salir» cierra la sesión.
-- [ ] `/perfil` y `/mis-pedidos` redirigen a `/login` sin sesión y, tras iniciar sesión, vuelven a la ruta pedida.
-- [ ] Sin sesión, «Finalizar compra» lleva a iniciar sesión; con sesión, crea el pedido a nombre del usuario.
-- [ ] Tras un pedido exitoso el carrito se vacía, y el pedido aparece en `/mis-pedidos` con el total correcto.
-- [ ] Un pedido con un token ausente, inválido o vencido responde 401 desde la API.
-- [ ] Crear, editar y eliminar productos exige sesión; el catálogo y el detalle siguen siendo públicos.
-- [ ] El catálogo, el detalle, el carrito y el formulario de contacto siguen funcionando.
-- [ ] No hay archivos `.env` ni credenciales (incluido `JWT_SECRET`) en el repositorio.
-- [ ] El README incluye los enlaces de ambos despliegues, la arquitectura y las variables de entorno.
+- [x] Se puede crear una cuenta en `/registro` y la contraseña queda hasheada en la base (nunca en texto plano).
+- [x] `/login` con credenciales correctas inicia sesión, y con credenciales incorrectas muestra un error claro.
+- [x] Recargar la página mantiene la sesión iniciada.
+- [x] La barra de navegación cambia según haya o no sesión, y «Salir» cierra la sesión.
+- [x] `/perfil` y `/mis-pedidos` redirigen a `/login` sin sesión y, tras iniciar sesión, vuelven a la ruta pedida.
+- [x] Sin sesión, «Finalizar compra» lleva a iniciar sesión; con sesión, crea el pedido a nombre del usuario.
+- [x] Tras un pedido exitoso el carrito se vacía, y el pedido aparece en `/mis-pedidos` con el total correcto.
+- [x] Un pedido con un token ausente, inválido o vencido responde 401 desde la API.
+- [x] Crear, editar y eliminar productos exige sesión; el catálogo y el detalle siguen siendo públicos.
+- [x] El catálogo, el detalle, el carrito y el formulario de contacto siguen funcionando.
+- [x] No hay archivos `.env` ni credenciales (incluido `JWT_SECRET`) en el repositorio.
+- [x] El README incluye los enlaces de ambos despliegues, la arquitectura y las variables de entorno.
 - [ ] Cada integrante escribió su nombre y usuario en su tarea de este archivo.
