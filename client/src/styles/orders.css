@@ -1,0 +1,238 @@
+/* ---------- Perfil y pedidos ---------- */
+
+.orders-page {
+  max-width: 60rem;
+}
+
+.orders-page__heading {
+  margin-bottom: 1.75rem;
+}
+
+.orders-page__heading .section-heading__title {
+  margin-bottom: 0.5rem;
+}
+
+.orders-page__heading .section-heading__subtitle {
+  margin-top: 0;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+/* ---------- Perfil ---------- */
+
+.account-card {
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.65rem;
+  background: var(--surface);
+}
+
+.account-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--alabaster);
+}
+
+.account-card__header h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.3rem;
+}
+
+.account-card__role {
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  background: var(--surface);
+  color: var(--siena-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.account-card__details {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.account-card__details > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.7fr) minmax(0, 1.3fr);
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.account-card__details > div:last-child {
+  border-bottom: 0;
+}
+
+.account-card__details dt {
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+
+.account-card__details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Mensaje de éxito ---------- */
+
+.orders-success {
+  margin: 0 0 1.5rem;
+  border-left: 4px solid var(--sage);
+  border-radius: 0.35rem;
+  padding: 1rem 1.25rem;
+  background: var(--alabaster);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* ---------- Estado sin pedidos ---------- */
+
+.orders-empty {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.65rem;
+  padding: 2rem;
+  background: var(--surface);
+}
+
+.orders-empty h2,
+.orders-empty p {
+  margin: 0;
+}
+
+.orders-empty h2 {
+  font-family: var(--serif);
+}
+
+.orders-empty p {
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+/* ---------- Lista de pedidos ---------- */
+
+.orders-list {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.order-card {
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.65rem;
+  background: var(--surface);
+}
+
+.order-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--alabaster);
+}
+
+.order-card__header h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+}
+
+.order-card__header p {
+  margin: 0.4rem 0 0;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}
+
+.order-card__status {
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  background: var(--surface);
+  color: var(--siena-dark);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.order-card__body {
+  padding: 1.25rem;
+}
+
+.order-card__body h3 {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+
+.order-card__items {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-card__items li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.order-card__items li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.order-card__items strong {
+  color: var(--siena-dark);
+  white-space: nowrap;
+}
+
+.order-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--alabaster);
+}
+
+.order-card__footer strong {
+  color: var(--siena-dark);
+  font-size: 1.2rem;
+}
+
+@media (max-width: 36rem) {
+  .account-card__details > div {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .orders-empty {
+    padding: 1.25rem;
+  }
+
+  .order-card__header,
+  .order-card__body,
+  .order-card__footer {
+    padding: 1rem;
+  }
+}

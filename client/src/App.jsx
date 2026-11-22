@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { getProducts } from './services/productsApi';
+import { useCartContext } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Cart from './components/Cart';
 import ContactForm from './components/ContactForm';
@@ -8,35 +9,15 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Catalogo from './pages/Catalogo';
 import ProductDetail from './components/ProductDetail';
+import ProtectedRoute from './components/ProtectedRoute';
+import Perfil from './pages/Perfil';
+import MisPedidos from './pages/MisPedidos';
 import CrearProducto from './pages/CrearProducto';
 import EditarProducto from './pages/EditarProducto';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import './styles/app.css';
 import './styles/glass.css';
-
-const CART_STORAGE_KEY = 'hermanos-jota-cart';
-
-export function readStoredCart() {
-  try {
-    const stored = JSON.parse(localStorage.getItem(CART_STORAGE_KEY));
-
-    if (!Array.isArray(stored)) {
-      return [];
-    }
-
-    // Descarta ítems corruptos o de versiones previas sin _id/precio numérico.
-    return stored.filter(
-      (item) =>
-        item?.product?._id != null &&
-        Number.isFinite(Number(item.product.precio)) &&
-        Number.isInteger(item.quantity) &&
-        item.quantity > 0,
-    );
-  } catch {
-    return [];
-  }
-}
 
 // La API puede tardar cerca de un minuto en despertar: reintenta durante 90 segundos.
 const WAKE_RETRY_DELAY = 5000;
@@ -46,17 +27,14 @@ function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [cart, setCart] = useState(readStoredCart);
+
+  const {
+    removeFromCart,
+    updateCartProduct,
+  } = useCartContext();
+
   const location = useLocation();
   const hasMountedRef = useRef(false);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-    } catch {
-      // El carrito sigue funcionando en memoria si el almacenamiento no está disponible.
-    }
-  }, [cart]);
 
   // Cada pantalla nueva arranca desde arriba, no en el scroll de la anterior.
   useEffect(() => {
@@ -120,70 +98,25 @@ function App() {
     };
   }, [location.pathname, loadProducts]);
 
-  const cartItemCount = useMemo(
-    () => cart.reduce((total, item) => total + item.quantity, 0),
-    [cart],
-  );
-
-  function addToCart(product) {
-    setCart((currentCart) => {
-      const existingItem = currentCart.find((item) => item.product._id === product._id);
-
-      if (existingItem) {
-        return currentCart.map((item) =>
-          item.product._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-
-      return [...currentCart, { product, quantity: 1 }];
-    });
-  }
-
-  function increaseQuantity(productId) {
-    setCart((currentCart) =>
-      currentCart.map((item) =>
-        item.product._id === productId
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      ),
-    );
-  }
-
-  function decreaseQuantity(productId) {
-    setCart((currentCart) =>
-      currentCart
-        .map((item) =>
-          item.product._id === productId
-            ? { ...item, quantity: item.quantity - 1 }
-            : item,
-        )
-        .filter((item) => item.quantity > 0),
-    );
-  }
-
-  function removeFromCart(productId) {
-    setCart((currentCart) =>
-      currentCart.filter((item) => item.product._id !== productId),
-    );
-  }
-
   function handleProductUpdated(product) {
-    setProducts((current) => current.map((item) => item._id === product._id ? product : item));
-    setCart((current) => current.map((item) =>
-      item.product._id === product._id ? { ...item, product } : item,
-    ));
+    setProducts((current) =>
+      current.map((item) => item._id === product._id ? product : item),
+    );
+
+    updateCartProduct(product);
   }
 
   function handleProductDeleted(productId) {
-    setProducts((current) => current.filter((item) => item._id !== productId));
+    setProducts((current) =>
+      current.filter((item) => item._id !== productId),
+    );
+
     removeFromCart(productId);
   }
 
   return (
     <div className="app-shell">
-      <Navbar cartItemCount={cartItemCount} />
+      <Navbar />
 
       <main className="app-main">
         {location.state?.success && (
@@ -191,6 +124,7 @@ function App() {
             {location.state.success}
           </p>
         )}
+
         <Routes>
           <Route
             path="/"
@@ -200,7 +134,6 @@ function App() {
                 loading={loading}
                 error={error}
                 onRetry={() => loadProducts()}
-                onAddToCart={addToCart}
               />
             }
           />
@@ -213,25 +146,42 @@ function App() {
                 loading={loading}
                 error={error}
                 onRetry={() => loadProducts()}
-                onAddToCart={addToCart}
               />
             }
           />
 
           <Route
             path="/productos/:id"
-            element={<ProductDetail onAddToCart={addToCart} onProductDeleted={handleProductDeleted} />}
+            element={
+              <ProductDetail
+                onProductDeleted={handleProductDeleted}
+              />
+            }
           />
 
-          <Route
-            path="/admin/crear-producto"
-            element={<CrearProducto />}
-          />
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path="/perfil"
+              element={<Perfil />}
+            />
 
-          <Route
-            path="/admin/editar-producto/:id"
-            element={<EditarProducto onProductUpdated={handleProductUpdated} />}
-          />
+            <Route
+              path="/mis-pedidos"
+              element={<MisPedidos />}
+            />
+
+            <Route
+              path="/admin/crear-producto"
+              element={<CrearProducto />}
+            />
+
+            <Route
+              path="/admin/editar-producto/:id"
+              element={
+                <EditarProducto onProductUpdated={handleProductUpdated} />
+              }
+            />
+          </Route>
 
           <Route
             path="/contacto"
@@ -257,13 +207,7 @@ function App() {
             path="/carrito"
             element={
               <div className="app-content">
-                <Cart
-                  cart={cart}
-                  onIncreaseQuantity={increaseQuantity}
-                  onDecreaseQuantity={decreaseQuantity}
-                  onRemoveFromCart={removeFromCart}
-                  onCheckout={() => setCart([])}
-                />
+                <Cart />
               </div>
             }
           />

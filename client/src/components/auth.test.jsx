@@ -1,3 +1,4 @@
+
 import { act, memo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
@@ -9,6 +10,7 @@ import {
   isTokenExpired,
   useAuthContext,
 } from '../context/AuthContext';
+import { CartProvider } from '../context/CartContext';
 import AuthForm, { validateAuthForm } from './AuthForm';
 import ProtectedRoute from './ProtectedRoute';
 import Login, { getRedirectTarget } from '../pages/Login';
@@ -112,6 +114,15 @@ function getInteractive(label) {
     (element) => element.textContent.trim() === label,
   );
   if (!found) throw new Error(`No se encontró la acción: ${label}`);
+  return found;
+}
+
+// Busca exclusivamente botones, evitando seleccionar enlaces del Navbar.
+function getButton(label) {
+  const found = [...container.querySelectorAll('button')].find(
+    (element) => element.textContent.trim() === label,
+  );
+  if (!found) throw new Error(`No se encontró el botón: ${label}`);
   return found;
 }
 
@@ -316,7 +327,6 @@ describe('AuthContext y useAuthContext', () => {
       </AuthProvider>,
     );
 
-    // Logout antes de que termine la restauración inicial: la respuesta tardía se descarta.
     act(() => {
       auth.logout();
     });
@@ -511,12 +521,14 @@ describe('AuthForm, /registro y /login', () => {
 
     await renderTree(
       <AuthProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </AuthProvider>,
       ['/registro'],
     );
 
-    await click(getInteractive('Crear cuenta'));
+    await click(getButton('Crear cuenta'));
     expect(document.activeElement.id).toBe('auth-nombre');
     expect(container.querySelector('#auth-nombre').getAttribute('aria-invalid')).toBe('true');
     expect(container.querySelector('#auth-email-error').textContent).toContain('Ingresá tu email');
@@ -527,7 +539,7 @@ describe('AuthForm, /registro y /login', () => {
     typeField('nombre', 'Ana Pérez');
     typeField('email', 'no-valido');
     typeField('password', '123');
-    await click(getInteractive('Crear cuenta'));
+    await click(getButton('Crear cuenta'));
     expect(document.activeElement.id).toBe('auth-email');
     expect(container.querySelector('#auth-password-error').textContent).toContain(
       'al menos 6 caracteres',
@@ -549,7 +561,9 @@ describe('AuthForm, /registro y /login', () => {
 
     await renderTree(
       <AuthProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </AuthProvider>,
       ['/registro'],
     );
@@ -557,7 +571,7 @@ describe('AuthForm, /registro y /login', () => {
     typeField('nombre', '  Ana Pérez  ');
     typeField('email', '  ana@correo.com  ');
     typeField('password', 'secreto123');
-    await click(getInteractive('Crear cuenta'));
+    await click(getButton('Crear cuenta'));
 
     const registerCall = global.fetch.mock.calls.find(([url]) => url.endsWith('/auth/register'));
     expect(JSON.parse(registerCall[1].body)).toEqual({
@@ -583,7 +597,9 @@ describe('AuthForm, /registro y /login', () => {
 
     await renderTree(
       <AuthProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </AuthProvider>,
       ['/registro'],
     );
@@ -591,7 +607,7 @@ describe('AuthForm, /registro y /login', () => {
     typeField('nombre', 'Ana Pérez');
     typeField('email', 'ana@correo.com');
     typeField('password', 'secreto123');
-    await click(getInteractive('Crear cuenta'));
+    await click(getButton('Crear cuenta'));
 
     expect(currentLocation()).toBe('/registro');
     expect(container.querySelector('.auth-form__api-error').textContent).toBe(
@@ -611,14 +627,16 @@ describe('AuthForm, /registro y /login', () => {
 
     await renderTree(
       <AuthProvider>
-        <App />
+        <CartProvider>
+          <App />
+        </CartProvider>
       </AuthProvider>,
       ['/login'],
     );
 
     typeField('email', 'ana@correo.com');
     typeField('password', 'clave-erronea');
-    await click(getInteractive('Ingresar'));
+    await click(getButton('Ingresar'));
 
     expect(currentLocation()).toBe('/login');
     expect(container.querySelector('.auth-form__api-error').textContent).toBe(

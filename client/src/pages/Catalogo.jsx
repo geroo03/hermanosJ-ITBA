@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProductList from '../components/ProductList';
 
-// Permite buscar sin distinguir mayúsculas ni tildes: "sofa" encuentra "Sofá".
+// Permite buscar sin distinguir mayúsculas ni tildes.
 function normalizeText(text = '') {
   return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
 }
 
-function Catalogo({ products, loading, error, onRetry, onAddToCart }) {
+function Catalogo({ products, loading, error, onRetry }) {
   const [query, setQuery] = useState('');
   const normalizedQuery = normalizeText(query.trim());
+
   const visibleProducts = products.filter((product) =>
     normalizeText(`${product.nombre} ${product.descripcion}`).includes(normalizedQuery),
   );
@@ -31,7 +32,11 @@ function Catalogo({ products, loading, error, onRetry, onAddToCart }) {
         </Link>
       </div>
 
-      {loading && <p className="app-message app-message--loading" role="status">Cargando catálogo… La primera visita puede tardar hasta un minuto.</p>}
+      {loading && (
+        <p className="app-message app-message--loading" role="status">
+          Cargando catálogo… La primera visita puede tardar hasta un minuto.
+        </p>
+      )}
 
       {!loading && error && (
         <section className="app-message app-message--error" role="alert">
@@ -53,11 +58,14 @@ function Catalogo({ products, loading, error, onRetry, onAddToCart }) {
               placeholder="Nombre o descripción"
             />
           </label>
+
           <div aria-live="polite">
             {normalizedQuery && visibleProducts.length === 0 ? (
-              <p className="app-message">No encontramos piezas para “{query.trim()}”.</p>
+              <p className="app-message">
+                No encontramos piezas para “{query.trim()}”.
+              </p>
             ) : (
-              <ProductList products={visibleProducts} onAddToCart={onAddToCart} />
+              <ProductList products={visibleProducts} />
             )}
           </div>
         </>
@@ -67,4 +75,3 @@ function Catalogo({ products, loading, error, onRetry, onAddToCart }) {
 }
 
 export default Catalogo;
-

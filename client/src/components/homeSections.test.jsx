@@ -1,11 +1,13 @@
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
-import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 import Catalogo from '../pages/Catalogo';
 import Home from '../pages/Home';
 import Cart from './Cart';
 import ProductCard from './ProductCard';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from '../context/AuthContext';
+import { CartProvider } from '../context/CartContext';
 
 const ROUTER_FUTURE = { v7_startTransition: true, v7_relativeSplatPath: true };
 
@@ -19,6 +21,7 @@ let root;
 
 beforeEach(() => {
   global.IS_REACT_ACT_ENVIRONMENT = true;
+  localStorage.clear();
   container = document.createElement('div');
   document.body.appendChild(container);
   root = createRoot(container);
@@ -29,9 +32,26 @@ afterEach(() => {
   container.remove();
 });
 
-function render(ui) {
+function AppProviders({ children, initialEntries = ['/'] }) {
+  return (
+    <MemoryRouter
+      initialEntries={initialEntries}
+      future={ROUTER_FUTURE}
+    >
+      <AuthProvider>
+        <CartProvider>{children}</CartProvider>
+      </AuthProvider>
+    </MemoryRouter>
+  );
+}
+
+function render(ui, initialEntries) {
   act(() => {
-    root.render(<MemoryRouter future={ROUTER_FUTURE}>{ui}</MemoryRouter>);
+    root.render(
+      <AppProviders initialEntries={initialEntries}>
+        {ui}
+      </AppProviders>
+    );
   });
 }
 
@@ -196,8 +216,14 @@ describe('Imágenes que no cargan', () => {
   });
 
   it('el carrito muestra el respaldo en lugar de una imagen rota', () => {
-    render(<Cart cart={[{ product, quantity: 1 }]} />);
+    localStorage.setItem(
+      'hermanos-jota-cart',
+      JSON.stringify([{ product, quantity: 1 }])
+    );
+
+    render(<Cart />);
     failImage();
+
     expect(container.querySelector('img')).toBeNull();
     expect(container.querySelector('.cart-item__image')).not.toBeNull();
   });
@@ -212,7 +238,7 @@ describe('API despertando', () => {
       .mockResolvedValue({ ok: true, json: () => Promise.resolve(products) });
 
     await act(async () => {
-      root.render(<MemoryRouter initialEntries={['/productos']} future={ROUTER_FUTURE}><App /></MemoryRouter>);
+      root.render(<AppProviders initialEntries={['/productos']}><App /></AppProviders>);
     });
     expect(container.textContent).toContain('Cargando catálogo');
     expect(container.textContent).not.toContain('Unexpected token');
@@ -237,7 +263,7 @@ describe('Navegación', () => {
     global.fetch = jest.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve(products) });
 
     await act(async () => {
-      root.render(<MemoryRouter initialEntries={['/productos']} future={ROUTER_FUTURE}><App /></MemoryRouter>);
+      root.render(<AppProviders initialEntries={['/productos']}><App /></AppProviders>);
     });
     document.documentElement.scrollTop = 500;
     await act(async () => {
@@ -250,23 +276,30 @@ describe('Navegación', () => {
 });
 
 describe('Finalizar compra', () => {
-  it('vacía el carrito y confirma el total aclarando que no hubo cobro', () => {
-    const stored = [{ product: { ...products[0], imagenUrl: '' }, quantity: 2 }];
-    const onCheckout = jest.fn();
+  it('redirige al inicio de sesión si el usuario no está autenticado', () => {
+    const stored = [
+      { product: { ...products[0], imagenUrl: '' }, quantity: 2 },
+    ];
 
-    function Harness({ cart }) {
-      return <Cart cart={cart} onCheckout={onCheckout} />;
-    }
+    localStorage.setItem(
+      'hermanos-jota-cart',
+      JSON.stringify(stored)
+    );
 
-    render(<Harness cart={stored} />);
-    const button = [...container.querySelectorAll('button')].find((item) => item.textContent === 'Finalizar compra');
+    render(
+      <Routes>
+        <Route path="/carrito" element={<Cart />} />
+        <Route path="/login" element={<p>Iniciá sesión</p>} />
+      </Routes>,
+      ['/carrito']
+    );
+
+    const button = [...container.querySelectorAll('button')].find(
+      (item) => item.textContent.includes('Finalizar compra')
+    );
+
     click(button);
-    expect(onCheckout).toHaveBeenCalledTimes(1);
 
-    render(<Harness cart={[]} />);
-    expect(container.querySelector('h1').textContent).toBe('¡Gracias por tu compra!');
-    expect(container.textContent).toContain('$');
-    expect(container.textContent).toContain('200');
-    expect(container.textContent).toContain('no se guardó ningún pedido ni se realizó ningún cobro');
+    expect(container.textContent).toContain('Iniciá sesión');
   });
 });

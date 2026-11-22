@@ -4,8 +4,7 @@ import InstagramPost from '../components/InstagramPost';
 import ProductList from '../components/ProductList';
 import { getImageUrl } from '../utils/productHelpers';
 
-
-function Home({ products = [], loading = false, error = null, onRetry, onAddToCart }) {
+function Home({ products = [], loading = false, error = null, onRetry }) {
   const featuredProducts = products.slice(0, 4);
 
   return (
@@ -62,7 +61,8 @@ function Home({ products = [], loading = false, error = null, onRetry, onAddToCa
               Ver todo el catálogo
             </Link>
           </div>
-          <ProductList products={featuredProducts} onAddToCart={onAddToCart} />
+
+          <ProductList products={featuredProducts} />
         </section>
       )}
 
@@ -93,4 +93,3 @@ function Home({ products = [], loading = false, error = null, onRetry, onAddToCa
 }
 
 export default Home;
-

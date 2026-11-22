@@ -180,9 +180,9 @@ Se agregaron **34 pruebas nuevas** (`client/src/services/authApi.test.js`: 12 y 
 
 ---
 
-## Tarea 4. Responsable: **(sin asignar)** — Frontend: `CartContext`, navegación según sesión, perfil y pedidos
+## Tarea 4. Responsable: **Nicolás Benitez — GitHub: Nico-5525** — Frontend: `CartContext`, navegación según sesión, perfil y pedidos
 
-**Estado: Pendiente**
+**Estado: Finalizada**
 
 **Archivos:** `client/src/context/CartContext.jsx`, `client/src/services/ordersApi.js`, `client/src/components/Cart.jsx`, `client/src/components/Navbar.jsx`, `client/src/pages/Perfil.jsx`, `client/src/pages/MisPedidos.jsx`, `client/src/App.jsx`, `client/src/index.js`, `client/src/styles/orders.css`, y las pruebas correspondientes.
 
@@ -198,6 +198,33 @@ Se agregaron **34 pruebas nuevas** (`client/src/services/authApi.test.js`: 12 y 
 
 **Al terminar:** el carrito funciona desde el contexto, solo se puede finalizar la compra con sesión iniciada, el pedido queda guardado a nombre del usuario y aparece en «Mis pedidos». Depende de `AuthContext` y `ProtectedRoute` de la Tarea 3 y de los endpoints de la Tarea 2: conviene coordinar los nombres al comienzo, usando el contrato de la sección 6.
 
+Resumen de lo realizado:
+
+Se creó CartContext con CartProvider y el hook useCartContext(), centralizando el estado y las operaciones del carrito.
+
+Se incorporó la persistencia en localStorage, la validación de los datos almacenados mediante readStoredCart y el cálculo del total y la cantidad de productos.
+
+Se utilizaron useMemo y useCallback para optimizar el contexto y sus funciones.
+
+Se integró CartProvider en index.js y se adaptó App.jsx para trabajar con el nuevo contexto.
+
+Se modificaron Navbar, ProductCard, ProductDetail, Home, Catalogo y Cart para consumir el contexto del carrito.
+
+Se creó services/ordersApi.js con las funciones createOrder y getMyOrders, incluyendo la autenticación mediante token.
+
+Se implementó el proceso de finalizar compra, contemplando la validación de sesión, la creación del pedido, el manejo de errores y la limpieza del carrito únicamente cuando la operación finaliza correctamente.
+
+Se incorporó la navegación condicional en Navbar, mostrando las opciones correspondientes según el estado de autenticación del usuario.
+
+Se crearon las páginas Perfil.jsx y MisPedidos.jsx, con información del usuario y sus pedidos.
+
+Se protegieron las rutas privadas y administrativas mediante ProtectedRoute.
+
+Se actualizaron y adaptaron las pruebas automatizadas a la nueva estructura de contextos y funcionalidades.
+
+Archivos principales:
+
+client/src/context/CartContext.jsx, client/src/services/ordersApi.js, client/src/components/Cart.jsx, client/src/components/Navbar.jsx, client/src/pages/Perfil.jsx, client/src/pages/MisPedidos.jsx, client/src/App.jsx, client/src/index.js, client/src/styles/orders.css y los archivos de pruebas correspondientes.
 ---
 
 ## Tarea 5. Responsable: **(sin asignar)** — Sprint 8: despliegue, variables de producción, README y revisión final

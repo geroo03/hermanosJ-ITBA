@@ -1,12 +1,15 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCartContext } from '../context/CartContext';
 import { formatPrice, getImageUrl, truncate } from '../utils/productHelpers';
 import '../styles/products.css';
 
 /**
  * Tarjeta visual de un producto del catálogo conectada a React Router.
  */
-function ProductCard({ product, onAddToCart }) {
+function ProductCard({ product }) {
+  const { addToCart } = useCartContext();
   const { _id, nombre, descripcion, precio, imagenUrl } = product;
   const detailPath = `/productos/${_id}`;
   const imageSrc = getImageUrl(imagenUrl);
@@ -15,7 +18,12 @@ function ProductCard({ product, onAddToCart }) {
   return (
     <article className="product-card">
       {imageSrc && !imageFailed ? (
-        <Link to={detailPath} className="product-card__media-link" tabIndex={-1} aria-hidden="true">
+        <Link
+          to={detailPath}
+          className="product-card__media-link"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
           <img
             className="product-card__image"
             src={imageSrc}
@@ -25,7 +33,10 @@ function ProductCard({ product, onAddToCart }) {
           />
         </Link>
       ) : (
-        <div className="product-card__image product-card__image--placeholder" aria-hidden="true" />
+        <div
+          className="product-card__image product-card__image--placeholder"
+          aria-hidden="true"
+        />
       )}
 
       <div className="product-card__body">
@@ -36,7 +47,9 @@ function ProductCard({ product, onAddToCart }) {
         </h3>
 
         {descripcion && (
-          <p className="product-card__description">{truncate(descripcion)}</p>
+          <p className="product-card__description">
+            {truncate(descripcion)}
+          </p>
         )}
 
         <p className="product-card__price">{formatPrice(precio)}</p>
@@ -49,7 +62,7 @@ function ProductCard({ product, onAddToCart }) {
           <button
             type="button"
             className="btn btn--primary"
-            onClick={() => onAddToCart(product)}
+            onClick={() => addToCart(product)}
           >
             Agregar al carrito
           </button>
@@ -60,3 +73,4 @@ function ProductCard({ product, onAddToCart }) {
 }
 
 export default ProductCard;
+
