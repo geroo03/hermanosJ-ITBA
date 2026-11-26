@@ -163,8 +163,7 @@ body::before {
 /* ---------- Portada: el panel de vidrio es el elemento protagonista ---------- */
 .home-hero {
   margin-top: calc(var(--nav-height) * -1);
-  padding: calc(var(--nav-height) + 2.5rem) 0 3.5rem;
-  min-height: min(92vh, 52rem);
+  padding: calc(var(--nav-height) + 1.5rem) 0 1.5rem;
 }
 
 .home-hero__scrim {
@@ -213,9 +212,11 @@ body::before {
 }
 
 /* El panel se achica para dejar ver el video */
+/* La portada ocupa justo la primera pantalla; solo crece si el texto no entra */
 .home-hero {
   align-items: flex-end;
-  min-height: max(min(92vh, 52rem), 46rem);
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .home-hero__scrim {
@@ -480,21 +481,6 @@ body::before {
     font-size: clamp(1.75rem, 8.4vw, 2.4rem);
   }
 
-  /* Altura fija y panel arriba: al achicarse no mueve la página y el video queda debajo */
-  .home-hero {
-    align-items: flex-start;
-    min-height: 62rem;
-  }
-
-  .home-hero__scrim {
-    background: rgba(31, 20, 14, 0.5);
-  }
-
-  .home-hero__actions .btn {
-    flex: 1 1 100%;
-    text-align: center;
-  }
-
   .cart__actions {
     flex-direction: column-reverse;
     width: 100%;
@@ -503,6 +489,185 @@ body::before {
   .cart__actions .btn {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* ---------- Portada en pantallas bajas (notebooks) ---------- */
+@media (min-width: 48.01rem) and (max-height: 46rem) {
+  .home-hero {
+    padding-bottom: 1rem;
+  }
+
+  .home-hero__glass {
+    padding: 1.25rem 1.75rem;
+  }
+
+  .home-hero__label {
+    margin-bottom: 0.35rem;
+  }
+
+  .home-hero__title {
+    font-size: clamp(1.75rem, 6.5vh, 2.75rem);
+  }
+
+  .home-hero__lede {
+    margin-top: 0.6rem;
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
+
+  .home-hero__stats {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+  }
+
+  .home-hero__stats dd {
+    font-size: 1.3rem;
+  }
+
+  .home-hero__actions {
+    margin-top: 1rem;
+  }
+}
+
+/* ---------- Portada en vertical: el video entero arriba y el texto debajo ---------- */
+@media (max-aspect-ratio: 1/1) {
+  .home-hero {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: calc(var(--nav-height) + 1rem) 0 0.75rem;
+  }
+
+  /* 16:7 es la proporción de la imagen sin las franjas negras */
+  .home-hero__media {
+    position: relative;
+    inset: auto;
+    flex-shrink: 0;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+  }
+
+  .home-hero__scrim {
+    display: none;
+  }
+
+  .home-hero__glass {
+    margin: 0 auto;
+    padding: 1rem;
+    border-radius: 1.5rem;
+  }
+
+  .home-hero__label {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+  }
+
+  .home-hero__title {
+    font-size: clamp(1.5rem, 7vw, 2.4rem);
+  }
+
+  .home-hero__lede {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .home-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+  }
+
+  .home-hero__stats div {
+    justify-content: flex-end;
+  }
+
+  .home-hero__stats dd {
+    font-size: 1.15rem;
+  }
+
+  .home-hero__stats dt {
+    font-size: 0.72rem;
+    line-height: 1.3;
+  }
+
+  .home-hero__actions {
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+
+  .home-hero__actions .btn {
+    flex: 1 1 0;
+    padding-inline: 0.5rem;
+    font-size: 0.88rem;
+    text-align: center;
+  }
+
+  /* Acá el panel no tapa el video: el texto queda siempre a la vista */
+  .home-hero--video-visible .home-hero__collapsible {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .home-hero__toggle {
+    display: none;
+  }
+}
+
+/* Teléfonos bajos: las cifras no entran en la primera pantalla */
+@media (max-width: 48rem) and (max-height: 44rem) {
+  .home-hero__stats {
+    display: none;
+  }
+}
+
+/* ---------- Teléfono en horizontal: solo título y botones, para que se vea el video ---------- */
+@media (orientation: landscape) and (max-height: 30rem) {
+  .home-hero {
+    padding-bottom: 0.5rem;
+    padding-top: calc(var(--nav-height) + 0.5rem);
+  }
+
+  .home-hero__glass {
+    width: min(34rem, 100%);
+    padding: 0.75rem 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .home-hero__label,
+  .home-hero__collapsible,
+  .home-hero__toggle {
+    display: none;
+  }
+
+  .home-hero__title {
+    font-size: 1.35rem;
+  }
+
+  .home-hero__actions {
+    margin-top: 0.6rem;
+  }
+
+  .home-hero__actions .btn {
+    padding-block: 0.45rem;
+    font-size: 0.88rem;
+  }
+}
+
+/* Entre el tamaño teléfono y el de escritorio los enlaces no entran junto al lema */
+@media (min-width: 48.01rem) and (max-width: 60rem) {
+  .navbar__brand-tagline {
+    display: none;
+  }
+
+  .navbar__link {
+    padding-inline: 0.5rem;
+    font-size: 0.9rem;
   }
 }
 
