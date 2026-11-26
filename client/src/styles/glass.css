@@ -86,7 +86,7 @@ body::before {
 
 .navbar__inner {
   flex-wrap: nowrap;
-  width: min(74rem, calc(100% - 1.5rem));
+  width: var(--page-width);
   padding: 0.5rem 0.65rem 0.5rem 1rem;
   border-radius: 999px;
   background: var(--glass-fill-strong);
@@ -171,7 +171,7 @@ body::before {
 }
 
 .home-hero__inner {
-  width: min(74rem, calc(100% - 1.5rem));
+  width: var(--page-width);
 }
 
 .home-hero__glass {
@@ -285,7 +285,7 @@ body::before {
 }
 
 .home-workshop {
-  width: min(70rem, calc(100% - 3rem));
+  width: var(--page-width);
 }
 
 .instagram-section {
@@ -661,6 +661,10 @@ body::before {
 
 /* Entre el tamaño teléfono y el de escritorio los enlaces no entran junto al lema */
 @media (min-width: 48.01rem) and (max-width: 60rem) {
+  :root {
+    --gutter: 0.75rem;
+  }
+
   .navbar__brand-tagline {
     display: none;
   }

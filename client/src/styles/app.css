@@ -15,10 +15,20 @@
   --error-ink: #9c4a3d;
   --serif: Georgia, 'Times New Roman', serif;
   --sans: Inter, 'Segoe UI', Arial, sans-serif;
+  /* Ancho común de todas las secciones: márgenes laterales que crecen con la pantalla */
+  --gutter: clamp(1rem, 7vw, 6rem);
+  --page-width: min(64rem, calc(100% - 2 * var(--gutter)));
 
   color: var(--ink);
   background: var(--paper);
   font-family: var(--sans);
+}
+
+/* En pantallas de escritorio todo un poco más chico para que respire */
+@media (min-width: 64rem) {
+  html {
+    font-size: 87.5%;
+  }
 }
 
 * {
@@ -60,7 +70,7 @@ a.btn {
 
 .app-content,
 .app-message {
-  width: min(70rem, calc(100% - 3rem));
+  width: var(--page-width);
   margin: 2.5rem auto;
 }
 
@@ -114,7 +124,7 @@ a.btn {
 
 .home-hero__inner {
   position: relative;
-  width: min(70rem, calc(100% - 3rem));
+  width: var(--page-width);
   margin: 0 auto;
 }
 

@@ -8,7 +8,7 @@
   display: grid;
   align-items: center;
   gap: 2.5rem;
-  width: min(70rem, calc(100% - 3rem));
+  width: var(--page-width);
   margin: 0 auto;
 }
 
